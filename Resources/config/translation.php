@@ -23,43 +23,12 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use BaksDev\Elastic\BaksDevElasticBundle;
 use BaksDev\Support\BaksDevSupportBundle;
-use BaksDev\Support\Type\Message\SupportMessageUid;
+use Symfony\Config\FrameworkConfig;
 
-return static function (ContainerConfigurator $configurator) {
+return static function (FrameworkConfig $config) {
 
-    $services = $configurator->services()
-        ->defaults()
-        ->autowire()
-        ->autoconfigure();
-
-    $NAMESPACE = BaksDevSupportBundle::NAMESPACE;
-    $PATH = BaksDevSupportBundle::PATH;
-
-    $services->load($NAMESPACE, $PATH)
-        ->exclude([
-            $PATH.'{Entity,Resources,Type}',
-            $PATH.'**'.DIRECTORY_SEPARATOR.'*Message.php',
-            $PATH.'**'.DIRECTORY_SEPARATOR.'*DTO.php',
-            $PATH.'**'.DIRECTORY_SEPARATOR.'*Test.php',
-        ]);
-
-    /* Коллекция статусов */
-    $services->load(
-        $NAMESPACE.'Type\Status\SupportStatus\\',
-        $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'Status','SupportStatus'])
-    );
-
-    /* Коллекция приоритетов */
-    $services->load(
-        $NAMESPACE.'Type\Priority\SupportPriority\\',
-        $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'Priority', 'SupportPriority'])
-    );
-
-
-    $services->set(SupportMessageUid::class)->class(SupportMessageUid::class);
-
-
-
+    $config
+        ->translator()
+        ->paths([BaksDevSupportBundle::PATH.implode(DIRECTORY_SEPARATOR, ['Resources', 'translations', ''])]);
 };
