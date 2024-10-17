@@ -23,14 +23,44 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Support;
+namespace BaksDev\Support\Type\Status\SupportStatus;
 
-use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
-class BaksDevSupportBundle extends AbstractBundle
+final readonly class SupportStatusCollection
 {
-    public const NAMESPACE = __NAMESPACE__.'\\';
+    public function __construct(
+        #[AutowireIterator('baks.support.status', defaultPriorityMethod: 'priority')] private iterable $property,
+    ) {}
 
-    public const PATH = __DIR__.DIRECTORY_SEPARATOR;
+    public function cases(): array
+    {
+        $case = null;
 
+        foreach($this->property as $key => $property)
+        {
+            $case[$key] = new $property();
+        }
+
+        return $case;
+    }
+
+    public function casesSettings(): array
+    {
+        $case = null;
+
+        /** @var SupportStatusInterface $instance */
+
+        foreach($this->property as $key => $property)
+        {
+            $instance = new $property();
+
+            if($instance->isSetting())
+            {
+                $case[$key] = $instance;
+            }
+        }
+
+        return $case;
+    }
 }

@@ -23,14 +23,39 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Support;
+namespace BaksDev\Support\UseCase\Admin\Delete;
 
-use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+use BaksDev\Core\Entity\AbstractHandler;
+use BaksDev\Support\Entity\Event\SupportEvent;
+use BaksDev\Support\Entity\Support;
+use BaksDev\Support\Messenger\SupportMessage;
 
-class BaksDevSupportBundle extends AbstractBundle
+final class SupportDeleteHandler extends AbstractHandler
 {
-    public const NAMESPACE = __NAMESPACE__.'\\';
+    public function handle(
+        SupportDeleteDTO $command,
+    ): string|Support
+    {
 
-    public const PATH = __DIR__.DIRECTORY_SEPARATOR;
+        $this->setCommand($command);
 
+        $this->preEventRemove(Support::class, SupportEvent::class);
+
+        /** Валидация всех объектов */
+        if($this->validatorCollection->isInvalid())
+        {
+            return $this->validatorCollection->getErrorUniqid();
+        }
+
+        $this->flush();
+
+        /* Отправляем сообщение в шину */
+        $this->messageDispatch->dispatch(
+            message: new SupportMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
+            transport: 'support'
+        );
+
+        return $this->main;
+
+    }
 }

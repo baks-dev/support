@@ -1,0 +1,50 @@
+<?php
+
+declare(strict_types=1);
+
+namespace BaksDev\Support\Listeners\Entity;
+
+use BaksDev\Core\Type\Ip\IpAddress;
+use BaksDev\Support\Entity\Modify\SupportModify;
+use BaksDev\Users\User\Entity\User;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
+use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
+
+#[AsEntityListener(event: Events::prePersist, method: 'prePersist', entity: SupportModify::class)]
+final class SupportModifyListener
+{
+    public function __construct(
+        private readonly RequestStack $request,
+        private readonly TokenStorageInterface $token,
+    ) {}
+
+    public function prePersist(SupportModify $data, LifecycleEventArgs $event): void
+    {
+        $token = $this->token->getToken();
+
+        if($token)
+        {
+            $data->setUsr($token->getUser());
+
+            if($token instanceof SwitchUserToken)
+            {
+                /** @var User $originalUser */
+                $originalUser = $token->getOriginalToken()->getUser();
+                $data->setUsr($originalUser);
+            }
+        }
+
+        /* Если пользователь не из консоли */
+        if($this->request->getCurrentRequest())
+        {
+            $data->upModifyAgent(
+                new IpAddress($this->request->getCurrentRequest()->getClientIp()), /* Ip */
+                $this->request->getCurrentRequest()->headers->get('User-Agent') /* User-Agent */
+            );
+        }
+    }
+}

@@ -23,14 +23,35 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Support;
+namespace BaksDev\Support\Listeners\Event;
 
-use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+use BaksDev\Support\Type\Status\SupportStatus\SupportStatusCollection;
+use BaksDev\Support\Type\Status\SupportStatusType;
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
-class BaksDevSupportBundle extends AbstractBundle
+/**
+ * Слушатель инициирует статусы заказов Ozon для определения в типе доктрины.
+ */
+#[AsEventListener(event: ControllerEvent::class)]
+#[AsEventListener(event: ConsoleEvents::COMMAND)]
+final class SupportStatusListeners
 {
-    public const NAMESPACE = __NAMESPACE__.'\\';
+    public function __construct(private SupportStatusCollection $collection) {}
 
-    public const PATH = __DIR__.DIRECTORY_SEPARATOR;
+    public function onKernelController(ControllerEvent $event): void
+    {
+        if(in_array(SupportStatusType::class, get_declared_classes(), true))
+        {
+            $this->collection->cases();
+        }
+    }
+
+    public function onConsoleCommand(ConsoleCommandEvent $event): void
+    {
+        $this->collection->cases();
+    }
 
 }

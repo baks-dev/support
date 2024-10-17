@@ -1,0 +1,24 @@
+# Роль
+
+ROLE_SUPPORT:
+  header: 'Support'
+  name: 'Соотношения свойств Ozon'
+  desc: 'Настройки соотношений данных Ozon'
+
+# Правила
+
+ROLE_SUPPORT_INDEX:
+  name: 'Просмотр'
+  desc: ''
+
+ROLE_SUPPORT_NEW:
+  name: 'Добавить'
+  desc: ''
+
+ROLE_SUPPORT_EDIT:
+  name: 'Редактировать'
+  desc: ''
+
+ROLE_SUPPORT_DELETE:
+  name: 'Удалить'
+  desc: ''

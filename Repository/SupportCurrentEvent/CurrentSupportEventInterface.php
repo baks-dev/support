@@ -21,16 +21,17 @@
  *  THE SOFTWARE.
  */
 
-declare(strict_types=1);
+namespace BaksDev\Support\Repository\SupportCurrentEvent;
 
-namespace BaksDev\Support;
+use BaksDev\Support\Entity\Event\SupportEvent;
+use BaksDev\Support\Entity\Support;
+use BaksDev\Support\Type\Id\SupportUid;
 
-use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
-
-class BaksDevSupportBundle extends AbstractBundle
+interface CurrentSupportEventInterface
 {
-    public const NAMESPACE = __NAMESPACE__.'\\';
+    public function forSupport(Support|SupportUid|string $support): self;
 
-    public const PATH = __DIR__.DIRECTORY_SEPARATOR;
+    /**  Метод возвращает текущее активное событие Support */
+    public function find(): SupportEvent|false;
 
 }
