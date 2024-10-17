@@ -15,8 +15,8 @@ use BaksDev\Support\UseCase\Admin\Delete\SupportDeleteHandler;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\Routing\Annotation\Route;
 
 #[AsController]
 #[RoleSecurity('ROLE_SUPPORT_DELETE')]
@@ -27,7 +27,8 @@ final class DeleteController extends AbstractController
         Request $request,
         #[MapEntity] SupportEvent $SupportEvent,
         SupportDeleteHandler $SupportDeleteHandler,
-    ): Response {
+    ): Response
+    {
 
         $SupportDeleteDTO = new SupportDeleteDTO();
         $SupportEvent->getDto($SupportDeleteDTO);

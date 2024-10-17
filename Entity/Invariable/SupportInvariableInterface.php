@@ -2,4 +2,4 @@
 
 namespace BaksDev\Support\Entity\Invariable;
 
-interface SupportInvariableInterface {}
+interface SupportInvariableInterface { }

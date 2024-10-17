@@ -32,10 +32,10 @@ use BaksDev\Support\Type\Priority\SupportPriority;
 use BaksDev\Support\Type\Priority\SupportPriority\Collection\SupportPriorityLow;
 use BaksDev\Support\Type\Status\SupportStatus;
 use BaksDev\Support\Type\Status\SupportStatus\Collection\SupportStatusOpen;
+use BaksDev\Support\UseCase\Admin\New\Invariable\SupportInvariableDTO;
 use BaksDev\Support\UseCase\Admin\New\Message\SupportMessageDTO;
 use BaksDev\Support\UseCase\Admin\New\SupportDTO;
 use BaksDev\Support\UseCase\Admin\New\SupportHandler;
-use BaksDev\Support\UseCase\Admin\New\Invariable\SupportInvariableDTO;
 use BaksDev\Users\Profile\TypeProfile\Type\Id\Choice\TypeProfileOrganization;
 use BaksDev\Users\Profile\TypeProfile\Type\Id\TypeProfileUid;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
@@ -115,7 +115,6 @@ class SupportNewTest extends KernelTestCase
 
         $SupportInvariableDTO->setTitle('Triangle SnowLink PL02');
         self::assertSame('Triangle SnowLink PL02', $SupportInvariableDTO->getTitle());
-
 
 
         /** SupportMessageDTO */

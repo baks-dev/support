@@ -5,15 +5,15 @@ declare(strict_types=1);
 
 namespace BaksDev\Support\Controller;
 
+use BaksDev\Core\Controller\AbstractController;
 use BaksDev\Core\Form\Search\SearchDTO;
 use BaksDev\Core\Form\Search\SearchForm;
+use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
 use BaksDev\Support\Repository\AllSupport\AllSupportRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use BaksDev\Core\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\Routing\Annotation\Route;
 
 #[AsController]
 #[RoleSecurity('ROLE_SUPPORT')]
@@ -24,7 +24,8 @@ final class IndexController extends AbstractController
         Request $request,
         AllSupportRepositoryInterface $allSupport,
         int $page = 0,
-    ): Response {
+    ): Response
+    {
         // Поиск
         $search = new SearchDTO();
         $searchForm = $this->createForm(

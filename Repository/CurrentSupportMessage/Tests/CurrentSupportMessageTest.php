@@ -24,8 +24,7 @@ class CurrentSupportMessageTest extends KernelTestCase
         $message = $CurrentSupportMessageInterface
             ->forEvent(SupportEventUid::TEST)
             ->forMessage(SupportMessageUid::TEST)
-            ->find()
-        ;
+            ->find();
 
         self::assertInstanceOf(SupportMessage::class, $message);
 

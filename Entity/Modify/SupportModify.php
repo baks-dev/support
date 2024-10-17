@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace BaksDev\Support\Entity\Modify;
 
+use BaksDev\Core\Entity\EntityEvent;
+use BaksDev\Core\Type\Ip\IpAddress;
 use BaksDev\Core\Type\Modify\Modify\ModifyActionNew;
 use BaksDev\Core\Type\Modify\Modify\ModifyActionUpdate;
+use BaksDev\Core\Type\Modify\ModifyAction;
 use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Users\User\Entity\User;
 use BaksDev\Users\User\Type\Id\UserUid;
-use BaksDev\Core\Entity\EntityEvent;
-use BaksDev\Core\Type\Ip\IpAddress;
-use BaksDev\Core\Type\Modify\ModifyAction;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,7 +19,6 @@ use InvalidArgumentException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /** Модификаторы событий SupportModify */
-
 #[ORM\Entity]
 #[ORM\Table(name: 'support_modify')]
 #[ORM\Index(columns: ['action'])]
@@ -77,12 +76,12 @@ class SupportModify extends EntityEvent
 
     public function __toString(): string
     {
-        return (string)$this->event;
+        return (string) $this->event;
     }
 
     public function getDto($dto): mixed
     {
-        if ($dto instanceof SupportModifyInterface)
+        if($dto instanceof SupportModifyInterface)
         {
             return parent::getDto($dto);
         }
@@ -92,7 +91,7 @@ class SupportModify extends EntityEvent
 
     public function setEntity($dto): mixed
     {
-        if ($dto instanceof SupportModifyInterface)
+        if($dto instanceof SupportModifyInterface)
         {
             return parent::setEntity($dto);
         }

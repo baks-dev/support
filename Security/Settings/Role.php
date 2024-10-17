@@ -28,7 +28,6 @@ namespace BaksDev\Support\Security\Settings;
 use BaksDev\Menu\Admin\Command\Upgrade\MenuAdminInterface;
 use BaksDev\Menu\Admin\Type\SectionGroup\Group\Collection\MenuAdminSectionGroupCollectionInterface;
 use BaksDev\Menu\Admin\Type\SectionGroup\Group\MenuGroupSettings;
-use BaksDev\Orders\Order\Security\MenuGroupMarketplace;
 use BaksDev\Users\Profile\Group\Security\RoleInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 

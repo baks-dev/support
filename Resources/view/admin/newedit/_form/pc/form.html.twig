@@ -10,19 +10,19 @@
             {{ form_row(form.message, { label: 'Профиль пользователя', placeholder: 'Выберите профиль из списка...' }) }}
         {% endif %}
 
-{#        {{ form_row(form.client, { label: 'Идентификатор клиента' }) }}#}
+        {#        {{ form_row(form.client, { label: 'Идентификатор клиента' }) }} #}
 
-{#        {{ form_row(form.token, { label: 'Токен авторизации' }) }}#}
+        {#        {{ form_row(form.token, { label: 'Токен авторизации' }) }} #}
 
-{#        {% if form.client.vars.data %}#}
-{#            <div class="alert alert-warning" role="alert">#}
-{#                В целях безопастности токен зашифрован и не отображается в форме. Оставьте поле пустым, если обновление указанного ранее токена не требуется!#}
-{#            </div>#}
-{#        {% endif %}#}
+        {#        {% if form.client.vars.data %} #}
+        {#            <div class="alert alert-warning" role="alert"> #}
+        {#                В целях безопастности токен зашифрован и не отображается в форме. Оставьте поле пустым, если обновление указанного ранее токена не требуется! #}
+        {#            </div> #}
+        {#        {% endif %} #}
 
-{#        <div class="d-flex gap-3">#}
-{#            {{ form_row(form.percent, { label: 'Торговая наценка' }) }}#}
-{#        </div>#}
+        {#        <div class="d-flex gap-3"> #}
+        {#            {{ form_row(form.percent, { label: 'Торговая наценка' }) }} #}
+        {#        </div> #}
 
         <div class="flex-fill d-flex justify-content-around pb-3 radio-buttons gap-3" data-buttons="true">
 
@@ -31,7 +31,7 @@
                     <div class="flex-grow-1">
                     <span class="h5">
                         <div class="form-check d-flex align-items-center">
-{#                            {{ form_widget(form.active, { label: false }) }}#}
+{#                            {{ form_widget(form.active, { label: false }) }} #}
                             <span>
                                 Активный токен
                             </span>

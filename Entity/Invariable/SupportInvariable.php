@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace BaksDev\Support\Entity\Invariable;
 
+use BaksDev\Core\Entity\EntityReadonly;
 use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Type\Id\SupportUid;
 use BaksDev\Users\Profile\TypeProfile\Type\Id\TypeProfileUid;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
-use BaksDev\Core\Entity\EntityReadonly;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /* SupportInvariable */
@@ -95,7 +96,7 @@ class SupportInvariable extends EntityReadonly
             return parent::getDto($dto);
         }
 
-        throw new \InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
+        throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
     }
 
 
@@ -106,7 +107,7 @@ class SupportInvariable extends EntityReadonly
             return parent::setEntity($dto);
         }
 
-        throw new \InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
+        throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
     }
 
 }

@@ -3,6 +3,7 @@
 namespace BaksDev\Support\Type\Priority;
 
 use BaksDev\Support\Type\Priority\SupportPriority\SupportPriorityInterface;
+use InvalidArgumentException;
 
 final class SupportPriority
 {
@@ -45,7 +46,7 @@ final class SupportPriority
             }
         }
 
-        throw new \InvalidArgumentException(sprintf('Undefined Support Status %s', $property));
+        throw new InvalidArgumentException(sprintf('Undefined Support Status %s', $property));
     }
 
 
@@ -83,7 +84,7 @@ final class SupportPriority
     {
         return array_filter(
             get_declared_classes(),
-            static function ($className) {
+            static function($className) {
                 return in_array(SupportPriorityInterface::class, class_implements($className), true);
             }
         );

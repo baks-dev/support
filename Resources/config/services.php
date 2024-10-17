@@ -27,7 +27,7 @@ use BaksDev\Elastic\BaksDevElasticBundle;
 use BaksDev\Support\BaksDevSupportBundle;
 use BaksDev\Support\Type\Message\SupportMessageUid;
 
-return static function (ContainerConfigurator $configurator) {
+return static function(ContainerConfigurator $configurator) {
 
     $services = $configurator->services()
         ->defaults()
@@ -48,7 +48,7 @@ return static function (ContainerConfigurator $configurator) {
     /* Коллекция статусов */
     $services->load(
         $NAMESPACE.'Type\Status\SupportStatus\\',
-        $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'Status','SupportStatus'])
+        $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'Status', 'SupportStatus'])
     );
 
     /* Коллекция приоритетов */
@@ -59,7 +59,6 @@ return static function (ContainerConfigurator $configurator) {
 
 
     $services->set(SupportMessageUid::class)->class(SupportMessageUid::class);
-
 
 
 };

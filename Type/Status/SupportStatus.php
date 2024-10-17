@@ -3,6 +3,7 @@
 namespace BaksDev\Support\Type\Status;
 
 use BaksDev\Support\Type\Status\SupportStatus\SupportStatusInterface;
+use InvalidArgumentException;
 
 final class SupportStatus
 {
@@ -46,7 +47,7 @@ final class SupportStatus
             }
         }
 
-        throw new \InvalidArgumentException(sprintf('Undefined Support Status %s', $property));
+        throw new InvalidArgumentException(sprintf('Undefined Support Status %s', $property));
     }
 
 
@@ -84,7 +85,7 @@ final class SupportStatus
     {
         return array_filter(
             get_declared_classes(),
-            static function ($className) {
+            static function($className) {
                 return in_array(SupportStatusInterface::class, class_implements($className), true);
             }
         );

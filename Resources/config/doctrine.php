@@ -36,7 +36,7 @@ use BaksDev\Support\Type\Status\SupportStatus;
 use BaksDev\Support\Type\Status\SupportStatusType;
 use Symfony\Config\DoctrineConfig;
 
-return static function (DoctrineConfig $doctrine, ContainerConfigurator $configurator): void {
+return static function(DoctrineConfig $doctrine, ContainerConfigurator $configurator): void {
 
     $doctrine->dbal()->type(SupportUid::TYPE)->class(SupportType::class);
     $doctrine->dbal()->type(SupportEventUid::TYPE)->class(SupportEventType::class);

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace BaksDev\Support\Entity\Message;
 
+use BaksDev\Core\Entity\EntityEvent;
 use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Type\Message\SupportMessageUid;
 use DateTimeImmutable;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
-use BaksDev\Core\Entity\EntityEvent;
+use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use Symfony\Component\Validator\Constraints as Assert;
 

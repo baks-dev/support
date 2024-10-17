@@ -5,13 +5,13 @@ declare(strict_types=1);
 
 namespace BaksDev\Support\Repository\AllSupport;
 
+use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Core\Form\Search\SearchDTO;
 use BaksDev\Core\Services\Paginator\PaginatorInterface;
-use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Support\Entity\Event\SupportEvent;
+use BaksDev\Support\Entity\Invariable\SupportInvariable;
 use BaksDev\Support\Entity\Message\SupportMessage;
 use BaksDev\Support\Entity\Support;
-use BaksDev\Support\Entity\Invariable\SupportInvariable;
 use BaksDev\Support\Type\Status\SupportStatus;
 use BaksDev\Support\Type\Status\SupportStatus\Collection\SupportStatusOpen;
 
@@ -85,8 +85,7 @@ final class AllSupportRepository implements AllSupportRepositoryInterface
                 ->addSearchLike('invariable.title')
                 ->addSearchLike('message.name')
                 ->addSearchLike('message.message')
-                ->addSearchLike('invariable.ticket')
-            ;
+                ->addSearchLike('invariable.ticket');
 
         }
         // $dbal->addOrderBy('event.priority');

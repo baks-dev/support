@@ -16,7 +16,7 @@ final class SupportMessageForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event): void {
 
             /** @var SupportMessageDTO $data */
             $data = $event->getData();

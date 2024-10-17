@@ -34,7 +34,8 @@ final class SupportDeleteHandler extends AbstractHandler
 {
     public function handle(
         SupportDeleteDTO $command,
-    ): string|Support {
+    ): string|Support
+    {
 
         $this->setCommand($command);
 

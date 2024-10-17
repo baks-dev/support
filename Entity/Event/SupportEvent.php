@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace BaksDev\Support\Entity\Event;
 
+use BaksDev\Core\Entity\EntityEvent;
+use BaksDev\Support\Entity\Invariable\SupportInvariable;
 use BaksDev\Support\Entity\Message\SupportMessage;
 use BaksDev\Support\Entity\Modify\SupportModify;
 use BaksDev\Support\Entity\Support;
-use BaksDev\Support\Entity\Invariable\SupportInvariable;
 use BaksDev\Support\Type\Event\SupportEventUid;
 use BaksDev\Support\Type\Id\SupportUid;
 use BaksDev\Support\Type\Priority\SupportPriority;
 use BaksDev\Support\Type\Status\SupportStatus;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use BaksDev\Core\Entity\EntityEvent;
 use InvalidArgumentException;
 use Symfony\Component\Validator\Constraints as Assert;
 

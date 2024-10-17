@@ -3,7 +3,6 @@
 namespace BaksDev\Support\Type\Status;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
 
 final class SupportStatusType extends Type

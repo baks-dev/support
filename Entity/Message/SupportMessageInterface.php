@@ -2,4 +2,4 @@
 
 namespace BaksDev\Support\Entity\Message;
 
-interface SupportMessageInterface {}
+interface SupportMessageInterface { }

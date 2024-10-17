@@ -8,7 +8,6 @@ use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Type\Event\SupportEventUid;
 use BaksDev\Support\Type\Id\SupportUid;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /* Support */
@@ -38,7 +37,7 @@ class Support
 
     public function __toString(): string
     {
-        return (string)$this->id;
+        return (string) $this->id;
     }
 
     /**

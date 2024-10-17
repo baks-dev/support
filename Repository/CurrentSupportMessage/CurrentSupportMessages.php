@@ -69,8 +69,7 @@ final class CurrentSupportMessages implements CurrentSupportMessagesInterface
                 'id',
                 $this->message,
                 SupportMessageUid::TYPE
-            )
-        ;
+            );
 
         return $orm->getOneOrNullResult() ?: false;
     }
