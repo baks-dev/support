@@ -60,7 +60,7 @@ class SupportMessageAddTest extends KernelTestCase
         /** @var CurrentSupportEventInterface $SupportCurrentEvent */
         $SupportCurrentEvent = self::getContainer()->get(CurrentSupportEventInterface::class);
         $SupportCurrentEvent->forSupport(SupportUid::TEST);
-        $SupportEvent = $SupportCurrentEvent->find();
+        $SupportEvent = $SupportCurrentEvent->execute();
 
 
         self::assertNotFalse($SupportEvent);

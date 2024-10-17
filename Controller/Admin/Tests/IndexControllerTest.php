@@ -30,22 +30,20 @@ use Symfony\Component\DependencyInjection\Attribute\When;
 #[When(env: 'test')]
 final class IndexControllerTest extends WebTestCase
 {
-    private const URL = '/admin/supports';
+    private const string URL = '/admin/supports';
 
-    private const ROLE = 'ROLE_SUPPORT';
+    private const string ROLE = 'ROLE_SUPPORT';
 
     /** Доступ по роли  */
     public function testRoleSuccessful(): void
     {
         self::ensureKernelShutdown();
         $client = static::createClient();
+        $usr = TestUserAccount::getModer(self::ROLE);
 
         foreach(TestUserAccount::getDevice() as $device)
         {
             $client->setServerParameter('HTTP_USER_AGENT', $device);
-
-            $usr = TestUserAccount::getModer(self::ROLE);
-
             $client->loginUser($usr, 'user');
             $client->request('GET', self::URL);
 
@@ -60,13 +58,11 @@ final class IndexControllerTest extends WebTestCase
     {
         self::ensureKernelShutdown();
         $client = static::createClient();
+        $usr = TestUserAccount::getAdmin();
 
         foreach(TestUserAccount::getDevice() as $device)
         {
             $client->setServerParameter('HTTP_USER_AGENT', $device);
-
-            $usr = TestUserAccount::getAdmin();
-
             $client->loginUser($usr, 'user');
             $client->request('GET', self::URL);
 
@@ -81,12 +77,11 @@ final class IndexControllerTest extends WebTestCase
     {
         self::ensureKernelShutdown();
         $client = static::createClient();
+        $usr = TestUserAccount::getUsr();
 
         foreach(TestUserAccount::getDevice() as $device)
         {
             $client->setServerParameter('HTTP_USER_AGENT', $device);
-
-            $usr = TestUserAccount::getUsr();
             $client->loginUser($usr, 'user');
             $client->request('GET', self::URL);
 
@@ -105,7 +100,6 @@ final class IndexControllerTest extends WebTestCase
         foreach(TestUserAccount::getDevice() as $device)
         {
             $client->setServerParameter('HTTP_USER_AGENT', $device);
-
             $client->request('GET', self::URL);
 
             // Full authentication is required to access this resource

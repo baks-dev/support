@@ -32,6 +32,6 @@ interface CurrentSupportEventInterface
     public function forSupport(Support|SupportUid|string $support): self;
 
     /**  Метод возвращает текущее активное событие Support */
-    public function find(): SupportEvent|false;
+    public function execute(): SupportEvent|false;
 
 }

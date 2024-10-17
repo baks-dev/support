@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace BaksDev\Support\UseCase\Admin\New\Tests;
 
+use BaksDev\Support\Controller\Tests\MessageAddControllerTest;
 use BaksDev\Support\Entity\Support;
 use BaksDev\Support\Repository\SupportCurrentEvent\CurrentSupportEventInterface;
 use BaksDev\Support\Type\Id\SupportUid;
@@ -53,6 +54,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @group support
  *
  * @depends BaksDev\Support\UseCase\Admin\New\Tests\SupportNewTest::class
+ * @depends BaksDev\Support\Controller\Tests\MessageAddControllerTest::class
+ *
  */
 #[When(env: 'test')]
 class SupportEditTest extends KernelTestCase
@@ -68,7 +71,7 @@ class SupportEditTest extends KernelTestCase
         /** @var CurrentSupportEventInterface $SupportCurrentEvent */
         $SupportCurrentEvent = self::getContainer()->get(CurrentSupportEventInterface::class);
         $SupportCurrentEvent->forSupport(SupportUid::TEST);
-        $SupportEvent = $SupportCurrentEvent->find();
+        $SupportEvent = $SupportCurrentEvent->execute();
 
 
         self::assertNotFalse($SupportEvent);

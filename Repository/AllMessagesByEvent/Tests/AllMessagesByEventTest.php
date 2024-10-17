@@ -8,8 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * @group support
- *
- * @depends BaksDev\Support\Controller\Tests\DeleteControllerTest::class
  */
 class AllMessagesByEventTest extends KernelTestCase
 {

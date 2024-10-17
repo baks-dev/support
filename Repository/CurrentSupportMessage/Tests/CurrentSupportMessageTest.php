@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 /**
  * @group support
  *
- * @depends BaksDev\Support\Repository\AllSupport\Tests\AllSupportRepositoryTest::class
+ * @depends BaksDev\Support\UseCase\Admin\New\Tests\SupportNewTest::class
  */
 class CurrentSupportMessageTest extends KernelTestCase
 {

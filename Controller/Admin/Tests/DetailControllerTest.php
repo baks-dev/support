@@ -26,14 +26,14 @@ use Symfony\Component\DependencyInjection\Attribute\When;
 /**
  * @group support
  *
- * @depends BaksDev\Support\Controller\Admin\Tests\MessageAddControllerTest::class
+ * @depends BaksDev\Support\UseCase\Admin\New\Tests\SupportNewTest::class
  */
 #[When(env: 'test')]
 final class DetailControllerTest extends WebTestCase
 {
     private static ?string $url = null;
 
-    private const ROLE = 'ROLE_SUPPORT_DETAIL';
+    private const string ROLE = 'ROLE_SUPPORT_DETAIL';
 
 
     public static function setUpBeforeClass(): void
@@ -47,15 +47,12 @@ final class DetailControllerTest extends WebTestCase
     {
         self::ensureKernelShutdown();
         $client = static::createClient();
+        $usr = TestUserAccount::getModer(self::ROLE);
 
         foreach(TestUserAccount::getDevice() as $device)
         {
             $client->setServerParameter('HTTP_USER_AGENT', $device);
-
-            $usr = TestUserAccount::getModer(self::ROLE);
-
             $client->loginUser($usr, 'user');
-
             $client->request('GET', self::$url);
 
             self::assertResponseIsSuccessful();
@@ -70,13 +67,11 @@ final class DetailControllerTest extends WebTestCase
     {
         self::ensureKernelShutdown();
         $client = static::createClient();
+        $usr = TestUserAccount::getAdmin();
 
         foreach(TestUserAccount::getDevice() as $device)
         {
             $client->setServerParameter('HTTP_USER_AGENT', $device);
-
-            $usr = TestUserAccount::getAdmin();
-
             $client->loginUser($usr, 'user');
             $client->request('GET', self::$url);
 
@@ -91,12 +86,11 @@ final class DetailControllerTest extends WebTestCase
     {
         self::ensureKernelShutdown();
         $client = static::createClient();
+        $usr = TestUserAccount::getUsr();
 
         foreach(TestUserAccount::getDevice() as $device)
         {
             $client->setServerParameter('HTTP_USER_AGENT', $device);
-
-            $usr = TestUserAccount::getUsr();
             $client->loginUser($usr, 'user');
             $client->request('GET', self::$url);
 
@@ -115,7 +109,6 @@ final class DetailControllerTest extends WebTestCase
         foreach(TestUserAccount::getDevice() as $device)
         {
             $client->setServerParameter('HTTP_USER_AGENT', $device);
-
             $client->request('GET', self::$url);
 
             // Full authentication is required to access this resource

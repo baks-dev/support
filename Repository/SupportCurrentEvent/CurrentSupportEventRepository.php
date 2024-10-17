@@ -55,9 +55,9 @@ final class CurrentSupportEventRepository implements CurrentSupportEventInterfac
     }
 
     /**  Метод возвращает текущее активное событие  */
-    public function find(): SupportEvent|false
+    public function execute(): SupportEvent|false
     {
-        if(!$this->support === false)
+        if($this->support === false)
         {
             throw new InvalidArgumentException('Invalid Argument $support');
         }
