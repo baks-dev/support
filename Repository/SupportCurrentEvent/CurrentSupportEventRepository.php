@@ -29,10 +29,11 @@ use BaksDev\Core\Doctrine\ORMQueryBuilder;
 use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Entity\Support;
 use BaksDev\Support\Type\Id\SupportUid;
+use InvalidArgumentException;
 
 final class CurrentSupportEventRepository implements CurrentSupportEventInterface
 {
-    private SupportUid|false $supportUid = false;
+    private SupportUid|false $support = false;
 
     public function __construct(private readonly ORMQueryBuilder $ORMQueryBuilder) {}
 
@@ -48,7 +49,7 @@ final class CurrentSupportEventRepository implements CurrentSupportEventInterfac
             $support = new SupportUid($support);
         }
 
-        $this->supportUid = $support;
+        $this->support = $support;
 
         return $this;
     }
@@ -56,6 +57,11 @@ final class CurrentSupportEventRepository implements CurrentSupportEventInterfac
     /**  Метод возвращает текущее активное событие  */
     public function find(): SupportEvent|false
     {
+        if(!$this->support === false)
+        {
+            throw new InvalidArgumentException('Invalid Argument $support');
+        }
+
         $orm = $this->ORMQueryBuilder->createQueryBuilder(self::class);
 
         $orm
@@ -63,10 +69,9 @@ final class CurrentSupportEventRepository implements CurrentSupportEventInterfac
             ->where('support.id = :support')
             ->setParameter(
                 'support',
-                $this->supportUid,
+                $this->support,
                 SupportUid::TYPE
             );
-
 
         $orm
             ->select('event')

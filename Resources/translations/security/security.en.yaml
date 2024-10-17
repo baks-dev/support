@@ -2,25 +2,25 @@
 
 ROLE_SUPPORT:
   header: 'Support'
-  name: 'Соотношения свойств Ozon'
-  desc: 'Настройки соотношений данных Ozon'
+  name: 'Technical support service'
+  desc: 'User technical support service'
 
 # Правила
 
 ROLE_SUPPORT_INDEX:
-  name: 'Просмотр'
+  name: 'view'
   desc: ''
 
 ROLE_SUPPORT_NEW:
-  name: 'Добавить'
+  name: 'Add'
   desc: ''
 
 ROLE_SUPPORT_EDIT:
-  name: 'Редактировать'
+  name: 'Edit'
   desc: ''
 
 ROLE_SUPPORT_DELETE:
-  name: 'Удалить'
+  name: 'Delete'
   desc: ''
 
 

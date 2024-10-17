@@ -16,7 +16,7 @@
  *
  */
 
-namespace BaksDev\Support\Controller\Tests;
+namespace BaksDev\Support\Controller\Admin\Tests;
 
 use BaksDev\Support\Type\Event\SupportEventUid;
 use BaksDev\Users\User\Tests\TestUserAccount;
@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\Attribute\When;
 /**
  * @group support
  *
- * @depends BaksDev\Support\Controller\Tests\MessageAddControllerTest::class
+ * @depends BaksDev\Support\Controller\Admin\Tests\MessageAddControllerTest::class
  */
 #[When(env: 'test')]
 final class DetailControllerTest extends WebTestCase

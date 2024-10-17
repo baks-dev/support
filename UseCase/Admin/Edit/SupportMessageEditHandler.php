@@ -25,8 +25,7 @@ final class SupportMessageEditHandler extends AbstractHandler
 
         $this->flush();
 
-        /** Не Сообщение не тправляем */
-
+        /** Не отправляем сообщение при изменении */
         return $this->main;
     }
 }

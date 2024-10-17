@@ -9,7 +9,7 @@ use BaksDev\Support\Type\Message\SupportMessageUid;
 
 interface CurrentSupportMessagesInterface
 {
-    public function find(): SupportMessage|false;
+    public function execute(): SupportMessage|false;
 
     public function forMessage(SupportMessageUid|string $supportMessageUid): self;
 

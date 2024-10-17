@@ -9,10 +9,11 @@ use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Entity\Message\SupportMessage;
 use BaksDev\Support\Type\Event\SupportEventUid;
 use BaksDev\Support\Type\Message\SupportMessageUid;
+use InvalidArgumentException;
 
-final class CurrentSupportMessages implements CurrentSupportMessagesInterface
+final class CurrentSupportMessagesRepository implements CurrentSupportMessagesInterface
 {
-    private SupportMessageUid $message;
+    private SupportMessageUid|false $message = false;
 
     private SupportEventUid|false $event = false;
 
@@ -20,12 +21,10 @@ final class CurrentSupportMessages implements CurrentSupportMessagesInterface
 
     public function forMessage(SupportMessageUid|string $supportMessageUid): self
     {
-
         if(is_string($supportMessageUid))
         {
             $supportMessageUid = new SupportMessageUid($supportMessageUid);
         }
-
 
         $this->message = $supportMessageUid;
 
@@ -50,8 +49,17 @@ final class CurrentSupportMessages implements CurrentSupportMessagesInterface
         return $this;
     }
 
-    public function find(): SupportMessage|false
+    public function execute(): SupportMessage|false
     {
+        if($this->event === false)
+        {
+            throw new InvalidArgumentException('Invalid Argument SupportEventUid');
+        }
+
+        if($this->message === false)
+        {
+            throw new InvalidArgumentException('Invalid Argument SupportMessageUid');
+        }
 
         $orm = $this->ORMQueryBuilder->createQueryBuilder(self::class);
 

@@ -30,35 +30,16 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 final readonly class SupportStatusCollection
 {
     public function __construct(
-        #[AutowireIterator('baks.support.status', defaultPriorityMethod: 'priority')] private iterable $property,
+        #[AutowireIterator('baks.support.status', defaultPriorityMethod: 'priority')] private iterable $status,
     ) {}
 
     public function cases(): array
     {
         $case = null;
 
-        foreach($this->property as $key => $property)
+        foreach($this->status as $key => $status)
         {
-            $case[$key] = new $property();
-        }
-
-        return $case;
-    }
-
-    public function casesSettings(): array
-    {
-        $case = null;
-
-        /** @var SupportStatusInterface $instance */
-
-        foreach($this->property as $key => $property)
-        {
-            $instance = new $property();
-
-            if($instance->isSetting())
-            {
-                $case[$key] = $instance;
-            }
+            $case[$key] = new $status();
         }
 
         return $case;

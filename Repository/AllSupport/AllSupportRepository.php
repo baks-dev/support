@@ -15,7 +15,7 @@ use BaksDev\Support\Entity\Support;
 use BaksDev\Support\Type\Status\SupportStatus;
 use BaksDev\Support\Type\Status\SupportStatus\Collection\SupportStatusOpen;
 
-final class AllSupportRepository implements AllSupportRepositoryInterface
+final class AllSupportRepository implements AllSupportInterface
 {
     private SearchDTO|false $search = false;
 
@@ -35,9 +35,9 @@ final class AllSupportRepository implements AllSupportRepositoryInterface
     {
         $dbal = $this->DBALQueryBuilder->createQueryBuilder(self::class);
 
-
-        $dbal->select('support.id');
-        $dbal->from(Support::class, 'support');
+        $dbal
+            ->select('support.id')
+            ->from(Support::class, 'support');
 
         $dbal
             ->addSelect('event.id AS event')
@@ -49,16 +49,21 @@ final class AllSupportRepository implements AllSupportRepositoryInterface
                 'event',
                 'event.id = support.event AND event.status = :status'
             )
-            ->setParameter('status', SupportStatusOpen::class, SupportStatus::TYPE);
+            ->setParameter(
+                'status',
+                SupportStatusOpen::class,
+                SupportStatus::TYPE
+            );
 
-        $dbal->addSelect('invariable.ticket');
-        $dbal->addSelect('invariable.title');
-        $dbal->leftJoin(
-            'support',
-            SupportInvariable::class,
-            'invariable',
-            'invariable.main = support.id'
-        );
+        $dbal
+            ->addSelect('invariable.ticket')
+            ->addSelect('invariable.title')
+            ->leftJoin(
+                'support',
+                SupportInvariable::class,
+                'invariable',
+                'invariable.main = support.id'
+            );
 
 
         $dbal
@@ -79,18 +84,14 @@ final class AllSupportRepository implements AllSupportRepositoryInterface
 
             $dbal
                 ->createSearchQueryBuilder($this->search)
-
-                //->addSearchEqualUid('support.id')
-
                 ->addSearchLike('invariable.title')
                 ->addSearchLike('message.name')
                 ->addSearchLike('message.message')
                 ->addSearchLike('invariable.ticket');
 
         }
-        // $dbal->addOrderBy('event.priority');
-        // $dbal->addOrderBy('modify.mod_date');
 
+        $dbal->addOrderBy('event.priority');
 
         return $this->paginator->fetchAllAssociative($dbal);
     }

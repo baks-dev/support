@@ -65,21 +65,6 @@ final class SupportPriority
         return $this->property->getValue();
     }
 
-
-    public static function cases(): array
-    {
-        $case = [];
-
-        foreach(self::getDeclared() as $property)
-        {
-            /** @var SupportPriorityInterface $property */
-            $class = new $property();
-            $case[$class::priority()] = new self($class);
-        }
-
-        return $case;
-    }
-
     public static function getDeclared(): array
     {
         return array_filter(

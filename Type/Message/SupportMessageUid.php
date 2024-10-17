@@ -10,9 +10,9 @@ use Symfony\Component\Uid\AbstractUid;
 final class SupportMessageUid extends Uid
 {
     /** Тестовый идентификатор */
-    public const TEST = 'b45ecdc9-8a44-737c-8501-79d3ba862031';
+    public const string TEST = 'b45ecdc9-8a44-737c-8501-79d3ba862031';
 
-    public const TYPE = 'support_message';
+    public const string TYPE = 'support_message';
 
     private mixed $attr;
 

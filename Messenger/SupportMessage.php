@@ -7,12 +7,12 @@ namespace BaksDev\Support\Messenger;
 use BaksDev\Support\Type\Event\SupportEventUid;
 use BaksDev\Support\Type\Id\SupportUid;
 
-final class SupportMessage
+final readonly class SupportMessage
 {
     public function __construct(
-        private readonly SupportUid $id,
-        private readonly SupportEventUid $event,
-        private readonly ?SupportEventUid $last = null
+        private SupportUid $id,
+        private SupportEventUid $event,
+        private ?SupportEventUid $last = null
     ) {}
 
     /**

@@ -10,8 +10,9 @@ use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Entity\Invariable\SupportInvariable;
 use BaksDev\Support\Entity\Message\SupportMessage;
 use BaksDev\Support\Type\Event\SupportEventUid;
+use InvalidArgumentException;
 
-final class AllMessagesByEvent implements AllMessagesByEventInterface
+final class AllMessagesByEventRepository implements AllMessagesByEventInterface
 {
     private SupportEventUid|false $event = false;
 
@@ -38,6 +39,11 @@ final class AllMessagesByEvent implements AllMessagesByEventInterface
     /** Метод возвращает все сообщения по id тикета */
     public function findAll(): array|false
     {
+        if($this->event === false)
+        {
+            throw new InvalidArgumentException('Invalid Argument $event');
+        }
+
         $dbal = $this->DBALQueryBuilder->createQueryBuilder(self::class);
 
 
@@ -50,14 +56,15 @@ final class AllMessagesByEvent implements AllMessagesByEventInterface
             ->setParameter('event', $this->event, SupportEventUid::TYPE);
 
 
-        $dbal->addSelect('invariable.ticket');
-        $dbal->addSelect('invariable.title');
-        $dbal->join(
-            'event',
-            SupportInvariable::class,
-            'invariable',
-            'invariable.main = event.main AND invariable.event = event.id'
-        );
+        $dbal
+            ->addSelect('invariable.ticket')
+            ->addSelect('invariable.title')
+            ->join(
+                'event',
+                SupportInvariable::class,
+                'invariable',
+                'invariable.main = event.main AND invariable.event = event.id'
+            );
 
 
         $dbal

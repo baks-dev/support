@@ -3,7 +3,7 @@
 namespace BaksDev\Support\Repository\AllSupport\Tests;
 
 use BaksDev\Core\Form\Search\SearchDTO;
-use BaksDev\Support\Repository\AllSupport\AllSupportRepositoryInterface;
+use BaksDev\Support\Repository\AllSupport\AllSupportInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -15,8 +15,8 @@ class AllSupportRepositoryTest extends KernelTestCase
 {
     public function testUseCase(): void
     {
-        /** @var AllSupportRepositoryInterface $AllSupportRepositoryInterface */
-        $AllSupportRepositoryInterface = self::getContainer()->get(AllSupportRepositoryInterface::class);
+        /** @var AllSupportInterface $AllSupportRepositoryInterface */
+        $AllSupportRepositoryInterface = self::getContainer()->get(AllSupportInterface::class);
 
         $response = $AllSupportRepositoryInterface
             ->search(new SearchDTO())

@@ -16,10 +16,9 @@
  *
  */
 
-namespace BaksDev\Support\Controller\Tests;
+namespace BaksDev\Support\Controller\Admin\Tests;
 
 use BaksDev\Support\Type\Event\SupportEventUid;
-use BaksDev\Support\Type\Message\SupportMessageUid;
 use BaksDev\Users\User\Tests\TestUserAccount;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\Attribute\When;
@@ -27,19 +26,20 @@ use Symfony\Component\DependencyInjection\Attribute\When;
 /**
  * @group support
  *
- * @depends BaksDev\Support\Controller\Tests\IndexControllerTest::class
+ * @depends BaksDev\Support\Controller\Tests\DetailControllerTest::class
  */
 #[When(env: 'test')]
-final class MessageAddControllerTest extends WebTestCase
+final class DeleteControllerTest extends WebTestCase
 {
     private static ?string $url = null;
 
-    private const ROLE = 'ROLE_SUPPORT_ADD';
+    private const ROLE = 'ROLE_SUPPORT_DELETE';
 
 
     public static function setUpBeforeClass(): void
     {
-        self::$url = sprintf('/admin/support/message/add/%s/%s', SupportEventUid::TEST, SupportMessageUid::TEST);
+
+        self::$url = sprintf('/admin/support/delete/%s', SupportEventUid::TEST);
     }
 
 

@@ -10,9 +10,9 @@ use Symfony\Component\Uid\AbstractUid;
 final class SupportEventUid extends Uid
 {
     /** Тестовый идентификатор */
-    public const TEST = '4bf28ed0-713c-7255-856d-e4c25f2002ec';
+    public const string TEST = '4bf28ed0-713c-7255-856d-e4c25f2002ec';
 
-    public const TYPE = 'support_event';
+    public const string TYPE = 'support_event';
 
     private mixed $attr;
 

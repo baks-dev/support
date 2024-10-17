@@ -7,7 +7,7 @@ use InvalidArgumentException;
 
 final class SupportStatus
 {
-    public const TYPE = 'support_status';
+    public const string TYPE = 'support_status';
 
     private ?SupportStatusInterface $property = null;
 

@@ -16,7 +16,7 @@
  *
  */
 
-namespace BaksDev\Support\Controller\Tests;
+namespace BaksDev\Support\Controller\Admin\Tests;
 
 use BaksDev\Users\User\Tests\TestUserAccount;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

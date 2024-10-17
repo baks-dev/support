@@ -22,7 +22,6 @@ final class SupportPriorityType extends Type
         return SupportPriority::TYPE;
     }
 
-
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;

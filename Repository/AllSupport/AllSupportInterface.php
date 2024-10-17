@@ -5,7 +5,7 @@ namespace BaksDev\Support\Repository\AllSupport;
 use BaksDev\Core\Form\Search\SearchDTO;
 use BaksDev\Core\Services\Paginator\PaginatorInterface;
 
-interface AllSupportRepositoryInterface
+interface AllSupportInterface
 {
     public function search(SearchDTO $search): self;
 

@@ -33,7 +33,7 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 /**
- * Слушатель инициирует статусы заказов Ozon для определения в типе доктрины.
+ * Слушатель инициирует статусы сообщений техподдержки для определения в типе доктрины.
  */
 #[AsEventListener(event: ControllerEvent::class)]
 #[AsEventListener(event: ConsoleEvents::COMMAND)]

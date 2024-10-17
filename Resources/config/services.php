@@ -57,8 +57,6 @@ return static function(ContainerConfigurator $configurator) {
         $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'Priority', 'SupportPriority'])
     );
 
-
     $services->set(SupportMessageUid::class)->class(SupportMessageUid::class);
-
 
 };

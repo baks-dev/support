@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2023.  Baks.dev <admin@baks.dev>
+ *  Copyright 2024.  Baks.dev <admin@baks.dev>
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,19 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Support\Security\Settings;
+namespace BaksDev\Support\Security;
 
 use BaksDev\Users\Profile\Group\Security\RoleInterface;
 use BaksDev\Users\Profile\Group\Security\VoterInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 #[AutoconfigureTag('baks.security.voter')]
-final class VoterIndex implements VoterInterface
+final class VoterAdd implements VoterInterface
 {
-    public const string VOTER = 'INDEX';
+    /**
+     * Добавить
+     */
+    public const string VOTER = 'ADD';
 
     public static function getVoter(): string
     {
@@ -43,6 +46,4 @@ final class VoterIndex implements VoterInterface
     {
         return $role->getRole() === Role::ROLE;
     }
-
-
 }

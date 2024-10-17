@@ -30,35 +30,16 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 final readonly class SupportPriorityCollection
 {
     public function __construct(
-        #[AutowireIterator('baks.support.priority', defaultPriorityMethod: 'priority')] private iterable $property,
+        #[AutowireIterator('baks.support.priority', defaultPriorityMethod: 'priority')] private iterable $priority,
     ) {}
 
     public function cases(): array
     {
         $case = null;
 
-        foreach($this->property as $key => $property)
+        foreach($this->priority as $key => $priority)
         {
-            $case[$key] = new $property();
-        }
-
-        return $case;
-    }
-
-    public function casesSettings(): array
-    {
-        $case = null;
-
-        /** @var SupportPriorityInterface $instance */
-
-        foreach($this->property as $key => $property)
-        {
-            $instance = new $property();
-
-            if($instance->isSetting())
-            {
-                $case[$key] = $instance;
-            }
+            $case[$key] = new $priority();
         }
 
         return $case;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace BaksDev\Support\Messenger;
 
 use BaksDev\Support\Repository\AllMessagesByEvent\AllMessagesByEventInterface;
-use BaksDev\Support\Repository\AllSupport\AllSupportRepositoryInterface;
+use BaksDev\Support\Repository\AllSupport\AllSupportInterface;
 use BaksDev\Support\Repository\CurrentSupportMessage\CurrentSupportMessagesInterface;
 use BaksDev\Support\Repository\SupportCurrentEvent\CurrentSupportEventInterface;
 use BaksDev\Support\UseCase\Admin\Delete\SupportDeleteHandler;
@@ -20,7 +20,7 @@ final class SupportHandler
         private readonly SupportDeleteHandler $supportDeleteHandler,
         private readonly CurrentSupportEventInterface $event,
         private readonly CurrentSupportMessagesInterface $supportMessage,
-        private readonly AllSupportRepositoryInterface $allSupportRepository,
+        private readonly AllSupportInterface $allSupportRepository,
         private readonly AllMessagesByEventInterface $allMessagesByTicketInterface,
     ) {}
 
