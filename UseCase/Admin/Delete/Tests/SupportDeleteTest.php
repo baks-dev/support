@@ -29,6 +29,7 @@ use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Entity\Support;
 use BaksDev\Support\Repository\SupportCurrentEvent\CurrentSupportEventInterface;
 use BaksDev\Support\Type\Id\SupportUid;
+use BaksDev\Support\UseCase\Admin\Add\Tests\SupportMessageAddTest;
 use BaksDev\Support\UseCase\Admin\Delete\SupportDeleteDTO;
 use BaksDev\Support\UseCase\Admin\Delete\SupportDeleteHandler;
 use BaksDev\Support\UseCase\Admin\New\SupportDTO;
@@ -39,7 +40,7 @@ use Symfony\Component\DependencyInjection\Attribute\When;
 /**
  * @group support
  *
- * @depends BaksDev\Support\UseCase\Admin\Edit\Tests\SupportMessageEditTest::class
+ * @depends BaksDev\Support\UseCase\Admin\Add\Tests\SupportMessageAddTest::class
  */
 #[When(env: 'test')]
 class SupportDeleteTest extends KernelTestCase

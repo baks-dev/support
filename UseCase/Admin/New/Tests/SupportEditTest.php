@@ -53,8 +53,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @group support
  *
- * @depends BaksDev\Support\UseCase\Admin\New\Tests\SupportNewTest::class
- * @depends BaksDev\Support\Controller\Tests\MessageAddControllerTest::class
+ * @depends BaksDev\Support\Controller\Admin\Tests\DeleteControllerTest::class
  *
  */
 #[When(env: 'test')]

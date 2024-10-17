@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace BaksDev\Support\UseCase\Admin\New\Message;
 
 use BaksDev\Support\Entity\Message\SupportMessageInterface;
-use BaksDev\Support\Type\Message\SupportMessageUid;
 use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /** @see SupportMessage */
 final class SupportMessageDTO implements SupportMessageInterface
 {
-    private ?SupportMessageUid $id = null;
+    //private ?SupportMessageUid $id = null;
 
     /** Никнейм */
     #[Assert\NotBlank]
@@ -53,14 +52,14 @@ final class SupportMessageDTO implements SupportMessageInterface
         return $this->date;
     }
 
-    public function getId(): ?SupportMessageUid
-    {
-        return $this->id;
-    }
-
-    public function setId(?SupportMessageUid $id): void
-    {
-        $this->id = $id;
-    }
+    //    public function getId(): ?SupportMessageUid
+    //    {
+    //        return $this->id;
+    //    }
+    //
+    //    public function setId(?SupportMessageUid $id): void
+    //    {
+    //        $this->id = $id;
+    //    }
 
 }

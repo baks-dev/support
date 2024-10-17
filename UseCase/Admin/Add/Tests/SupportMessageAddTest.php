@@ -28,11 +28,11 @@ namespace BaksDev\Support\UseCase\Admin\Add\Tests;
 use BaksDev\Support\Entity\Support;
 use BaksDev\Support\Repository\SupportCurrentEvent\CurrentSupportEventInterface;
 use BaksDev\Support\Type\Id\SupportUid;
-use BaksDev\Support\Type\Message\SupportMessageUid;
 use BaksDev\Support\Type\Status\SupportStatus;
 use BaksDev\Support\UseCase\Admin\New\Message\SupportMessageDTO;
 use BaksDev\Support\UseCase\Admin\New\SupportDTO;
 use BaksDev\Support\UseCase\Admin\New\SupportHandler;
+use BaksDev\Support\UseCase\Admin\New\Tests\SupportEditTest;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
@@ -44,7 +44,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @group support
  *
- * @depends BaksDev\Support\Repository\CurrentSupportMessage\Tests\CurrentSupportMessageTest::class
+ * @depends BaksDev\Support\UseCase\Admin\New\Tests\SupportEditTest::class
  */
 #[When(env: 'test')]
 class SupportMessageAddTest extends KernelTestCase
@@ -76,7 +76,7 @@ class SupportMessageAddTest extends KernelTestCase
 
         $SupportMessageDTO = new SupportMessageDTO();
 
-        $SupportMessageDTO->setId(clone new SupportMessageUid());
+        //$SupportMessageDTO->setId(clone new SupportMessageUid());
 
         $SupportMessageDTO->setName('Иванов Иван');
         self::assertSame('Иванов Иван', $SupportMessageDTO->getName());

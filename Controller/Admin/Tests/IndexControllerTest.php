@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\Attribute\When;
 /**
  * @group support
  *
- * @depends BaksDev\Support\UseCase\Admin\New\Tests\SupportEditTest::class
+ * @depends BaksDev\Support\Controller\Admin\Tests\MessageAddControllerTest::class
  */
 #[When(env: 'test')]
 final class IndexControllerTest extends WebTestCase
