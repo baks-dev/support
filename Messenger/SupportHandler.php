@@ -28,6 +28,7 @@ namespace BaksDev\Support\Messenger;
 use BaksDev\Support\Repository\AllMessagesByEvent\AllMessagesByEventInterface;
 use BaksDev\Support\Repository\AllSupport\AllSupportInterface;
 use BaksDev\Support\Repository\CurrentSupportMessage\CurrentSupportMessagesInterface;
+use BaksDev\Support\Repository\FindTicket\FindExistTicketInterface;
 use BaksDev\Support\Repository\SupportCurrentEvent\CurrentSupportEventInterface;
 use BaksDev\Support\UseCase\Admin\Delete\SupportDeleteHandler;
 use BaksDev\Support\UseCase\Admin\New\SupportHandler as SupportNewEditHandler;
@@ -43,6 +44,7 @@ final class SupportHandler
         private readonly CurrentSupportMessagesInterface $supportMessage,
         private readonly AllSupportInterface $allSupportRepository,
         private readonly AllMessagesByEventInterface $allMessagesByTicketInterface,
+        private readonly FindExistTicketInterface $findTicketById
     ) {}
 
     public function __invoke(SupportMessage $message): void {}

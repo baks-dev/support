@@ -70,7 +70,7 @@ class SupportInvariable extends EntityReadonly
 
     /** Id Тикета */
     #[Assert\NotBlank]
-    #[ORM\Column(type: Types::STRING)]
+    #[ORM\Column(type: Types::STRING, unique: true)]
     private string $ticket;
 
     /** Тема, заголовок или иная информация о предмете сообщения */

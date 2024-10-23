@@ -29,12 +29,26 @@ use BaksDev\Core\Entity\AbstractHandler;
 use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Entity\Support;
 use BaksDev\Support\Messenger\SupportMessage;
+use BaksDev\Support\Repository\FindTicket\FindExistTicketInterface;
 
 final class SupportHandler extends AbstractHandler
 {
+
     /** @see Support */
-    public function handle(SupportDTO $command): string|Support
+    public function handle(SupportDTO $command, FindExistTicketInterface|false $ticket = false): string|Support
     {
+        /** Проверяем, существует ли уже такой тикет в БД */
+        if(false !== $ticket)
+        {
+            $exist = $ticket
+                ->forTicket($command->getInvariable()->getTicket())
+                ->exist();
+
+            if($exist)
+            {
+                return 'Такой тикет уже существует!';
+            }
+        }
 
         $this->setCommand($command);
         $this->preEventPersistOrUpdate(Support::class, SupportEvent::class);
