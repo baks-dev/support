@@ -28,18 +28,18 @@ namespace BaksDev\Support\Repository\FindTicket;
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Support\Entity\Invariable\SupportInvariable;
 use BaksDev\Support\Entity\Support;
-use BaksDev\Support\Type\Ticket\SupportTicket;
+
 
 final class FindExistTicketRepository implements FindExistTicketInterface
 {
 
-    private SupportTicket|false $ticket = false;
+    private string|false $ticket = false;
 
     public function __construct(
         private readonly DBALQueryBuilder $DBALQueryBuilder,
     ) {}
 
-    public function forTicket(?SupportTicket $ticket): self
+    public function forTicket(?string $ticket): self
     {
         if(null === $ticket)
         {
@@ -67,7 +67,7 @@ final class FindExistTicketRepository implements FindExistTicketInterface
         $dbal
             ->from(SupportInvariable::class, 'invariable')
             ->where(' invariable.ticket = :ticket')
-            ->setParameter('ticket', $this->ticket, SupportTicket::TYPE);
+            ->setParameter('ticket', $this->ticket);
 
         $dbal
             ->join(

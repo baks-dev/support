@@ -26,7 +26,6 @@ declare(strict_types=1);
 namespace BaksDev\Support\UseCase\Admin\New\Invariable;
 
 use BaksDev\Support\Entity\Invariable\SupportInvariableInterface;
-use BaksDev\Support\Type\Ticket\SupportTicket;
 use BaksDev\Users\Profile\TypeProfile\Type\Id\TypeProfileUid;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -45,7 +44,7 @@ final class SupportInvariableDTO implements SupportInvariableInterface
 
     /** Id Тикета */
     #[Assert\NotBlank]
-    private SupportTicket $ticket;
+    private string $ticket;
 
     /** Тема, предмет сообщений тикета */
     #[Assert\NotBlank]
@@ -72,12 +71,12 @@ final class SupportInvariableDTO implements SupportInvariableInterface
         $this->profile = $profile;
     }
 
-    public function getTicket(): SupportTicket
+    public function getTicket(): string
     {
         return $this->ticket;
     }
 
-    public function setTicket(SupportTicket $ticket): void
+    public function setTicket(string $ticket): void
     {
         $this->ticket = $ticket;
     }
