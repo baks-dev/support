@@ -23,38 +23,35 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Support\UseCase\Admin\New;
+namespace BaksDev\Support\Listeners\Event;
 
-use BaksDev\Core\Entity\AbstractHandler;
-use BaksDev\Support\Entity\Event\SupportEvent;
-use BaksDev\Support\Entity\Support;
-use BaksDev\Support\Messenger\SupportMessage;
-use BaksDev\Support\Repository\FindTicket\FindExistTicketInterface;
+use BaksDev\Support\Type\Ticket\SupportTicket\SupportTicketCollection;
+use BaksDev\Support\Type\Ticket\SupportTicketType;
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
-final class SupportHandler extends AbstractHandler
+/**
+ * Слушатель инициирует тикеты сообщений
+ */
+#[AsEventListener(event: ControllerEvent::class)]
+#[AsEventListener(event: ConsoleEvents::COMMAND)]
+final class SupportTicketListeners
 {
+    public function __construct(private SupportTicketCollection $collection) {}
 
-    /** @see Support */
-    public function handle(SupportDTO $command, FindExistTicketInterface|false $ticket = false): string|Support
+    public function onKernelController(ControllerEvent $event): void
     {
-
-        $this->setCommand($command);
-        $this->preEventPersistOrUpdate(Support::class, SupportEvent::class);
-
-        /** Валидация всех объектов */
-        if($this->validatorCollection->isInvalid())
+        if(in_array(SupportTicketType::class, get_declared_classes(), true))
         {
-            return $this->validatorCollection->getErrorUniqid();
+            $this->collection->cases();
         }
-
-        $this->flush();
-
-        /** Отправляем сообщение в шину */
-        $this->messageDispatch->dispatch(
-            message: new SupportMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
-            transport: 'support'
-        );
-
-        return $this->main;
     }
+
+    public function onConsoleCommand(ConsoleCommandEvent $event): void
+    {
+        $this->collection->cases();
+    }
+
 }

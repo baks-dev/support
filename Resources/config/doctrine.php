@@ -34,6 +34,8 @@ use BaksDev\Support\Type\Priority\SupportPriority;
 use BaksDev\Support\Type\Priority\SupportPriorityType;
 use BaksDev\Support\Type\Status\SupportStatus;
 use BaksDev\Support\Type\Status\SupportStatusType;
+use BaksDev\Support\Type\Ticket\SupportTicket;
+use BaksDev\Support\Type\Ticket\SupportTicketType;
 use Symfony\Config\DoctrineConfig;
 
 return static function(DoctrineConfig $doctrine, ContainerConfigurator $configurator): void {
@@ -43,6 +45,7 @@ return static function(DoctrineConfig $doctrine, ContainerConfigurator $configur
     $doctrine->dbal()->type(SupportMessageUid::TYPE)->class(SupportMessageType::class);
     $doctrine->dbal()->type(SupportStatus::TYPE)->class(SupportStatusType::class);
     $doctrine->dbal()->type(SupportPriority::TYPE)->class(SupportPriorityType::class);
+    $doctrine->dbal()->type(SupportTicket::TYPE)->class(SupportTicketType::class);
 
 
     $emDefault = $doctrine->orm()->entityManager('default')->autoMapping(true);

@@ -23,9 +23,11 @@
 
 namespace BaksDev\Support\Repository\FindTicket;
 
+use BaksDev\Support\Type\Ticket\SupportTicket;
+
 interface FindExistTicketInterface
 {
-    public function forTicket(?string $ticket): self;
+    public function forTicket(?SupportTicket $ticket): self;
 
     /** Метод возвращает тикет по id */
     public function exist(): bool;

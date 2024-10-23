@@ -21,40 +21,37 @@
  *  THE SOFTWARE.
  */
 
-declare(strict_types=1);
+namespace BaksDev\Support\Type\Ticket;
 
-namespace BaksDev\Support\UseCase\Admin\New;
 
-use BaksDev\Core\Entity\AbstractHandler;
-use BaksDev\Support\Entity\Event\SupportEvent;
-use BaksDev\Support\Entity\Support;
-use BaksDev\Support\Messenger\SupportMessage;
-use BaksDev\Support\Repository\FindTicket\FindExistTicketInterface;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\Type;
 
-final class SupportHandler extends AbstractHandler
+final class SupportTicketType extends Type
 {
-
-    /** @see Support */
-    public function handle(SupportDTO $command, FindExistTicketInterface|false $ticket = false): string|Support
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): string
     {
+        return (string) new SupportTicket($value);
+    }
 
-        $this->setCommand($command);
-        $this->preEventPersistOrUpdate(Support::class, SupportEvent::class);
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?SupportTicket
+    {
+        return !empty($value) ? new SupportTicket($value) : null;
+    }
 
-        /** Валидация всех объектов */
-        if($this->validatorCollection->isInvalid())
-        {
-            return $this->validatorCollection->getErrorUniqid();
-        }
+    public function getName(): string
+    {
+        return SupportTicket::TYPE;
+    }
 
-        $this->flush();
 
-        /** Отправляем сообщение в шину */
-        $this->messageDispatch->dispatch(
-            message: new SupportMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
-            transport: 'support'
-        );
+    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
+    {
+        return true;
+    }
 
-        return $this->main;
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
+    {
+        return $platform->getStringTypeDeclarationSQL($column);
     }
 }

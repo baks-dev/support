@@ -54,6 +54,10 @@ class SupportMessage extends EntityEvent
     #[ORM\JoinColumn(name: 'event', referencedColumnName: "id")]
     private SupportEvent $event;
 
+    /** Внешний идентификатор сообщения */
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    private ?string $external = null;
+
     /** Никнейм */
     #[Assert\NotBlank]
     #[Assert\Length(max: 100)]

@@ -28,6 +28,7 @@ namespace BaksDev\Support\Entity\Invariable;
 use BaksDev\Core\Entity\EntityReadonly;
 use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Type\Id\SupportUid;
+use BaksDev\Support\Type\Ticket\SupportTicket;
 use BaksDev\Users\Profile\TypeProfile\Type\Id\TypeProfileUid;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Doctrine\DBAL\Types\Types;
@@ -70,8 +71,8 @@ class SupportInvariable extends EntityReadonly
 
     /** Id Тикета */
     #[Assert\NotBlank]
-    #[ORM\Column(type: Types::STRING, unique: true)]
-    private string $ticket;
+    #[ORM\Column(type: SupportTicket::TYPE, unique: true)]
+    private SupportTicket $ticket;
 
     /** Тема, заголовок или иная информация о предмете сообщения */
     #[Assert\NotBlank]
@@ -82,14 +83,6 @@ class SupportInvariable extends EntityReadonly
     {
         $this->event = $event;
         $this->main = $event->getMain();
-
-        /** Генерируем идентификатор тикета */
-        $this->ticket = number_format(
-            (microtime(true) * 100),
-            0,
-            '.',
-            '.'
-        );
     }
 
     public function __toString(): string
