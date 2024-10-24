@@ -28,7 +28,7 @@
                 <div class="col-md-6 col-lg-7 col-xl-8">
                     <ul class="list-unstyled">
                         {% for message in messages %}
-                            {% if message.external and user != message.name %}
+                            {% if message.external or user != message.name %}
                                 <li class="d-flex justify-content-between mb-4">
                                     <div class="card w-100">
                                         <div class="card-header d-flex justify-content-between p-3">
