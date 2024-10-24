@@ -114,6 +114,11 @@ class SupportEditTest extends KernelTestCase
         /** @var  SupportMessageDTO $SupportMessageDTO */
         foreach($SupportDTO->getMessages() as $SupportMessageDTO)
         {
+
+            self::assertSame('c5bddd02', $SupportMessageDTO->getExternal());
+            $SupportMessageDTO->setExternal('341a1e8a');
+            self::assertSame('341a1e8a', $SupportMessageDTO->getExternal());
+
             self::assertSame('Иван Петров', $SupportMessageDTO->getName());
             $SupportMessageDTO->setName('Петр Иванов');
             self::assertSame('Петр Иванов', $SupportMessageDTO->getName());

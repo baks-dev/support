@@ -75,8 +75,6 @@ class SupportMessageAddTest extends KernelTestCase
 
         $SupportMessageDTO = new SupportMessageDTO();
 
-        //$SupportMessageDTO->setId(clone new SupportMessageUid());
-
         $SupportMessageDTO->setName('Иванов Иван');
         self::assertSame('Иванов Иван', $SupportMessageDTO->getName());
 

@@ -27,7 +27,6 @@ namespace BaksDev\Support\UseCase\Admin\New\Tests;
 
 use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Entity\Support;
-use BaksDev\Support\Repository\FindTicket\FindExistTicketInterface;
 use BaksDev\Support\Type\Id\SupportUid;
 use BaksDev\Support\Type\Priority\SupportPriority;
 use BaksDev\Support\Type\Priority\SupportPriority\Collection\SupportPriorityLow;
@@ -121,6 +120,9 @@ class SupportNewTest extends KernelTestCase
         /** SupportMessageDTO */
         $SupportMessageDTO = new SupportMessageDTO();
 
+        $SupportMessageDTO->setExternal('c5bddd02');
+        self::assertSame('c5bddd02', $SupportMessageDTO->getExternal());
+
         $SupportMessageDTO->setName('Иван Петров');
         self::assertSame('Иван Петров', $SupportMessageDTO->getName());
 
@@ -133,12 +135,10 @@ class SupportNewTest extends KernelTestCase
         $SupportDTO->setInvariable($SupportInvariableDTO);
         self::assertSame($SupportInvariableDTO, $SupportDTO->getInvariable());
 
-        /** @var FindExistTicketInterface $FindExistTicketInterface */
-        $FindExistTicketInterface = self::getContainer()->get(FindExistTicketInterface::class);
 
         /** @var SupportHandler $SupportHandler */
         $SupportHandler = self::getContainer()->get(SupportHandler::class);
-        $handle = $SupportHandler->handle($SupportDTO, $FindExistTicketInterface);
+        $handle = $SupportHandler->handle($SupportDTO);
 
         self::assertTrue(($handle instanceof Support), $handle.': Ошибка Support');
 
