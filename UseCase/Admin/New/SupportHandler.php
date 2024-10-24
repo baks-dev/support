@@ -29,13 +29,13 @@ use BaksDev\Core\Entity\AbstractHandler;
 use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Entity\Support;
 use BaksDev\Support\Messenger\SupportMessage;
-use BaksDev\Support\Repository\FindTicket\FindExistTicketInterface;
+
 
 final class SupportHandler extends AbstractHandler
 {
 
     /** @see Support */
-    public function handle(SupportDTO $command, FindExistTicketInterface|false $ticket = false): string|Support
+    public function handle(SupportDTO $command): string|Support
     {
 
         $this->setCommand($command);

@@ -21,9 +21,9 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Support\Repository\FindTicket\Tests;
+namespace BaksDev\Support\Repository\FindExistTicket\Tests;
 
-use BaksDev\Support\Repository\FindTicket\FindExistTicketInterface;
+use BaksDev\Support\Repository\FindExistTicket\FindExistTicketInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -40,7 +40,7 @@ class FindExistTicketTest extends KernelTestCase
 
 
         $response = $AFindTicketByIdInterface->exist();
-        //        dd($response);
+                dd($response);
 
 
         self::assertTrue(true);

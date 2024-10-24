@@ -21,12 +21,12 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Support\Repository\FindTicket;
+namespace BaksDev\Support\Repository\FindExistTicket;
 
 
 interface FindExistTicketInterface
 {
-    public function forTicket(?string $ticket): self;
+    public function forTicket(string|int|null $ticket): self;
 
     /** Метод возвращает тикет по id */
     public function exist(): bool;
