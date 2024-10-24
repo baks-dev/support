@@ -70,7 +70,7 @@ class SupportInvariable extends EntityReadonly
 
     /** Id Тикета */
     #[Assert\NotBlank]
-    #[ORM\Column(type: Types::STRING)]
+    #[ORM\Column(type: Types::STRING, unique: true)]
     private string $ticket;
 
     /** Тема, заголовок или иная информация о предмете сообщения */
@@ -82,14 +82,6 @@ class SupportInvariable extends EntityReadonly
     {
         $this->event = $event;
         $this->main = $event->getMain();
-
-        /** Генерируем идентификатор тикета */
-        $this->ticket = number_format(
-            (microtime(true) * 100),
-            0,
-            '.',
-            '.'
-        );
     }
 
     public function __toString(): string
@@ -99,8 +91,18 @@ class SupportInvariable extends EntityReadonly
 
     public function setEvent(SupportEvent $event): self
     {
+
         $this->event = $event;
-        return $this;
+        $this->main = $event->getMain();
+
+        /** Генерируем идентификатор тикета */
+        $this->ticket = number_format(
+            (microtime(true) * 100),
+            0,
+            '.',
+            '.'
+        );
+
     }
 
     public function getTitle(): ?string

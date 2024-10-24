@@ -32,7 +32,6 @@ use BaksDev\Support\Type\Status\SupportStatus;
 use BaksDev\Support\UseCase\Admin\New\Message\SupportMessageDTO;
 use BaksDev\Support\UseCase\Admin\New\SupportDTO;
 use BaksDev\Support\UseCase\Admin\New\SupportHandler;
-use BaksDev\Support\UseCase\Admin\New\Tests\SupportEditTest;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
@@ -75,8 +74,6 @@ class SupportMessageAddTest extends KernelTestCase
         /** SupportMessageDTO */
 
         $SupportMessageDTO = new SupportMessageDTO();
-
-        //$SupportMessageDTO->setId(clone new SupportMessageUid());
 
         $SupportMessageDTO->setName('Иванов Иван');
         self::assertSame('Иванов Иван', $SupportMessageDTO->getName());

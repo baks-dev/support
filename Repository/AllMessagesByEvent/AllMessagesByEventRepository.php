@@ -89,6 +89,7 @@ final class AllMessagesByEventRepository implements AllMessagesByEventInterface
 
         $dbal
             ->addSelect('message.id AS message_id')
+            ->addSelect('message.external AS external')
             ->addSelect('message.name AS name')
             ->addSelect('message.message AS message')
             ->addSelect('message.date AS date')

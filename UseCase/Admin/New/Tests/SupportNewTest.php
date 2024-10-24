@@ -120,6 +120,9 @@ class SupportNewTest extends KernelTestCase
         /** SupportMessageDTO */
         $SupportMessageDTO = new SupportMessageDTO();
 
+        $SupportMessageDTO->setExternal('c5bddd02');
+        self::assertSame('c5bddd02', $SupportMessageDTO->getExternal());
+
         $SupportMessageDTO->setName('Иван Петров');
         self::assertSame('Иван Петров', $SupportMessageDTO->getName());
 

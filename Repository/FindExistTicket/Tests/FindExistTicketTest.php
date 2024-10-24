@@ -21,40 +21,28 @@
  *  THE SOFTWARE.
  */
 
-declare(strict_types=1);
+namespace BaksDev\Support\Repository\FindExistTicket\Tests;
 
-namespace BaksDev\Support\UseCase\Admin\New;
+use BaksDev\Support\Repository\FindExistTicket\FindExistTicketInterface;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-use BaksDev\Core\Entity\AbstractHandler;
-use BaksDev\Support\Entity\Event\SupportEvent;
-use BaksDev\Support\Entity\Support;
-use BaksDev\Support\Messenger\SupportMessage;
-
-
-final class SupportHandler extends AbstractHandler
+/**
+ * group support
+ */
+class FindExistTicketTest extends KernelTestCase
 {
-
-    /** @see Support */
-    public function handle(SupportDTO $command): string|Support
+    public function testUseCase(): void
     {
 
-        $this->setCommand($command);
-        $this->preEventPersistOrUpdate(Support::class, SupportEvent::class);
+        /** @var FindExistTicketInterface $AFindTicketByIdInterface */
+        $AFindTicketByIdInterface = self::getContainer()->get(FindExistTicketInterface::class);
+        $AFindTicketByIdInterface->forTicket('00481e1e-cb75-4af7-b9ea-0d77dbad9914');
 
-        /** Валидация всех объектов */
-        if($this->validatorCollection->isInvalid())
-        {
-            return $this->validatorCollection->getErrorUniqid();
-        }
 
-        $this->flush();
+        $response = $AFindTicketByIdInterface->exist();
+                dd($response);
 
-        /** Отправляем сообщение в шину */
-        $this->messageDispatch->dispatch(
-            message: new SupportMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
-            transport: 'support'
-        );
 
-        return $this->main;
+        self::assertTrue(true);
     }
 }

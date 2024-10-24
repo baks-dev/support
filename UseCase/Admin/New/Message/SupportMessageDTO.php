@@ -32,6 +32,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /** @see SupportMessage */
 final class SupportMessageDTO implements SupportMessageInterface
 {
+    /** Внешний Id сообщения */
+    #[Assert\NotBlank]
+    private ?string $external = null;
+
     /** Никнейм */
     #[Assert\NotBlank]
     #[Assert\Length(max: 100)]
@@ -71,5 +75,17 @@ final class SupportMessageDTO implements SupportMessageInterface
         return $this->date;
     }
 
+    public function getExternal(): ?string
+    {
+        return $this->external;
+    }
+
+    public function setExternal(string|int|null $external): void
+    {
+        if($external !== null){
+            $this->external = (string) $external;
+        }
+
+    }
 
 }

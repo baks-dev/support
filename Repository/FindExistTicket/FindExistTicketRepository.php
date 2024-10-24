@@ -23,38 +23,62 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Support\UseCase\Admin\New;
+namespace BaksDev\Support\Repository\FindExistTicket;
 
-use BaksDev\Core\Entity\AbstractHandler;
-use BaksDev\Support\Entity\Event\SupportEvent;
+use BaksDev\Core\Doctrine\DBALQueryBuilder;
+use BaksDev\Support\Entity\Invariable\SupportInvariable;
 use BaksDev\Support\Entity\Support;
-use BaksDev\Support\Messenger\SupportMessage;
 
 
-final class SupportHandler extends AbstractHandler
+final class FindExistTicketRepository implements FindExistTicketInterface
 {
 
-    /** @see Support */
-    public function handle(SupportDTO $command): string|Support
+    private string|false $ticket = false;
+
+    public function __construct(
+        private readonly DBALQueryBuilder $DBALQueryBuilder,
+    ) {}
+
+    public function forTicket(string|int|null $ticket): self
     {
-
-        $this->setCommand($command);
-        $this->preEventPersistOrUpdate(Support::class, SupportEvent::class);
-
-        /** Валидация всех объектов */
-        if($this->validatorCollection->isInvalid())
+        if(null === $ticket)
         {
-            return $this->validatorCollection->getErrorUniqid();
+            return $this;
         }
 
-        $this->flush();
+        $this->ticket = (string) $ticket;
 
-        /** Отправляем сообщение в шину */
-        $this->messageDispatch->dispatch(
-            message: new SupportMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
-            transport: 'support'
-        );
-
-        return $this->main;
+        return $this;
     }
+
+
+    /**
+     * Метод возвращает все сообщения по id тикета
+     */
+    public function exist(): bool
+    {
+        if($this->ticket === false)
+        {
+            return false;
+        }
+
+        $dbal = $this->DBALQueryBuilder->createQueryBuilder(self::class);
+
+        $dbal
+            ->from(SupportInvariable::class, 'invariable')
+            ->where(' invariable.ticket = :ticket')
+            ->setParameter('ticket', $this->ticket);
+
+        $dbal
+            ->join(
+                'invariable',
+                Support::class,
+                'support',
+                'invariable.main = support.id'
+            );
+
+
+        return $dbal->fetchExist();
+    }
+
 }
