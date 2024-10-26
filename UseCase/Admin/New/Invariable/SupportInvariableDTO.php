@@ -76,19 +76,20 @@ final class SupportInvariableDTO implements SupportInvariableInterface
         return $this->ticket;
     }
 
-    public function setTicket(string $ticket): void
+    public function setTicket(string|int $ticket): void
     {
-        $this->ticket = $ticket;
+        $this->ticket = (string) $ticket;
     }
+
 
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    public function setTitle(string|int $title): void
+    public function setTitle(string $title): void
     {
-        $this->title = (string) $title;
+        $this->title = $title;
     }
 
 }
