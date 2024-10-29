@@ -82,6 +82,7 @@ class SupportEvent extends EntityEvent
 
     /** Сообщения */
     #[Assert\Valid]
+    #[ORM\OrderBy(["date" => "ASC"])]
     #[ORM\OneToMany(targetEntity: SupportMessage::class, mappedBy: 'event', cascade: ['all'])]
     private Collection $messages;
 

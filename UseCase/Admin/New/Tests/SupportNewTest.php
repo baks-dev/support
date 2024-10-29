@@ -28,6 +28,7 @@ namespace BaksDev\Support\UseCase\Admin\New\Tests;
 use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Entity\Support;
 use BaksDev\Support\Type\Id\SupportUid;
+use BaksDev\Support\Type\Message\SupportMessageUid;
 use BaksDev\Support\Type\Priority\SupportPriority;
 use BaksDev\Support\Type\Priority\SupportPriority\Collection\SupportPriorityLow;
 use BaksDev\Support\Type\Status\SupportStatus;
@@ -39,6 +40,7 @@ use BaksDev\Support\UseCase\Admin\New\SupportHandler;
 use BaksDev\Users\Profile\TypeProfile\Type\Id\Choice\TypeProfileOrganization;
 use BaksDev\Users\Profile\TypeProfile\Type\Id\TypeProfileUid;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
@@ -120,6 +122,8 @@ class SupportNewTest extends KernelTestCase
         /** SupportMessageDTO */
         $SupportMessageDTO = new SupportMessageDTO();
 
+        $SupportMessageDTO->setId(new SupportMessageUid(SupportMessageUid::TEST));
+
         $SupportMessageDTO->setExternal('c5bddd02');
         self::assertSame('c5bddd02', $SupportMessageDTO->getExternal());
 
@@ -129,8 +133,11 @@ class SupportNewTest extends KernelTestCase
         $SupportMessageDTO->setMessage('Добрый день! Хотел бы поинтересоваться у Вас по поводу комплекта свежих шин!');
         self::assertSame('Добрый день! Хотел бы поинтересоваться у Вас по поводу комплекта свежих шин!', $SupportMessageDTO->getMessage());
 
+        $SupportMessageDTO->setDate(new DateTimeImmutable());
+
 
         $SupportDTO->addMessage($SupportMessageDTO);
+
 
         $SupportDTO->setInvariable($SupportInvariableDTO);
         self::assertSame($SupportInvariableDTO, $SupportDTO->getInvariable());

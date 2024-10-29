@@ -26,12 +26,15 @@ declare(strict_types=1);
 namespace BaksDev\Support\UseCase\Admin\New\Message;
 
 use BaksDev\Support\Entity\Message\SupportMessageInterface;
+use BaksDev\Support\Type\Message\SupportMessageUid;
 use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /** @see SupportMessage */
 final class SupportMessageDTO implements SupportMessageInterface
 {
+    private ?SupportMessageUid $id = null;
+
     /** Внешний Id сообщения */
     #[Assert\NotBlank]
     private ?string $external = null;
@@ -46,9 +49,20 @@ final class SupportMessageDTO implements SupportMessageInterface
     #[Assert\Length(max: 4096)]
     private ?string $message;
 
+    /** Дата сообщения */
     #[Assert\NotBlank]
     private ?DateTimeImmutable $date;
 
+    public function getId(): ?SupportMessageUid
+    {
+        return $this->id;
+    }
+
+    public function setId(?SupportMessageUid $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
 
     public function getName(): ?string
     {
@@ -75,6 +89,12 @@ final class SupportMessageDTO implements SupportMessageInterface
         return $this->date;
     }
 
+    public function setDate(?DateTimeImmutable $date): self
+    {
+        $this->date = $date;
+        return $this;
+    }
+
     public function getExternal(): ?string
     {
         return $this->external;
@@ -82,7 +102,8 @@ final class SupportMessageDTO implements SupportMessageInterface
 
     public function setExternal(string|int|null $external): void
     {
-        if($external !== null){
+        if($external !== null)
+        {
             $this->external = (string) $external;
         }
 

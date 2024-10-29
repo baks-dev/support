@@ -28,7 +28,7 @@ namespace BaksDev\Support\Messenger;
 use BaksDev\Support\Repository\AllMessagesByEvent\AllMessagesByEventInterface;
 use BaksDev\Support\Repository\AllSupport\AllSupportInterface;
 use BaksDev\Support\Repository\CurrentSupportMessage\CurrentSupportMessagesInterface;
-use BaksDev\Support\Repository\FindExistMessage\FindExistMessageInterface;
+use BaksDev\Support\Repository\FindExistMessage\FindExistExternalMessageByIdInterface;
 use BaksDev\Support\Repository\FindExistTicket\FindExistTicketInterface;
 use BaksDev\Support\Repository\SupportCurrentEvent\CurrentSupportEventInterface;
 use BaksDev\Support\Repository\SupportCurrentEventByTicket\CurrentSupportEventByTicketInterface;
@@ -48,7 +48,7 @@ final class SupportHandler
         private readonly AllMessagesByEventInterface $allMessagesByTicketInterface,
         private readonly FindExistTicketInterface $findTicketById,
         private readonly CurrentSupportEventByTicketInterface $currentSupportEventByTicket,
-        private readonly FindExistMessageInterface $findExistMessage
+        private readonly FindExistExternalMessageByIdInterface $findExistMessage
     ) {}
 
     public function __invoke(SupportMessage $message): void {}

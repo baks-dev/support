@@ -50,6 +50,7 @@ final class SupportMessageAddDTO implements SupportMessageInterface
     #[Assert\NotBlank]
     private ?SupportMessageDTO $reply;
 
+    /** Тема тикета для UI, не сохраняется в БД*/
     private ?string $title;
 
     #[Assert\NotBlank]

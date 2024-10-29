@@ -59,7 +59,6 @@ class SupportDeleteTest extends KernelTestCase
         $SupportDTO = new SupportDTO();
         $SupportEvent->getDto($SupportDTO);
 
-
         /** @see SupportDeleteDTO */
         $SupportDeleteDTO = new SupportDeleteDTO();
         $SupportEvent->getDto($SupportDeleteDTO);

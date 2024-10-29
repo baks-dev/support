@@ -78,9 +78,8 @@ class SupportMessage extends EntityEvent
 
     public function __construct(SupportEvent $event)
     {
-        $this->id = new SupportMessageUid();
+        $this->id = clone new SupportMessageUid();
         $this->event = $event;
-        $this->date = new DateTimeImmutable();
     }
 
     public function __clone(): void

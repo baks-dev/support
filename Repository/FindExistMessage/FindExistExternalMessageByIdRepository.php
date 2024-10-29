@@ -31,23 +31,23 @@ use BaksDev\Support\Entity\Message\SupportMessage;
 use BaksDev\Support\Entity\Support;
 
 
-final class FindExistMessageRepository implements FindExistMessageInterface
+final class FindExistExternalMessageByIdRepository implements FindExistExternalMessageByIdInterface
 {
 
-    private string|false $message = false;
+    private string|false $externalId = false;
 
     public function __construct(
         private readonly DBALQueryBuilder $DBALQueryBuilder,
     ) {}
 
-    public function forMessage(string|int|null $message): self
+    public function external(string|int|null $externalId): self
     {
-        if(null === $message)
+        if(null === $externalId)
         {
             return $this;
         }
 
-        $this->message = (string) $message;
+        $this->externalId = (string) $externalId;
 
         return $this;
     }
@@ -58,7 +58,7 @@ final class FindExistMessageRepository implements FindExistMessageInterface
      */
     public function exist(): bool
     {
-        if($this->message === false)
+        if($this->externalId === false)
         {
             return false;
         }
@@ -68,7 +68,7 @@ final class FindExistMessageRepository implements FindExistMessageInterface
         $dbal
             ->from(SupportMessage::class, 'message')
             ->where(' message.external = :message')
-            ->setParameter('message', $this->message);
+            ->setParameter('message', $this->externalId);
 
         $dbal
             ->join(
