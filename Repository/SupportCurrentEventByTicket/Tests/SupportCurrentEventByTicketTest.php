@@ -49,7 +49,7 @@ class SupportCurrentEventByTicketTest extends KernelTestCase
         $CurrentSupportEventByTicketInterface->forTicket('00481e1e-cb75-4af7-b9ea-0d77dbad9914');
 
 
-        $response = $CurrentSupportEventByTicketInterface->execute();
+        $response = $CurrentSupportEventByTicketInterface->find();
         dd($response);
 
 

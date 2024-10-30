@@ -49,7 +49,7 @@ final class CurrentSupportEventByTicketRepository implements CurrentSupportEvent
     }
 
     /**  Метод возвращает текущее активное событие  */
-    public function execute(): SupportEvent|false
+    public function find(): SupportEvent|false
     {
         if($this->ticket === false)
         {

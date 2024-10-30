@@ -40,6 +40,7 @@ use BaksDev\Support\UseCase\Admin\New\Message\SupportMessageDTO;
 use BaksDev\Support\UseCase\Admin\New\SupportDTO;
 use BaksDev\Support\UseCase\Admin\New\SupportHandler;
 use BaksDev\Users\Profile\UserProfile\Repository\CurrentUserProfile\CurrentUserProfileInterface;
+use DateTimeImmutable;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,7 +67,7 @@ final class AddController extends AbstractController
         $SupportMessage = $currentSupportMessages
             ->forMessage($message)
             ->forEvent($SupportEvent)
-            ->execute();
+            ->find();
 
         /** Входящее сообщение */
         $ReplySupportMessageDto = new SupportMessageAddDTO();
@@ -75,7 +76,11 @@ final class AddController extends AbstractController
         /** Исходящее сообщение */
         $SupportMessageDTO = new SupportMessageDTO();
 
+        /** Присваиваем имя профиля */
         $SupportMessageDTO->setName($user['profile_username'] ?? null);
+
+        /** Дата создания сообщения */
+        $SupportMessageDTO->setDate(new DateTimeImmutable());
 
         /** Тема тикета */
         $ReplySupportMessageDto->setTitle($SupportEvent->getTitle());

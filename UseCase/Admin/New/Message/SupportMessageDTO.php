@@ -41,12 +41,11 @@ final class SupportMessageDTO implements SupportMessageInterface
 
     /** Никнейм */
     #[Assert\NotBlank]
-    #[Assert\Length(max: 100)]
+    #[Assert\Length(max: 255)]
     private ?string $name = null;
 
     /** Текст сообщения */
     #[Assert\NotBlank]
-    #[Assert\Length(max: 4096)]
     private ?string $message;
 
     /** Дата сообщения */

@@ -1,5 +1,6 @@
 <div class="offcanvas-header d-flex justify-content-between">
     {% if messages %}
+        {% set name = messages[0].name %}
         {% set ticket = messages[0].ticket %}
         {% set title = messages[0].title %}
     {% else %}
@@ -93,7 +94,7 @@
                 {{ form_row(form.reply.message, {attr: {'class': 'form-control bg-body-tertiary', 'rows': '4'}}) }}
             </div>
         {% else %}
-            {{ form_row(form.reply.message, {attr: {'class': 'form-control bg-body-tertiary', 'rows': '4'}}) }}
+            {{ form_row(form.reply.message, {attr: {'class': 'form-control bg-body-tertiary', 'rows': '4'}, disabled: name == 'system'}) }}
         {% endif %}
 
         <div class="btn-rounded float-end">
@@ -101,20 +102,11 @@
             {{ form_widget(form.support_message_add, { label: '
             <span>'~ 'btn.new'|trans({}, 'core.btn') ~'</span>
             <span class="spinner-border spinner-border-sm vertical-middle d-none"></span>
-        '}) }}
+        ',
+                disabled: name == 'system'
+            }) }}
         </div>
 
-
         {{ form_end(form) }}
-        {#        <textarea class="form-control bg-body-tertiary" id="textAreaExample2" rows="4"></textarea> #}
-        {#        <label class="form-label" for="textAreaExample2 "></label> #}
     </div>
-    {#    <button #}
-    {#            type="button" #}
-    {#            data-mdb-button-init data-mdb-ripple-init #}
-    {#            class="btn btn-primary btn-rounded float-end" #}
-    {#    > #}
-    {#        Отправить #}
-    {#    </button> #}
-
 </div>

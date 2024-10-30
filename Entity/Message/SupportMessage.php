@@ -60,20 +60,19 @@ class SupportMessage extends EntityEvent
 
     /** Никнейм */
     #[Assert\NotBlank]
-    #[Assert\Length(max: 100)]
+    #[Assert\Length(max: 255)]
     #[ORM\Column(type: Types::STRING)]
     private string $name;
 
     /** Текст сообщения */
     #[Assert\NotBlank]
-    #[Assert\Length(max: 4096)]
     #[ORM\Column(type: Types::TEXT)]
     private string $message;
 
     /** Дата */
     #[Assert\NotBlank]
     #[ORM\Column(name: 'date', type: Types::DATETIME_IMMUTABLE)]
-    private readonly DateTimeImmutable $date;
+    private DateTimeImmutable $date;
 
 
     public function __construct(SupportEvent $event)
