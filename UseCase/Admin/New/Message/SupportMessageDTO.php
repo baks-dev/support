@@ -26,12 +26,17 @@ declare(strict_types=1);
 namespace BaksDev\Support\UseCase\Admin\New\Message;
 
 use BaksDev\Support\Entity\Message\SupportMessageInterface;
+use BaksDev\Support\Type\Message\SupportMessageUid;
 use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /** @see SupportMessage */
 final class SupportMessageDTO implements SupportMessageInterface
 {
+
+    /** Определяем идентификатор для тестов */
+    private ?SupportMessageUid $id = null;
+
     /** Внешний Id сообщения */
     #[Assert\NotBlank]
     private ?string $external = null;
@@ -49,6 +54,19 @@ final class SupportMessageDTO implements SupportMessageInterface
     #[Assert\NotBlank]
     private ?DateTimeImmutable $date;
 
+    /**
+     * Id
+     */
+    public function getId(): ?SupportMessageUid
+    {
+        return $this->id;
+    }
+
+    public function setId(?SupportMessageUid $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
 
     public function getName(): ?string
     {
@@ -68,6 +86,12 @@ final class SupportMessageDTO implements SupportMessageInterface
     public function setMessage(?string $message): void
     {
         $this->message = $message;
+    }
+
+    public function setDate(?DateTimeImmutable $date): self
+    {
+        $this->date = $date;
+        return $this;
     }
 
     public function getDate(): DateTimeImmutable

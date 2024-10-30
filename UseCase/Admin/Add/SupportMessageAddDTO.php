@@ -50,10 +50,10 @@ final class SupportMessageAddDTO implements SupportMessageInterface
     #[Assert\NotBlank]
     private ?SupportMessageDTO $reply;
 
-    private ?string $title;
-
     #[Assert\NotBlank]
     private ?DateTimeImmutable $date;
+
+    private ?string $title;
 
 
     public function getName(): ?string

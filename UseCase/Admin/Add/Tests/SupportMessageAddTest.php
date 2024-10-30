@@ -32,6 +32,7 @@ use BaksDev\Support\Type\Status\SupportStatus;
 use BaksDev\Support\UseCase\Admin\New\Message\SupportMessageDTO;
 use BaksDev\Support\UseCase\Admin\New\SupportDTO;
 use BaksDev\Support\UseCase\Admin\New\SupportHandler;
+use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
@@ -80,6 +81,8 @@ class SupportMessageAddTest extends KernelTestCase
 
         $SupportMessageDTO->setMessage('Добрый день! Прошу решить вопрос с возвратом товара, купленным');
         self::assertSame('Добрый день! Прошу решить вопрос с возвратом товара, купленным', $SupportMessageDTO->getMessage());
+
+        $SupportMessageDTO->setDate(new DateTimeImmutable());
 
         $SupportDTO->addMessage($SupportMessageDTO);
 
