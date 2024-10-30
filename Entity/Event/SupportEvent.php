@@ -80,8 +80,9 @@ class SupportEvent extends EntityEvent
     private ?SupportInvariable $invariable = null;
 
 
-    /** Сообщения */
+    /** Сообщения (сортируем по дате) */
     #[Assert\Valid]
+    #[ORM\OrderBy(["date" => "ASC"])]
     #[ORM\OneToMany(targetEntity: SupportMessage::class, mappedBy: 'event', cascade: ['all'])]
     private Collection $messages;
 

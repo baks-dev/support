@@ -70,7 +70,7 @@ final class CurrentSupportMessagesRepository implements CurrentSupportMessagesIn
         return $this;
     }
 
-    public function execute(): SupportMessage|false
+    public function find(): SupportMessage|false
     {
         if($this->event === false)
         {

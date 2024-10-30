@@ -76,7 +76,7 @@ final class DeleteController extends AbstractController
                 $handle
             );
 
-            return $handle instanceof Support ? $this->redirectToRoute('support:admin.index', status: 400) : $this->redirectToReferer();
+            return $handle instanceof Support ? $this->redirectToRoute('support:admin.index') : $this->redirectToReferer();
         }
 
         return $this->render(['form' => $form->createView(),]);

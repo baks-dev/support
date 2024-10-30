@@ -49,7 +49,7 @@ class SupportDeleteTest extends KernelTestCase
         /** @var CurrentSupportEventInterface $SupportCurrentEvent */
         $SupportCurrentEvent = self::getContainer()->get(CurrentSupportEventInterface::class);
         $SupportCurrentEvent->forSupport(SupportUid::TEST);
-        $SupportEvent = $SupportCurrentEvent->execute();
+        $SupportEvent = $SupportCurrentEvent->find();
 
         self::assertNotNull($SupportEvent);
         self::assertNotFalse($SupportEvent);
@@ -58,7 +58,6 @@ class SupportDeleteTest extends KernelTestCase
         /** @see SupportDTO */
         $SupportDTO = new SupportDTO();
         $SupportEvent->getDto($SupportDTO);
-
 
         /** @see SupportDeleteDTO */
         $SupportDeleteDTO = new SupportDeleteDTO();

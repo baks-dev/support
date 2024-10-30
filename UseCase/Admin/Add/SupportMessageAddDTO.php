@@ -38,18 +38,18 @@ final class SupportMessageAddDTO implements SupportMessageInterface
 
     /** Никнейм */
     #[Assert\NotBlank]
-    #[Assert\Length(max: 100)]
-    private ?string $name;
+    #[Assert\Length(max: 255)]
+    private ?string $name = null;
 
     /** Текст сообщения */
     #[Assert\NotBlank]
-    #[Assert\Length(max: 4096)]
     private ?string $message;
 
     /** Исходящее сообщение */
     #[Assert\NotBlank]
     private ?SupportMessageDTO $reply;
 
+    /** Тема тикета для UI, не сохраняется в БД*/
     private ?string $title;
 
     #[Assert\NotBlank]
@@ -81,7 +81,7 @@ final class SupportMessageAddDTO implements SupportMessageInterface
         return $this->date;
     }
 
-    public function setDate(DateTimeImmutable $date): void
+    public function setDate(?DateTimeImmutable $date): void
     {
         $this->date = $date;
     }

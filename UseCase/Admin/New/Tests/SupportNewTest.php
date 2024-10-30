@@ -28,6 +28,7 @@ namespace BaksDev\Support\UseCase\Admin\New\Tests;
 use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Entity\Support;
 use BaksDev\Support\Type\Id\SupportUid;
+use BaksDev\Support\Type\Message\SupportMessageUid;
 use BaksDev\Support\Type\Priority\SupportPriority;
 use BaksDev\Support\Type\Priority\SupportPriority\Collection\SupportPriorityLow;
 use BaksDev\Support\Type\Status\SupportStatus;
@@ -39,6 +40,7 @@ use BaksDev\Support\UseCase\Admin\New\SupportHandler;
 use BaksDev\Users\Profile\TypeProfile\Type\Id\Choice\TypeProfileOrganization;
 use BaksDev\Users\Profile\TypeProfile\Type\Id\TypeProfileUid;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
@@ -113,24 +115,30 @@ class SupportNewTest extends KernelTestCase
         $SupportInvariableDTO->setTicket('00481e1e-cb75-4af7-b9ea-0d77dbad9914');
         self::assertSame('00481e1e-cb75-4af7-b9ea-0d77dbad9914', $SupportInvariableDTO->getTicket());
 
-        $SupportInvariableDTO->setTitle('Triangle SnowLink PL02');
-        self::assertSame('Triangle SnowLink PL02', $SupportInvariableDTO->getTitle());
+        $SupportInvariableDTO->setTitle('New Test Title');
+        self::assertSame('New Test Title', $SupportInvariableDTO->getTitle());
 
 
         /** SupportMessageDTO */
         $SupportMessageDTO = new SupportMessageDTO();
 
+        $SupportMessageDTO->setId(new SupportMessageUid(SupportMessageUid::TEST));
+
         $SupportMessageDTO->setExternal('c5bddd02');
         self::assertSame('c5bddd02', $SupportMessageDTO->getExternal());
 
-        $SupportMessageDTO->setName('Иван Петров');
-        self::assertSame('Иван Петров', $SupportMessageDTO->getName());
+        $SupportMessageDTO->setName('New Test Name');
+        self::assertSame('New Test Name', $SupportMessageDTO->getName());
 
-        $SupportMessageDTO->setMessage('Добрый день! Хотел бы поинтересоваться у Вас по поводу комплекта свежих шин!');
-        self::assertSame('Добрый день! Хотел бы поинтересоваться у Вас по поводу комплекта свежих шин!', $SupportMessageDTO->getMessage());
+        $SupportMessageDTO->setMessage('New Test Message');
+        self::assertSame('New Test Message', $SupportMessageDTO->getMessage());
 
+        $testDate = new DateTimeImmutable('2024-10-29');
+        $SupportMessageDTO->setDate($testDate);
+        self::assertSame($testDate, $SupportMessageDTO->getDate());
 
         $SupportDTO->addMessage($SupportMessageDTO);
+
 
         $SupportDTO->setInvariable($SupportInvariableDTO);
         self::assertSame($SupportInvariableDTO, $SupportDTO->getInvariable());
