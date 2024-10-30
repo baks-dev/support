@@ -115,8 +115,8 @@ class SupportNewTest extends KernelTestCase
         $SupportInvariableDTO->setTicket('00481e1e-cb75-4af7-b9ea-0d77dbad9914');
         self::assertSame('00481e1e-cb75-4af7-b9ea-0d77dbad9914', $SupportInvariableDTO->getTicket());
 
-        $SupportInvariableDTO->setTitle('Triangle SnowLink PL02');
-        self::assertSame('Triangle SnowLink PL02', $SupportInvariableDTO->getTitle());
+        $SupportInvariableDTO->setTitle('New Test Title');
+        self::assertSame('New Test Title', $SupportInvariableDTO->getTitle());
 
 
         /** SupportMessageDTO */
@@ -127,15 +127,18 @@ class SupportNewTest extends KernelTestCase
         $SupportMessageDTO->setExternal('c5bddd02');
         self::assertSame('c5bddd02', $SupportMessageDTO->getExternal());
 
-        $SupportMessageDTO->setName('Иван Петров');
-        self::assertSame('Иван Петров', $SupportMessageDTO->getName());
+        $SupportMessageDTO->setName('New Test Name');
+        self::assertSame('New Test Name', $SupportMessageDTO->getName());
 
-        $SupportMessageDTO->setMessage('Добрый день! Хотел бы поинтересоваться у Вас по поводу комплекта свежих шин!');
-        self::assertSame('Добрый день! Хотел бы поинтересоваться у Вас по поводу комплекта свежих шин!', $SupportMessageDTO->getMessage());
+        $SupportMessageDTO->setMessage('New Test Message');
+        self::assertSame('New Test Message', $SupportMessageDTO->getMessage());
 
-        $SupportMessageDTO->setDate(new DateTimeImmutable());
+        $testDate = new DateTimeImmutable('2024-10-29');
+        $SupportMessageDTO->setDate($testDate);
+        self::assertSame($testDate, $SupportMessageDTO->getDate());
 
         $SupportDTO->addMessage($SupportMessageDTO);
+
 
         $SupportDTO->setInvariable($SupportInvariableDTO);
         self::assertSame($SupportInvariableDTO, $SupportDTO->getInvariable());

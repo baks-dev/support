@@ -55,7 +55,7 @@ final class CurrentSupportEventRepository implements CurrentSupportEventInterfac
     }
 
     /**  Метод возвращает текущее активное событие  */
-    public function execute(): SupportEvent|false
+    public function find(): SupportEvent|false
     {
         if($this->support === false)
         {

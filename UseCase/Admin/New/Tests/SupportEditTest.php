@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace BaksDev\Support\UseCase\Admin\New\Tests;
 
-use BaksDev\Support\Controller\Tests\MessageAddControllerTest;
 use BaksDev\Support\Entity\Support;
 use BaksDev\Support\Repository\SupportCurrentEvent\CurrentSupportEventInterface;
 use BaksDev\Support\Type\Id\SupportUid;
@@ -70,7 +69,7 @@ class SupportEditTest extends KernelTestCase
         /** @var CurrentSupportEventInterface $SupportCurrentEvent */
         $SupportCurrentEvent = self::getContainer()->get(CurrentSupportEventInterface::class);
         $SupportCurrentEvent->forSupport(SupportUid::TEST);
-        $SupportEvent = $SupportCurrentEvent->execute();
+        $SupportEvent = $SupportCurrentEvent->find();
 
 
         self::assertNotFalse($SupportEvent);
@@ -104,9 +103,9 @@ class SupportEditTest extends KernelTestCase
         $SupportInvariableDTO->setTicket('84557148-cd8b-422e-bc93-dacd8aa6551e');
         self::assertSame('84557148-cd8b-422e-bc93-dacd8aa6551e', $SupportInvariableDTO->getTicket());
 
-        self::assertSame('Triangle SnowLink PL02', $SupportInvariableDTO->getTitle());
-        $SupportInvariableDTO->setTitle('Westlake ZuperAce SA-57');
-        self::assertSame('Westlake ZuperAce SA-57', $SupportInvariableDTO->getTitle());
+        self::assertSame('New Test Title', $SupportInvariableDTO->getTitle());
+        $SupportInvariableDTO->setTitle('Edit Test Title');
+        self::assertSame('Edit Test Title', $SupportInvariableDTO->getTitle());
 
 
         /** SupportMessageDTO */
@@ -119,15 +118,25 @@ class SupportEditTest extends KernelTestCase
             $SupportMessageDTO->setExternal('341a1e8a');
             self::assertSame('341a1e8a', $SupportMessageDTO->getExternal());
 
-            self::assertSame('Иван Петров', $SupportMessageDTO->getName());
-            $SupportMessageDTO->setName('Петр Иванов');
-            self::assertSame('Петр Иванов', $SupportMessageDTO->getName());
+            self::assertSame('New Test Name', $SupportMessageDTO->getName());
+            $SupportMessageDTO->setName('Edit Test Name');
+            self::assertSame('Edit Test Name', $SupportMessageDTO->getName());
 
-            self::assertSame('Добрый день! Хотел бы поинтересоваться у Вас по поводу комплекта свежих шин!', $SupportMessageDTO->getMessage());
-            $SupportMessageDTO->setMessage('Edit Support Message');
-            self::assertSame('Edit Support Message', $SupportMessageDTO->getMessage());
+            self::assertSame('New Test Message', $SupportMessageDTO->getMessage());
+            $SupportMessageDTO->setMessage('Edit Test Message');
+            self::assertSame('Edit Test Message', $SupportMessageDTO->getMessage());
 
-            self::assertInstanceOf(DateTimeImmutable::class, $SupportMessageDTO->getDate());
+            $testDate = new DateTimeImmutable('2024-10-29');
+            $testNewDate = new DateTimeImmutable('3 minutes ago');
+            self::assertSame(
+                $testDate->format('Y-m-d'),
+                $SupportMessageDTO->getDate()->format('Y-m-d')
+            );
+            $SupportMessageDTO->setDate(new DateTimeImmutable());
+            self::assertSame(
+                $testNewDate->format('Y-m-d'),
+                $SupportMessageDTO->getDate()->format('Y-m-d')
+            );
         }
 
 

@@ -35,17 +35,26 @@ final class SupportMessageAddForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
         $builder->add(
             'reply',
             SupportMessageForm::class,
-            ['label' => false]
+            [
+                'label' => false,
+                'disabled' => $options['data']->getName() === 'system',
+            ],
         );
 
         /* Сохранить ******************************************************/
         $builder->add(
             'support_message_add',
             SubmitType::class,
-            ['label' => 'Отправить', 'label_html' => true, 'attr' => ['class' => 'btn-primary']]
+            [
+                'label' => 'Отправить',
+                'label_html' => true,
+                'attr' => ['class' => 'btn-primary'],
+                'disabled' => $options['data']->getName() === 'system',
+            ]
         );
 
     }

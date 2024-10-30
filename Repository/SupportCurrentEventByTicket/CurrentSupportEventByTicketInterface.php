@@ -30,6 +30,6 @@ interface CurrentSupportEventByTicketInterface
     public function forTicket(string|int|null $ticket): self;
 
     /**  Метод возвращает текущее активное событие Support */
-    public function execute(): SupportEvent|false;
+    public function find(): SupportEvent|false;
 
 }

@@ -33,8 +33,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /** @see SupportMessage */
 final class SupportMessageDTO implements SupportMessageInterface
 {
-
-    /** Определяем идентификатор для тестов */
     private ?SupportMessageUid $id = null;
 
     /** Внешний Id сообщения */
@@ -43,20 +41,17 @@ final class SupportMessageDTO implements SupportMessageInterface
 
     /** Никнейм */
     #[Assert\NotBlank]
-    #[Assert\Length(max: 100)]
+    #[Assert\Length(max: 255)]
     private ?string $name = null;
 
     /** Текст сообщения */
     #[Assert\NotBlank]
-    #[Assert\Length(max: 4096)]
     private ?string $message;
 
+    /** Дата сообщения */
     #[Assert\NotBlank]
     private ?DateTimeImmutable $date;
 
-    /**
-     * Id
-     */
     public function getId(): ?SupportMessageUid
     {
         return $this->id;
@@ -88,15 +83,15 @@ final class SupportMessageDTO implements SupportMessageInterface
         $this->message = $message;
     }
 
+    public function getDate(): DateTimeImmutable
+    {
+        return $this->date;
+    }
+
     public function setDate(?DateTimeImmutable $date): self
     {
         $this->date = $date;
         return $this;
-    }
-
-    public function getDate(): DateTimeImmutable
-    {
-        return $this->date;
     }
 
     public function getExternal(): ?string
@@ -106,7 +101,8 @@ final class SupportMessageDTO implements SupportMessageInterface
 
     public function setExternal(string|int|null $external): void
     {
-        if($external !== null){
+        if($external !== null)
+        {
             $this->external = (string) $external;
         }
 

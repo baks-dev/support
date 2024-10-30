@@ -24,9 +24,9 @@
 namespace BaksDev\Support\Repository\FindExistMessage;
 
 
-interface FindExistMessageInterface
+interface FindExistExternalMessageByIdInterface
 {
-    public function forMessage(string|int|null $message): self;
+    public function external(string|int|null $externalId): self;
 
     /** Метод возвращает тикет по id */
     public function exist(): bool;

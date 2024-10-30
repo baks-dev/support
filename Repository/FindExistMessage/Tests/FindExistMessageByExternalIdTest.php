@@ -23,7 +23,7 @@
 
 namespace BaksDev\Support\Repository\FindExistMessage\Tests;
 
-use BaksDev\Support\Repository\FindExistMessage\FindExistMessageInterface;
+use BaksDev\Support\Repository\FindExistMessage\FindExistExternalMessageByIdInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
@@ -34,7 +34,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * group support
  */
-class FindExistMessageTest extends KernelTestCase
+class FindExistMessageByExternalIdTest extends KernelTestCase
 {
     public function testUseCase(): void
     {
@@ -43,13 +43,14 @@ class FindExistMessageTest extends KernelTestCase
         $event = new ConsoleCommandEvent(new Command(), new StringInput(''), new NullOutput());
         $dispatcher->dispatch($event, 'console.command');
 
-        /** @var FindExistMessageInterface $FindExistMessageInterface */
-        $FindExistMessageInterface = self::getContainer()->get(FindExistMessageInterface::class);
-        $FindExistMessageInterface->forMessage('e4c25f2002ec');
+        /** @var FindExistExternalMessageByIdInterface $FindExistMessageInterface */
+        $FindExistMessageInterface = self::getContainer()->get(FindExistExternalMessageByIdInterface::class);
+        //        $FindExistMessageInterface->external('e4c25f2002ec');
+        $FindExistMessageInterface->external('c5bddd02');
 
 
         $response = $FindExistMessageInterface->exist();
-        //                dd($response);
+        dd($response);
 
 
         self::assertTrue(true);

@@ -60,7 +60,7 @@ class SupportMessageAddTest extends KernelTestCase
         /** @var CurrentSupportEventInterface $SupportCurrentEvent */
         $SupportCurrentEvent = self::getContainer()->get(CurrentSupportEventInterface::class);
         $SupportCurrentEvent->forSupport(SupportUid::TEST);
-        $SupportEvent = $SupportCurrentEvent->execute();
+        $SupportEvent = $SupportCurrentEvent->find();
 
 
         self::assertNotFalse($SupportEvent);
@@ -72,15 +72,36 @@ class SupportMessageAddTest extends KernelTestCase
         $SupportEvent->getDto($SupportDTO);
 
 
-        /** SupportMessageDTO */
+        /** First SupportMessageDTO */
 
         $SupportMessageDTO = new SupportMessageDTO();
 
-        $SupportMessageDTO->setName('Иванов Иван');
-        self::assertSame('Иванов Иван', $SupportMessageDTO->getName());
+        $SupportMessageDTO->setName('Add Test Name (first)');
+        self::assertSame('Add Test Name (first)', $SupportMessageDTO->getName());
 
-        $SupportMessageDTO->setMessage('Добрый день! Прошу решить вопрос с возвратом товара, купленным');
-        self::assertSame('Добрый день! Прошу решить вопрос с возвратом товара, купленным', $SupportMessageDTO->getMessage());
+        $SupportMessageDTO->setMessage('Add Test Message (first)');
+        self::assertSame('Add Test Message (first)', $SupportMessageDTO->getMessage());
+
+        $SupportMessageDTO->setDate(new DateTimeImmutable('10 minutes ago'));
+
+        $SupportDTO->addMessage($SupportMessageDTO);
+
+        /** Меняем статус тикета на "Открытый" */
+        $SupportDTO->setStatus(new SupportStatus(SupportStatus\Collection\SupportStatusOpen::PARAM));
+
+
+        /** Second SupportMessageDTO */
+
+        $SupportMessageDTO = new SupportMessageDTO();
+
+        $SupportMessageDTO->setName('Add Test Name (second)');
+        self::assertSame('Add Test Name (second)', $SupportMessageDTO->getName());
+
+        $SupportMessageDTO->setMessage('Add Test Message (second)');
+        self::assertSame('Add Test Message (second)', $SupportMessageDTO->getMessage());
+
+
+        $SupportMessageDTO->setDate(new DateTimeImmutable('5 minutes ago'));
 
         $SupportMessageDTO->setDate(new DateTimeImmutable());
 

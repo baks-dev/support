@@ -100,6 +100,8 @@ final class AllMessagesByEventRepository implements AllMessagesByEventInterface
                 'message.event = event.id'
             );
 
+        $dbal->addOrderBy('message.date', 'ASC');
+
         return $dbal
             ->enableCache('support')
             ->fetchAllAssociative();
