@@ -56,9 +56,10 @@ final class SupportInvariableDTO implements SupportInvariableInterface
         return $this->type;
     }
 
-    public function setType(TypeProfileUid $type): void
+    public function setType(TypeProfileUid $type): self
     {
         $this->type = $type;
+        return $this;
     }
 
     public function getProfile(): ?UserProfileUid
@@ -66,9 +67,10 @@ final class SupportInvariableDTO implements SupportInvariableInterface
         return $this->profile;
     }
 
-    public function setProfile(?UserProfileUid $profile): void
+    public function setProfile(?UserProfileUid $profile): self
     {
         $this->profile = $profile;
+        return $this;
     }
 
     public function getTicket(): string
@@ -76,9 +78,10 @@ final class SupportInvariableDTO implements SupportInvariableInterface
         return $this->ticket;
     }
 
-    public function setTicket(string|int $ticket): void
+    public function setTicket(string|int $ticket): self
     {
         $this->ticket = (string) $ticket;
+        return $this;
     }
 
 
@@ -87,9 +90,10 @@ final class SupportInvariableDTO implements SupportInvariableInterface
         return $this->title;
     }
 
-    public function setTitle(string $title): void
+    public function setTitle(string $title): self
     {
         $this->title = $title;
+        return $this;
     }
 
 }

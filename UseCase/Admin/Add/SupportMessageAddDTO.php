@@ -55,15 +55,20 @@ final class SupportMessageAddDTO implements SupportMessageInterface
     #[Assert\NotBlank]
     private ?DateTimeImmutable $date;
 
+    /** Является ли сообщение исходящим */
+    #[Assert\NotBlank]
+    private bool $out;
+
 
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(?string $name): void
+    public function setName(?string $name): self
     {
         $this->name = $name;
+        return $this;
     }
 
     public function getMessage(): ?string
@@ -71,9 +76,10 @@ final class SupportMessageAddDTO implements SupportMessageInterface
         return $this->message;
     }
 
-    public function setMessage(?string $message): void
+    public function setMessage(?string $message): self
     {
         $this->message = $message;
+        return $this;
     }
 
     public function getDate(): DateTimeImmutable
@@ -81,9 +87,10 @@ final class SupportMessageAddDTO implements SupportMessageInterface
         return $this->date;
     }
 
-    public function setDate(?DateTimeImmutable $date): void
+    public function setDate(?DateTimeImmutable $date): self
     {
         $this->date = $date;
+        return $this;
     }
 
     public function getId(): ?SupportMessageUid
@@ -91,9 +98,10 @@ final class SupportMessageAddDTO implements SupportMessageInterface
         return $this->id;
     }
 
-    public function setId(?SupportMessageUid $id): void
+    public function setId(?SupportMessageUid $id): self
     {
         $this->id = $id;
+        return $this;
     }
 
     public function getReply(): ?SupportMessageDTO
@@ -101,9 +109,10 @@ final class SupportMessageAddDTO implements SupportMessageInterface
         return $this->reply;
     }
 
-    public function setReply(?SupportMessageDTO $reply): void
+    public function setReply(?SupportMessageDTO $reply): self
     {
         $this->reply = $reply;
+        return $this;
     }
 
     public function getTitle(): ?string
@@ -111,9 +120,27 @@ final class SupportMessageAddDTO implements SupportMessageInterface
         return $this->title;
     }
 
-    public function setTitle(?string $title): void
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
+        return $this;
+    }
+
+    public function isOut(): bool
+    {
+        return $this->out;
+    }
+
+    public function setOutMessage(): self
+    {
+        $this->out = true;
+        return $this;
+    }
+
+    public function setInMessage(): self
+    {
+        $this->out = false;
+        return $this;
     }
 
 }

@@ -93,6 +93,7 @@ final class AllMessagesByEventRepository implements AllMessagesByEventInterface
             ->addSelect('message.name AS name')
             ->addSelect('message.message AS message')
             ->addSelect('message.date AS date')
+            ->addSelect('message.out AS out')
             ->leftJoin(
                 'event',
                 SupportMessage::class,

@@ -51,11 +51,11 @@ final class SupportDeleteDTO implements SupportEventInterface
         return $this->id;
     }
 
-    public function setId(SupportEventUid $id): void
+    public function setId(?SupportEventUid $id): self
     {
         $this->id = $id;
+        return $this;
     }
-
 
     /** Модификатор */
     public function getModify(): Modify\ModifyDTO
