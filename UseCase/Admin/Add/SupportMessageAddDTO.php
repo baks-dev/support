@@ -56,7 +56,6 @@ final class SupportMessageAddDTO implements SupportMessageInterface
     private ?DateTimeImmutable $date;
 
     /** Является ли сообщение исходящим */
-    #[Assert\NotBlank]
     private bool $out;
 
 

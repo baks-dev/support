@@ -53,7 +53,7 @@ final class SupportMessageDTO implements SupportMessageInterface
     private ?DateTimeImmutable $date;
 
     /** Является ли сообщение исходящим */
-    #[Assert\NotBlank]
+    #[Assert\IsTrue]
     private bool $out;
 
     public function getId(): ?SupportMessageUid
