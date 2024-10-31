@@ -137,6 +137,9 @@ class SupportNewTest extends KernelTestCase
         $SupportMessageDTO->setDate($testDate);
         self::assertSame($testDate, $SupportMessageDTO->getDate());
 
+        $SupportMessageDTO->setOutMessage();
+        self::assertTrue($SupportMessageDTO->getOut());
+
         $SupportDTO->addMessage($SupportMessageDTO);
 
 

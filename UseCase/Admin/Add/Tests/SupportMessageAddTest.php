@@ -84,6 +84,9 @@ class SupportMessageAddTest extends KernelTestCase
 
         $SupportMessageDTO->setDate(new DateTimeImmutable('10 minutes ago'));
 
+        $SupportMessageDTO->setOutMessage();
+        self::assertTrue($SupportMessageDTO->getOut());
+
         $SupportDTO->addMessage($SupportMessageDTO);
 
         /** Меняем статус тикета на "Открытый" */
@@ -103,7 +106,9 @@ class SupportMessageAddTest extends KernelTestCase
 
         $SupportMessageDTO->setDate(new DateTimeImmutable('5 minutes ago'));
 
-        $SupportMessageDTO->setDate(new DateTimeImmutable());
+        $SupportMessageDTO->setInMessage();
+        self::assertFalse($SupportMessageDTO->getOut());
+
 
         $SupportDTO->addMessage($SupportMessageDTO);
 

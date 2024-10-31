@@ -68,9 +68,10 @@ final class SupportDTO implements SupportEventInterface
     }
 
 
-    public function setId(SupportEventUid $id): void
+    public function setId(SupportEventUid $id): self
     {
         $this->id = $id;
+        return $this;
     }
 
     public function getInvariable(): ?SupportInvariableDTO
@@ -78,9 +79,10 @@ final class SupportDTO implements SupportEventInterface
         return $this->invariable;
     }
 
-    public function setInvariable(?SupportInvariableDTO $invariable): void
+    public function setInvariable(?SupportInvariableDTO $invariable): self
     {
         $this->invariable = $invariable;
+        return $this;
     }
 
     public function getMessages(): ArrayCollection
@@ -92,7 +94,9 @@ final class SupportDTO implements SupportEventInterface
     public function addMessage(Message\SupportMessageDTO $message): void
     {
         $filter = $this->messages->filter(function(Message\SupportMessageDTO $element) use ($message) {
-            return $message->getMessage() === $element->getMessage() && $message->getName() === $element->getName();
+            return
+                $message->getMessage() === $element->getMessage() &&
+                $message->getOut() === $element->getOut();
         });
 
         if($filter->isEmpty())
@@ -111,9 +115,10 @@ final class SupportDTO implements SupportEventInterface
         return $this->status;
     }
 
-    public function setStatus(SupportStatus $status): void
+    public function setStatus(SupportStatus $status): self
     {
         $this->status = $status;
+        return $this;
     }
 
     public function getPriority(): SupportPriority
@@ -121,9 +126,10 @@ final class SupportDTO implements SupportEventInterface
         return $this->priority;
     }
 
-    public function setPriority(SupportPriority $priority): void
+    public function setPriority(SupportPriority $priority): self
     {
         $this->priority = $priority;
+        return $this;
     }
 
 }

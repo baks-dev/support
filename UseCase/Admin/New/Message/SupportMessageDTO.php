@@ -52,6 +52,10 @@ final class SupportMessageDTO implements SupportMessageInterface
     #[Assert\NotBlank]
     private ?DateTimeImmutable $date;
 
+    /** Является ли сообщение исходящим */
+    #[Assert\NotBlank]
+    private bool $out;
+
     public function getId(): ?SupportMessageUid
     {
         return $this->id;
@@ -68,9 +72,10 @@ final class SupportMessageDTO implements SupportMessageInterface
         return $this->name;
     }
 
-    public function setName(?string $name): void
+    public function setName(?string $name): self
     {
         $this->name = $name;
+        return $this;
     }
 
     public function getMessage(): ?string
@@ -78,9 +83,10 @@ final class SupportMessageDTO implements SupportMessageInterface
         return $this->message;
     }
 
-    public function setMessage(?string $message): void
+    public function setMessage(?string $message): self
     {
         $this->message = $message;
+        return $this;
     }
 
     public function getDate(): DateTimeImmutable
@@ -99,13 +105,29 @@ final class SupportMessageDTO implements SupportMessageInterface
         return $this->external;
     }
 
-    public function setExternal(string|int|null $external): void
+    public function setExternal(string|int|null $external): self
     {
         if($external !== null)
         {
             $this->external = (string) $external;
         }
-
+        return $this;
     }
 
+    public function getOut(): bool
+    {
+        return $this->out;
+    }
+
+    public function setOutMessage(): self
+    {
+        $this->out = true;
+        return $this;
+    }
+
+    public function setInMessage(): self
+    {
+        $this->out = false;
+        return $this;
+    }
 }
