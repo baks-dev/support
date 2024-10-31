@@ -139,6 +139,10 @@ class SupportEditTest extends KernelTestCase
             );
         }
 
+        self::assertTrue($SupportMessageDTO->getOut());
+        $SupportMessageDTO->setInMessage();
+        self::assertFalse($SupportMessageDTO->getOut());
+
 
         /** @var SupportHandler $SuportHandler */
         $SupportHandler = self::getContainer()->get(SupportHandler::class);

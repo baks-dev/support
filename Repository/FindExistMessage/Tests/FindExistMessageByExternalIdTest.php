@@ -50,7 +50,7 @@ class FindExistMessageByExternalIdTest extends KernelTestCase
 
 
         $response = $FindExistMessageInterface->exist();
-        dd($response);
+        //        dd($response);
 
 
         self::assertTrue(true);

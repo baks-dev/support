@@ -23,7 +23,6 @@
 
 namespace BaksDev\Support\Repository\SupportCurrentEventByTicket\Tests;
 
-use BaksDev\Support\Repository\FindTicket\FindExistTicketInterface;
 use BaksDev\Support\Repository\SupportCurrentEventByTicket\CurrentSupportEventByTicketInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
@@ -50,7 +49,7 @@ class SupportCurrentEventByTicketTest extends KernelTestCase
 
 
         $response = $CurrentSupportEventByTicketInterface->find();
-        dd($response);
+        //        dd($response);
 
 
         self::assertTrue(true);
