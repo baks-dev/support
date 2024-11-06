@@ -42,7 +42,7 @@
                                         </div>
                                         <div class="card-body text-start">
                                             <p class="mb-0">
-                                                {{ message.message }}
+                                                {{ message.message|raw }}
                                             </p>
                                         </div>
                                     </div>
@@ -79,9 +79,7 @@
                                 </li>
                             {% endif %}
                         {% endfor %}
-                        {#                        <li class="bg-white"> #}
-                        {#                            #}
-                        {#                        </li> #}
+                        <li class="box-hidden"> &nbsp;</li>
                     </ul>
                 </div>
             </div>
