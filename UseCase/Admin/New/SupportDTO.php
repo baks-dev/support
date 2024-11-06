@@ -91,7 +91,7 @@ final class SupportDTO implements SupportEventInterface
     }
 
 
-    public function addMessage(Message\SupportMessageDTO $message): void
+    public function addMessage(Message\SupportMessageDTO $message): bool
     {
         $filter = $this->messages->filter(function(Message\SupportMessageDTO $element) use ($message) {
             return
@@ -102,7 +102,10 @@ final class SupportDTO implements SupportEventInterface
         if($filter->isEmpty())
         {
             $this->messages->add($message);
+            return true;
         }
+
+        return false;
     }
 
     public function removeProperty(Message\SupportMessageDTO $message): void

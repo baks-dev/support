@@ -34,6 +34,8 @@ use BaksDev\Support\Entity\Message\SupportMessage;
 use BaksDev\Support\Entity\Support;
 use BaksDev\Support\Type\Status\SupportStatus;
 use BaksDev\Support\Type\Status\SupportStatus\Collection\SupportStatusOpen;
+use BaksDev\Users\Profile\TypeProfile\Entity\Trans\TypeProfileTrans;
+use BaksDev\Users\Profile\TypeProfile\Entity\TypeProfile;
 
 final class AllSupportRepository implements AllSupportInterface
 {
@@ -53,7 +55,9 @@ final class AllSupportRepository implements AllSupportInterface
     /** Метод возвращает пагинатор Support */
     public function findPaginator(): PaginatorInterface
     {
-        $dbal = $this->DBALQueryBuilder->createQueryBuilder(self::class);
+        $dbal = $this->DBALQueryBuilder
+            ->createQueryBuilder(self::class)
+            ->bindLocal();
 
         $dbal
             ->select('support.id')
@@ -83,6 +87,23 @@ final class AllSupportRepository implements AllSupportInterface
                 SupportInvariable::class,
                 'invariable',
                 'invariable.main = support.id'
+            );
+
+        $dbal
+            ->leftJoin(
+                'invariable',
+                TypeProfile::class,
+                'type_profile',
+                'type_profile.id = invariable.type'
+            );
+
+        $dbal
+            ->addSelect('type_profile_trans.name AS type_profile_name')
+            ->leftJoin(
+                'type_profile',
+                TypeProfileTrans::class,
+                'type_profile_trans',
+                'type_profile_trans.event = type_profile.event AND type_profile_trans.local = :local'
             );
 
 
