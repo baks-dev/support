@@ -1,16 +1,14 @@
 <div class="offcanvas-header d-flex justify-content-between">
     {% if messages %}
-        {% set name = messages[0].name %}
         {% set ticket = messages[0].ticket %}
         {% set title = messages[0].title %}
     {% else %}
         {% set ticket ='-' %}
         {% set title = '-' %}
     {% endif %}
+
     <div class="d-flex alert alert-light align-self-center m-0 p-1 align-items-center" role="alert">
-
         {{ ticket | title }}
-
     </div>
 
     <button type="button" class="btn-close icon rounded-circle align-self-center" style="width: 35px; height: 35px;"
@@ -19,17 +17,21 @@
     </button>
 </div>
 
+<div class="ms-3"><h5>{{ title|raw }}</h5></div>
+
+<hr>
+
 {% set image_path = '/assets/img/blank.svg' %}
 
 <div class="offcanvas-body">
     <section>
-        <div class="text-start"><h5>{{ title }}</h5></div>
+
         <div class="container pt-3  rounded">
             <div class="row">
                 <div class="col-md-6 col-lg-7 col-xl-8">
                     <ul class="list-unstyled">
                         {% for message in messages %}
-                            {% if  not message.out %}
+                            {% if message.external or user != message.name %}
                                 <li class="d-flex justify-content-between mb-4">
                                     <div class="card w-100">
                                         <div class="card-header d-flex justify-content-between p-3">
@@ -40,7 +42,7 @@
                                         </div>
                                         <div class="card-body text-start">
                                             <p class="mb-0">
-                                                {{ message.message | raw }}
+                                                {{ message.message }}
                                             </p>
                                         </div>
                                     </div>
@@ -70,21 +72,23 @@
                                         </div>
                                         <div class="card-body text-start">
                                             <p class="mb-0">
-                                                {{ message.message | raw }}
+                                                {{ message.message }}
                                             </p>
                                         </div>
                                     </div>
                                 </li>
                             {% endif %}
                         {% endfor %}
-                        <li class="box-hidden"></li>
+                        {#                        <li class="bg-white"> #}
+                        {#                            #}
+                        {#                        </li> #}
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 </div>
-<div class="offcanvas-bottom sticky-bottom p-3 pb-5 mx-3">
+<div class="offcanvas-bottom sticky-bottom p-3 mx-3">
     <div data-mdb-input-init class="form-outline">
         {{ form_start(form) }}
 
@@ -95,7 +99,7 @@
                 {{ form_row(form.reply.message, {attr: {'class': 'form-control bg-body-tertiary', 'rows': '4'}}) }}
             </div>
         {% else %}
-            {{ form_row(form.reply.message, {attr: {'class': 'form-control bg-body-tertiary', 'rows': '4'}, disabled: name == 'system'}) }}
+            {{ form_row(form.reply.message, {attr: {'class': 'form-control bg-body-tertiary', 'rows': '4'}}) }}
         {% endif %}
 
         <div class="btn-rounded float-end">
@@ -103,11 +107,20 @@
             {{ form_widget(form.support_message_add, { label: '
             <span>'~ 'btn.new'|trans({}, 'core.btn') ~'</span>
             <span class="spinner-border spinner-border-sm vertical-middle d-none"></span>
-        ',
-                disabled: name == 'system'
-            }) }}
+        '}) }}
         </div>
 
+
         {{ form_end(form) }}
+        {#        <textarea class="form-control bg-body-tertiary" id="textAreaExample2" rows="4"></textarea> #}
+        {#        <label class="form-label" for="textAreaExample2 "></label> #}
     </div>
+    {#    <button #}
+    {#            type="button" #}
+    {#            data-mdb-button-init data-mdb-ripple-init #}
+    {#            class="btn btn-primary btn-rounded float-end" #}
+    {#    > #}
+    {#        Отправить #}
+    {#    </button> #}
+
 </div>
