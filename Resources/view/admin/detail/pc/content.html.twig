@@ -31,30 +31,7 @@
                 <div class="col-md-6 col-lg-7 col-xl-8">
                     <ul class="list-unstyled">
                         {% for message in messages %}
-                            {% if message.external or user != message.name %}
-                                <li class="d-flex justify-content-between mb-4">
-                                    <div class="card w-100">
-                                        <div class="card-header d-flex justify-content-between p-3">
-                                            <p class="fw-bold mb-0">{{ message.name }}</p>
-                                            <p class="text-muted small mb-0"><i
-                                                        class="far fa-clock">{{ message.date | date('d-M H:i') }}</i>
-                                            </p>
-                                        </div>
-                                        <div class="card-body text-start">
-                                            <p class="mb-0">
-                                                {{ message.message|raw }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div>
-                                <span
-                                        class="icon rounded-circle bg-cover lazy p-1 ms-3 shadow-1-strong mx-2"
-                                        width="60"
-                                        data-bg="{{ image_path }}"
-                                > </span>
-                                    </div>
-                                </li>
-                            {% else %}
+                            {% if message.out %}
                                 <li class="d-flex justify-content-between mb-4">
                                     <div>
                                     <span
@@ -77,6 +54,30 @@
                                         </div>
                                     </div>
                                 </li>
+                            {% else %}
+                                <li class="d-flex justify-content-between mb-4">
+                                    <div class="card w-100">
+                                        <div class="card-header d-flex justify-content-between p-3">
+                                            <p class="fw-bold mb-0">{{ message.name }}</p>
+                                            <p class="text-muted small mb-0"><i
+                                                        class="far fa-clock">{{ message.date | date('d-M H:i') }}</i>
+                                            </p>
+                                        </div>
+                                        <div class="card-body text-start">
+                                            <p class="mb-0">
+                                                {{ message.message|raw }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                <span
+                                        class="icon rounded-circle bg-cover lazy p-1 ms-3 shadow-1-strong mx-2"
+                                        width="60"
+                                        data-bg="{{ image_path }}"
+                                > </span>
+                                    </div>
+                                </li>
+
                             {% endif %}
                         {% endfor %}
                         <li class="box-hidden"> &nbsp;</li>
