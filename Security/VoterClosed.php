@@ -23,30 +23,27 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Support\Type\Status\SupportStatus\Collection;
+namespace BaksDev\Support\Security;
 
-use BaksDev\Support\Type\Status\SupportStatus\SupportStatusInterface;
+use BaksDev\Users\Profile\Group\Security\RoleInterface;
+use BaksDev\Users\Profile\Group\Security\VoterInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
-#[AutoconfigureTag('baks.support.status')]
-final class SupportStatusClose implements SupportStatusInterface
+#[AutoconfigureTag('baks.security.voter')]
+final class VoterClosed implements VoterInterface
 {
-    public const string PARAM = 'closed';
+    /**
+     * Удалить
+     */
+    public const string VOTER = 'CLOSED';
 
-    public function getValue(): string
+    public static function getVoter(): string
     {
-        return self::PARAM;
+        return Role::ROLE.'_'.self::VOTER;
     }
 
-    public static function priority(): int
+    public function equals(RoleInterface $role): bool
     {
-        return 20;
+        return $role->getRole() === Role::ROLE;
     }
-
-    /** Проверяет, относится ли значение к данному объекту */
-    public static function equals(string $param): bool
-    {
-        return self::PARAM === $param;
-    }
-
 }

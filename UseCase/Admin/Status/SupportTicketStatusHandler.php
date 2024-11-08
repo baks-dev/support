@@ -23,30 +23,38 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Support\Type\Status\SupportStatus\Collection;
+namespace BaksDev\Support\UseCase\Admin\Status;
 
-use BaksDev\Support\Type\Status\SupportStatus\SupportStatusInterface;
-use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use BaksDev\Core\Entity\AbstractHandler;
+use BaksDev\Support\Entity\Event\SupportEvent;
+use BaksDev\Support\Entity\Support;
+use BaksDev\Support\Messenger\SupportMessage;
+use BaksDev\Support\UseCase\Admin\New\SupportDTO;
 
-#[AutoconfigureTag('baks.support.status')]
-final class SupportStatusClose implements SupportStatusInterface
+
+final class SupportTicketStatusHandler extends AbstractHandler
 {
-    public const string PARAM = 'closed';
 
-    public function getValue(): string
+    /** @see Support */
+    public function handle(SupportDTO $command): string|Support
     {
-        return self::PARAM;
-    }
 
-    public static function priority(): int
-    {
-        return 20;
-    }
+        $this->setCommand($command);
+        $this->preEventPersistOrUpdate(Support::class, SupportEvent::class);
 
-    /** Проверяет, относится ли значение к данному объекту */
-    public static function equals(string $param): bool
-    {
-        return self::PARAM === $param;
-    }
+        /** Валидация всех объектов */
+        if($this->validatorCollection->isInvalid())
+        {
+            return $this->validatorCollection->getErrorUniqid();
+        }
 
+        $this->flush();
+
+        /** Не отправляем сообщение в шину */
+        $this->messageDispatch->dispatch(
+            message: new SupportMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent())
+        );
+
+        return $this->main;
+    }
 }

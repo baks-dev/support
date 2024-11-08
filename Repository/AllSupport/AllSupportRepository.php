@@ -32,14 +32,16 @@ use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Entity\Invariable\SupportInvariable;
 use BaksDev\Support\Entity\Message\SupportMessage;
 use BaksDev\Support\Entity\Support;
+use BaksDev\Support\Form\Admin\Index\SupportTicketStatusFilterDTO;
 use BaksDev\Support\Type\Status\SupportStatus;
-use BaksDev\Support\Type\Status\SupportStatus\Collection\SupportStatusOpen;
 use BaksDev\Users\Profile\TypeProfile\Entity\Trans\TypeProfileTrans;
 use BaksDev\Users\Profile\TypeProfile\Entity\TypeProfile;
 
 final class AllSupportRepository implements AllSupportInterface
 {
     private SearchDTO|false $search = false;
+
+    private SupportTicketStatusFilterDTO|false $filter = false;
 
     public function __construct(
         private readonly DBALQueryBuilder $DBALQueryBuilder,
@@ -49,6 +51,12 @@ final class AllSupportRepository implements AllSupportInterface
     public function search(SearchDTO $search): self
     {
         $this->search = $search;
+        return $this;
+    }
+
+    public function filter(SupportTicketStatusFilterDTO $filter): self
+    {
+        $this->filter = $filter;
         return $this;
     }
 
@@ -71,13 +79,20 @@ final class AllSupportRepository implements AllSupportInterface
                 'support',
                 SupportEvent::class,
                 'event',
-                'event.id = support.event AND event.status = :status'
-            )
-            ->setParameter(
-                'status',
-                SupportStatusOpen::class,
-                SupportStatus::TYPE
+                'event.id = support.event'
             );
+
+        if($this->filter && null !== $this->filter->getStatus())
+        {
+            $dbal
+                ->andWhere('event.status = :status')
+                ->setParameter(
+                    'status',
+                    $this->filter->getStatus(),
+                    SupportStatus::TYPE
+                );
+        }
+
 
         $dbal
             ->addSelect('invariable.ticket')
@@ -126,6 +141,7 @@ final class AllSupportRepository implements AllSupportInterface
             $dbal
                 ->createSearchQueryBuilder($this->search)
                 ->addSearchLike('invariable.title')
+                ->addSearchLike('type_profile_trans.name')
                 ->addSearchLike('message.name')
                 ->addSearchLike('message.message')
                 ->addSearchLike('invariable.ticket');
@@ -136,4 +152,5 @@ final class AllSupportRepository implements AllSupportInterface
 
         return $this->paginator->fetchAllAssociative($dbal);
     }
+
 }

@@ -33,4 +33,14 @@
 
 {% block javascript %}
 <script nonce='{{ csp_nonce() }}' async  data-src='/assets/plugins/nice-select2/nice-select2.min.js?v={{ version }}' class='lazy'></script>
+
+<script nonce="{{ csp_nonce() }}">
+
+        document.addEventListener("DOMContentLoaded", (event) =>
+        {
+            const form = document.forms.support_ticket_status_filter_form;
+            form.addEventListener('change', () => { setTimeout(() => { form.submit(); }, 300); });
+        });
+
+</script>
 {% endblock %}

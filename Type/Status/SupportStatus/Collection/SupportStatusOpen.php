@@ -48,4 +48,5 @@ final class SupportStatusOpen implements SupportStatusInterface
     {
         return self::PARAM === $param;
     }
+
 }

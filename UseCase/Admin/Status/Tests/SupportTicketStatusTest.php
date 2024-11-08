@@ -23,76 +23,64 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Support\UseCase\Admin\Delete\Tests;
+namespace BaksDev\Support\UseCase\Admin\Status\Tests;
 
-use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Entity\Support;
 use BaksDev\Support\Repository\SupportCurrentEvent\CurrentSupportEventInterface;
 use BaksDev\Support\Type\Id\SupportUid;
-use BaksDev\Support\UseCase\Admin\Delete\SupportDeleteDTO;
-use BaksDev\Support\UseCase\Admin\Delete\SupportDeleteHandler;
+use BaksDev\Support\Type\Status\SupportStatus;
+use BaksDev\Support\Type\Status\SupportStatus\Collection\SupportStatusClose;
+use BaksDev\Support\Type\Status\SupportStatus\Collection\SupportStatusOpen;
 use BaksDev\Support\UseCase\Admin\New\SupportDTO;
-use Doctrine\ORM\EntityManagerInterface;
+use BaksDev\Support\UseCase\Admin\Status\SupportTicketStatusHandler;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
+use Symfony\Component\Console\Input\StringInput;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\Attribute\When;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @group support
  *
- * @depends BaksDev\Support\UseCase\Admin\Status\Tests\SupportTicketStatusTest::class
+ * @depends BaksDev\Support\UseCase\Admin\Add\Tests\SupportMessageAddTest::class
  */
 #[When(env: 'test')]
-class SupportDeleteTest extends KernelTestCase
+class SupportTicketStatusTest extends KernelTestCase
 {
     public function testUseCase(): void
     {
+        // Бросаем событие консольной комманды
+        $dispatcher = self::getContainer()->get(EventDispatcherInterface::class);
+        $event = new ConsoleCommandEvent(new Command(), new StringInput(''), new NullOutput());
+        $dispatcher->dispatch($event, 'console.command');
+
+
         /** @var CurrentSupportEventInterface $SupportCurrentEvent */
         $SupportCurrentEvent = self::getContainer()->get(CurrentSupportEventInterface::class);
         $SupportCurrentEvent->forSupport(SupportUid::TEST);
         $SupportEvent = $SupportCurrentEvent->find();
 
-        self::assertNotNull($SupportEvent);
+
         self::assertNotFalse($SupportEvent);
+        self::assertNotNull($SupportEvent);
 
 
         /** @see SupportDTO */
         $SupportDTO = new SupportDTO();
         $SupportEvent->getDto($SupportDTO);
 
-        /** @see SupportDeleteDTO */
-        $SupportDeleteDTO = new SupportDeleteDTO();
-        $SupportEvent->getDto($SupportDeleteDTO);
 
-        /** @var SupportDeleteHandler $SupportHandler */
-        $SupportDeleteHandler = self::getContainer()->get(SupportDeleteHandler::class);
-        $handle = $SupportDeleteHandler->handle($SupportDeleteDTO);
+        self::assertTrue($SupportDTO->getStatus()->equals(SupportStatusOpen::PARAM));
+        $SupportDTO->setStatus(new SupportStatus(SupportStatusClose::PARAM));
+        self::assertTrue($SupportDTO->getStatus()->equals(SupportStatusClose::PARAM));
+
+        /** @var SupportTicketStatusHandler $SupportTicketClosedHandler */
+        $SupportTicketClosedHandler = self::getContainer()->get(SupportTicketStatusHandler::class);
+        $handle = $SupportTicketClosedHandler->handle($SupportDTO);
 
         self::assertTrue(($handle instanceof Support), $handle.': Ошибка Support');
 
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        /** @var EntityManagerInterface $em */
-        $em = self::getContainer()->get(EntityManagerInterface::class);
-
-        $main = $em->getRepository(Support::class)
-            ->findOneBy(['id' => SupportUid::TEST]);
-
-        if($main)
-        {
-            $em->remove($main);
-        }
-
-        $event = $em->getRepository(SupportEvent::class)
-            ->findBy(['main' => SupportUid::TEST]);
-
-        foreach($event as $remove)
-        {
-            $em->remove($remove);
-        }
-
-        $em->flush();
-        $em->clear();
     }
 }
