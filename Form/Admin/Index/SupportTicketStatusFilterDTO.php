@@ -23,30 +23,26 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Support\Type\Status\SupportStatus\Collection;
+namespace BaksDev\Support\Form\Admin\Index;
 
+use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Type\Status\SupportStatus\SupportStatusInterface;
-use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
-#[AutoconfigureTag('baks.support.status')]
-final class SupportStatusClose implements SupportStatusInterface
+
+/** @see SupportEvent */
+final class SupportTicketStatusFilterDTO
 {
-    public const string PARAM = 'closed';
+    private ?SupportStatusInterface $status = null;
 
-    public function getValue(): string
+    public function getStatus(): ?SupportStatusInterface
     {
-        return self::PARAM;
+        return $this->status;
     }
 
-    public static function priority(): int
+    public function setStatus(?SupportStatusInterface $status): self
     {
-        return 20;
-    }
-
-    /** Проверяет, относится ли значение к данному объекту */
-    public static function equals(string $param): bool
-    {
-        return self::PARAM === $param;
+        $this->status = $status;
+        return $this;
     }
 
 }

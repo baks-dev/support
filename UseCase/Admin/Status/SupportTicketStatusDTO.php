@@ -23,30 +23,30 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Support\Type\Status\SupportStatus\Collection;
+namespace BaksDev\Support\UseCase\Admin\Status;
 
-use BaksDev\Support\Type\Status\SupportStatus\SupportStatusInterface;
-use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use BaksDev\Support\Entity\Event\SupportEventInterface;
+use BaksDev\Support\Entity\Invariable\SupportInvariable;
+use BaksDev\Support\Type\Event\SupportEventUid;
+use Symfony\Component\Validator\Constraints as Assert;
 
-#[AutoconfigureTag('baks.support.status')]
-final class SupportStatusClose implements SupportStatusInterface
+/** @see SupportInvariable */
+final class SupportTicketStatusDTO implements SupportEventInterface
 {
-    public const string PARAM = 'closed';
+    /** Идентификатор события */
+    #[Assert\Uuid]
+    private ?SupportEventUid $id = null;
 
-    public function getValue(): string
+
+    /** Идентификатор события */
+    public function getEvent(): ?SupportEventUid
     {
-        return self::PARAM;
+        return $this->id;
     }
 
-    public static function priority(): int
+    public function setId(?SupportEventUid $id): self
     {
-        return 20;
+        $this->id = $id;
+        return $this;
     }
-
-    /** Проверяет, относится ли значение к данному объекту */
-    public static function equals(string $param): bool
-    {
-        return self::PARAM === $param;
-    }
-
 }

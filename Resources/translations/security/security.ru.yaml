@@ -22,3 +22,7 @@ ROLE_SUPPORT_EDIT:
 ROLE_SUPPORT_DELETE:
   name: 'Удалить'
   desc: ''
+
+ROLE_SUPPORT_CLOSED:
+  name: 'Закрыть тикет'
+  desc: ''

@@ -32,6 +32,7 @@ use BaksDev\Support\Repository\FindExistMessage\FindExistExternalMessageByIdInte
 use BaksDev\Support\Repository\FindExistTicket\FindExistTicketInterface;
 use BaksDev\Support\Repository\SupportCurrentEvent\CurrentSupportEventInterface;
 use BaksDev\Support\Repository\SupportCurrentEventByTicket\CurrentSupportEventByTicketInterface;
+use BaksDev\Support\UseCase\Admin\Status\SupportTicketStatusHandler;
 use BaksDev\Support\UseCase\Admin\Delete\SupportDeleteHandler;
 use BaksDev\Support\UseCase\Admin\New\SupportHandler as SupportNewEditHandler;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -42,6 +43,7 @@ final class SupportHandler
     public function __construct(
         private readonly SupportNewEditHandler $supportNeweditHandler,
         private readonly SupportDeleteHandler $supportDeleteHandler,
+        private readonly SupportTicketStatusHandler $closedHandler,
         private readonly CurrentSupportEventInterface $event,
         private readonly CurrentSupportMessagesInterface $supportMessage,
         private readonly AllSupportInterface $allSupportRepository,

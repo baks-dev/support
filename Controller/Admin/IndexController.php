@@ -29,6 +29,8 @@ use BaksDev\Core\Controller\AbstractController;
 use BaksDev\Core\Form\Search\SearchDTO;
 use BaksDev\Core\Form\Search\SearchForm;
 use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
+use BaksDev\Support\Form\Admin\Index\SupportTicketStatusFilterDTO;
+use BaksDev\Support\Form\Admin\Index\SupportTicketStatusFilterForm;
 use BaksDev\Support\Repository\AllSupport\AllSupportInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,6 +41,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[RoleSecurity('ROLE_SUPPORT')]
 final class IndexController extends AbstractController
 {
+
     #[Route('/admin/supports/{page<\d+>}', name: 'admin.index', methods: ['GET', 'POST'])]
     public function index(
         Request $request,
@@ -46,6 +49,13 @@ final class IndexController extends AbstractController
         int $page = 0,
     ): Response
     {
+        $filter = new SupportTicketStatusFilterDTO();
+        $filterForm = $this->createForm(SupportTicketStatusFilterForm::class, $filter, [
+            'action' => $this->generateUrl('support:admin.index'),
+        ]);
+
+        $filterForm->handleRequest($request);
+
         // Поиск
         $search = new SearchDTO();
         $searchForm = $this
@@ -55,12 +65,14 @@ final class IndexController extends AbstractController
         // Получаем список
         $Support = $allSupport
             ->search($search)
+            ->filter($filter)
             ->findPaginator();
 
         return $this->render(
             [
                 'query' => $Support,
                 'search' => $searchForm->createView(),
+                'filter' => $filterForm->createView(),
             ]
         );
     }

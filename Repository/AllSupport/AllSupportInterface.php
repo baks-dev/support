@@ -25,10 +25,14 @@ namespace BaksDev\Support\Repository\AllSupport;
 
 use BaksDev\Core\Form\Search\SearchDTO;
 use BaksDev\Core\Services\Paginator\PaginatorInterface;
+use BaksDev\Support\Form\Admin\Index\SupportTicketStatusFilterDTO;
+
 
 interface AllSupportInterface
 {
     public function search(SearchDTO $search): self;
+
+    public function filter(SupportTicketStatusFilterDTO $filter): self;
 
     /** Метод возвращает пагинатор Support */
     public function findPaginator(): PaginatorInterface;

@@ -23,30 +23,32 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Support\Type\Status\SupportStatus\Collection;
+namespace BaksDev\Support\UseCase\Admin\Status;
 
-use BaksDev\Support\Type\Status\SupportStatus\SupportStatusInterface;
-use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-#[AutoconfigureTag('baks.support.status')]
-final class SupportStatusClose implements SupportStatusInterface
+final class SupportTicketStatusForm extends AbstractType
 {
-    public const string PARAM = 'closed';
-
-    public function getValue(): string
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        return self::PARAM;
+
+        /* Удалить ******************************************************/
+        $builder->add(
+            'support_ticket_closed',
+            SubmitType::class,
+            ['label' => 'Closed', 'label_html' => true, 'attr' => ['class' => 'btn-danger']]
+        );
     }
 
-    public static function priority(): int
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        return 20;
+        $resolver->setDefaults([
+            'data_class' => SupportTicketStatusDTO::class,
+            'method' => 'POST',
+            'attr' => ['class' => 'w-100'],
+        ]);
     }
-
-    /** Проверяет, относится ли значение к данному объекту */
-    public static function equals(string $param): bool
-    {
-        return self::PARAM === $param;
-    }
-
 }

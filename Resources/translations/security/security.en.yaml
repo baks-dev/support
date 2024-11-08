@@ -23,4 +23,8 @@ ROLE_SUPPORT_DELETE:
   name: 'Delete'
   desc: ''
 
+ROLE_SUPPORT_CLOSED:
+  name: 'Close ticket'
+  desc: ''
+
 
