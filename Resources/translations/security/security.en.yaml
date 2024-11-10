@@ -27,4 +27,10 @@ ROLE_SUPPORT_CLOSED:
   name: 'Close ticket'
   desc: ''
 
+ROLE_SUPPORT_ADD:
+  name: 'Answer'
+  desc: ''
 
+ROLE_SUPPORT_DETAIL:
+  name: 'Detailed view'
+  desc: ''

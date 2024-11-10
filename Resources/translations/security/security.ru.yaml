@@ -26,3 +26,11 @@ ROLE_SUPPORT_DELETE:
 ROLE_SUPPORT_CLOSED:
   name: 'Закрыть тикет'
   desc: ''
+
+ROLE_SUPPORT_ADD:
+  name: 'Ответить'
+  desc: ''
+
+ROLE_SUPPORT_DETAIL:
+  name: 'Детальный просмотр'
+  desc: ''
