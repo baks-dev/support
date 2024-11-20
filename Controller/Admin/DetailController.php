@@ -52,6 +52,11 @@ final class DetailController extends AbstractController
         AllMessagesByEventInterface $messagesByTicket,
     ): Response
     {
+        if(is_null($SupportEvent->getTitle()))
+        {
+            return $this->redirectToRoute('support:admin.index');
+        }
+
         $user = $currentUserProfileDTO->fetchProfileAssociative($this->getCurrentUsr());
 
         $SupportDTO = new SupportDTO();

@@ -77,16 +77,15 @@ final class AddController extends AbstractController
         $SupportMessageDTO = new SupportMessageDTO();
 
         /** Присваиваем имя профиля */
-        $SupportMessageDTO->setName($user['profile_username'] ?? null);
-
-        /** Дата создания сообщения */
-        $SupportMessageDTO->setDate(new DateTimeImmutable());
+        $SupportMessageDTO
+            ->setName($user['profile_username'] ?? null)
+            ->setDate(new DateTimeImmutable());
 
         /** Тема тикета */
-        $ReplySupportMessageDto->setTitle($SupportEvent->getTitle());
-
-        /** Сохраняем в ДТО входящего сообщения ДТО исходящего */
-        $ReplySupportMessageDto->setReply($SupportMessageDTO);
+        $ReplySupportMessageDto
+            ->setTitle($SupportEvent->getTitle())
+            ->setOutMessage()
+            ->setReply($SupportMessageDTO);
 
         // Форма
         $form = $this

@@ -123,7 +123,7 @@ class SupportEvent extends EntityEvent
 
     public function getTitle(): ?string
     {
-        return $this->invariable->getTitle();
+        return $this->invariable?->getTitle();
     }
 
     public function getDto($dto): mixed

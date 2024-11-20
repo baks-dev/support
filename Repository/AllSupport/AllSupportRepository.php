@@ -34,6 +34,7 @@ use BaksDev\Support\Entity\Message\SupportMessage;
 use BaksDev\Support\Entity\Support;
 use BaksDev\Support\Form\Admin\Index\SupportTicketStatusFilterDTO;
 use BaksDev\Support\Type\Status\SupportStatus;
+use BaksDev\Support\Type\Status\SupportStatus\Collection\SupportStatusOpen;
 use BaksDev\Users\Profile\TypeProfile\Entity\Trans\TypeProfileTrans;
 use BaksDev\Users\Profile\TypeProfile\Entity\TypeProfile;
 
@@ -82,8 +83,13 @@ final class AllSupportRepository implements AllSupportInterface
                 'event.id = support.event'
             );
 
-        if($this->filter && null !== $this->filter->getStatus())
+        if($this->filter)
         {
+            if(is_null($this->filter->getStatus()))
+            {
+                $this->filter->setStatus(new SupportStatusOpen());
+            }
+
             $dbal
                 ->andWhere('event.status = :status')
                 ->setParameter(

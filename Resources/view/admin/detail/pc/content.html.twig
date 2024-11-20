@@ -44,7 +44,7 @@
                                         <div class="card-header d-flex justify-content-between p-3 align-items-center bg-primary text-light">
                                             <p class="fw-bold mb-0 ">{{ message.name }}</p>
                                             <p class="text-muted small mb-0"><i
-                                                        class="far fa-clock text-light">{{ message.date | date('d-M H:i') }}</i>
+                                                        class="far fa-clock text-light">{{ message.date | format_datetime(pattern="EEEE d MMMM HH:mm") }}</i>
                                             </p>
                                         </div>
                                         <div class="card-body text-start">
@@ -60,7 +60,7 @@
                                         <div class="card-header d-flex justify-content-between p-3">
                                             <p class="fw-bold mb-0">{{ message.name }}</p>
                                             <p class="text-muted small mb-0"><i
-                                                        class="far fa-clock">{{ message.date | date('d-M H:i') }}</i>
+                                                        class="far fa-clock">{{ message.date | format_datetime(pattern="EEEE d MMMM HH:mm") }}</i>
                                             </p>
                                         </div>
                                         <div class="card-body text-start">
