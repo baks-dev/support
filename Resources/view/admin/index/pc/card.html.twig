@@ -20,11 +20,50 @@
         {% endif %}
     </td>
 
-    <td class="text-center">
+    <td>
         <div class="ms-0 text-start">
                 <span class="d-inline-block text-truncate text-emphasis align-middle"
                       style="max-width: 150px;">{{ item.type_profile_name|trans }}</span>
         </div>
+
+        {% set dedline = date(item.date) %}
+        {% set difference = dedline.diff(date("now")) %}
+        {% set day = difference.days ?: null %}
+        {% set hour = difference.h ?: null %}
+
+
+        <div class="small text-nowrap">
+
+            <span class="small text-muted ">{{ item.date|date('d.m H:i') }} | </span>
+            <strong
+
+                    role="tooltip"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-delay='{"show":600,"hide":100}'
+                    title="Последнее движение по заказу"
+                    class="small {{ day ? 'text-danger' : 'text-success' }}">
+
+                {% if day %}
+                    {{ day }}<span class="small">д.</span>
+                {% endif %}
+
+                {% if hour %}
+                    {{ hour }}<span class="small">ч.</span>
+                {% endif %}
+
+                {% if day is null %}
+                    {% if hour is empty and difference.i is empty %}
+                        Новый
+                    {% else %}
+                        {{ difference.i }}<span class="small">м.</span>
+                    {% endif %}
+                {% endif %}
+
+            </strong>
+        </div>
+
+
     </td>
 
     <td class="text-center">

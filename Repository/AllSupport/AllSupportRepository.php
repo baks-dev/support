@@ -132,6 +132,7 @@ final class AllSupportRepository implements AllSupportInterface
             ->addSelect('message.name AS name')
             ->addSelect('message.message AS message')
             ->addSelect('message.id AS message_id')
+            ->addSelect('message.date AS date')
             ->leftOneJoin(
                 'support',
                 SupportMessage::class,
