@@ -137,14 +137,14 @@ final class AllSupportRepository implements AllSupportInterface
                 'support',
                 SupportMessage::class,
                 'message',
-                'message.event = support.event'
+                'message.event = support.event',
+                sort: 'date'
             );
 
 
         /* Поиск */
         if($this->search->getQuery())
         {
-
             $dbal
                 ->createSearchQueryBuilder($this->search)
                 ->addSearchLike('invariable.title')
@@ -152,7 +152,6 @@ final class AllSupportRepository implements AllSupportInterface
                 ->addSearchLike('message.name')
                 ->addSearchLike('message.message')
                 ->addSearchLike('invariable.ticket');
-
         }
 
         $dbal->addOrderBy('event.priority');
