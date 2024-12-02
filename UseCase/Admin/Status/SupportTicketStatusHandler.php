@@ -28,7 +28,6 @@ namespace BaksDev\Support\UseCase\Admin\Status;
 use BaksDev\Core\Entity\AbstractHandler;
 use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Entity\Support;
-use BaksDev\Support\Messenger\SupportMessage;
 use BaksDev\Support\UseCase\Admin\New\SupportDTO;
 
 
@@ -51,9 +50,7 @@ final class SupportTicketStatusHandler extends AbstractHandler
         $this->flush();
 
         /** Не отправляем сообщение в шину */
-        $this->messageDispatch->dispatch(
-            message: new SupportMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent())
-        );
+        $this->messageDispatch->addClearCacheOther('support');
 
         return $this->main;
     }

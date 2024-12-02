@@ -92,7 +92,7 @@ final class SupportInvariableDTO implements SupportInvariableInterface
 
     public function setTitle(string $title): self
     {
-        $this->title = $title;
+        $this->title = empty($title) ? 'Без темы' : $title;
         return $this;
     }
 

@@ -141,7 +141,6 @@ final class AllSupportRepository implements AllSupportInterface
                 sort: 'date'
             );
 
-
         /* Поиск */
         if($this->search->getQuery())
         {
@@ -154,7 +153,15 @@ final class AllSupportRepository implements AllSupportInterface
                 ->addSearchLike('invariable.ticket');
         }
 
-        $dbal->addOrderBy('event.priority');
+        if($this->filter->getStatus() instanceof SupportStatusOpen)
+        {
+            $dbal
+                ->addOrderBy('event.priority');
+        }
+
+        $dbal
+            //->addOrderBy('message.date')
+            ->addOrderBy('event.id', 'DESC');
 
         return $this->paginator->fetchAllAssociative($dbal);
     }

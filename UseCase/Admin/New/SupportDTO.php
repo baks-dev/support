@@ -95,7 +95,7 @@ final class SupportDTO implements SupportEventInterface
     {
         $filter = $this->messages->filter(function(Message\SupportMessageDTO $element) use ($message) {
             return
-                $message->getMessage() === $element->getMessage() &&
+                md5(trim($message->getMessage())) === md5(trim($element->getMessage())) &&
                 $message->getOut() === $element->getOut();
         });
 
