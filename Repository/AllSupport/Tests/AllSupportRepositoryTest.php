@@ -36,6 +36,7 @@ class AllSupportRepositoryTest extends KernelTestCase
 {
     public function testUseCase(): void
     {
+
         /** @var AllSupportInterface $AllSupportRepositoryInterface */
         $AllSupportRepositoryInterface = self::getContainer()->get(AllSupportInterface::class);
 
@@ -45,18 +46,18 @@ class AllSupportRepositoryTest extends KernelTestCase
 
         if(!empty($response->getData()))
         {
+            $current = current($response->getData());
 
-            self::assertTrue(array_key_exists("id", current($response->getData())));
-            self::assertTrue(array_key_exists("event", current($response->getData())));
-            self::assertTrue(array_key_exists("status", current($response->getData())));
-            self::assertTrue(array_key_exists("priority", current($response->getData())));
-            self::assertTrue(array_key_exists("ticket", current($response->getData())));
-            self::assertTrue(array_key_exists("title", current($response->getData())));
-            self::assertTrue(array_key_exists("name", current($response->getData())));
-            self::assertTrue(array_key_exists("message", current($response->getData())));
-            self::assertTrue(array_key_exists("message_id", current($response->getData())));
+            self::assertTrue(array_key_exists("id", $current));
+            self::assertTrue(array_key_exists("event", $current));
+            self::assertTrue(array_key_exists("status", $current));
+            self::assertTrue(array_key_exists("priority", $current));
+            self::assertTrue(array_key_exists("ticket", $current));
+            self::assertTrue(array_key_exists("title", $current));
+            self::assertTrue(array_key_exists("name", $current));
+            self::assertTrue(array_key_exists("message", $current));
+            self::assertTrue(array_key_exists("message_id", $current));
         }
-
 
         self::assertTrue(true);
     }

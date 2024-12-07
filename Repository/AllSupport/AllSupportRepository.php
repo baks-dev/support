@@ -153,7 +153,7 @@ final class AllSupportRepository implements AllSupportInterface
                 ->addSearchLike('invariable.ticket');
         }
 
-        if($this->filter->getStatus() instanceof SupportStatusOpen)
+        if($this->filter && $this->filter->getStatus() instanceof SupportStatusOpen)
         {
             $dbal
                 ->addOrderBy('event.priority');
