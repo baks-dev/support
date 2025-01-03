@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace BaksDev\Support\Controller\Admin;
 
+use BaksDev\Centrifugo\Server\Publish\CentrifugoPublishInterface;
 use BaksDev\Core\Controller\AbstractController;
 use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
 use BaksDev\Support\Entity\Event\SupportEvent;
@@ -46,16 +47,22 @@ final class DetailController extends AbstractController
 {
     #[Route('/admin/support/detail/{id}', name: 'admin.detail', methods: ['GET', 'POST'])]
     public function edit(
-        Request $request,
         #[MapEntity] SupportEvent $SupportEvent,
         CurrentUserProfileInterface $currentUserProfileDTO,
         AllMessagesByEventInterface $messagesByTicket,
+        CentrifugoPublishInterface $publish,
     ): Response
     {
         if(is_null($SupportEvent->getTitle()))
         {
             return $this->redirectToRoute('support:admin.index');
         }
+
+        /** Скрываем тикет у остальных пользователей */
+        $publish
+            ->addData(['profile' => (string) $this->getProfileUid()])
+            ->addData(['identifier' => (string) $SupportEvent->getMain()])
+            ->send('remove');
 
         $user = $currentUserProfileDTO->fetchProfileAssociative($this->getCurrentUsr());
 
