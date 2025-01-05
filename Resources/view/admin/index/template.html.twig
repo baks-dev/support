@@ -59,11 +59,9 @@
                         debug: '{{ app.environment }}' === 'dev',
                     });
 
-                /** Удаляем из списка тикет */
+                /** Удаляем из списка тикет у других */
                 centrifuge.newSubscription('remove').on('publication', function(ctx)
                 {
-                    // console.log(ctx.data);
-
                     if(ctx.data.profile === '{{ app.user.profile }}')
                     {
                         return;

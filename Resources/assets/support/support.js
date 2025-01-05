@@ -23,6 +23,132 @@
 var btn = document.querySelector(".offcanvas-link");
 
 btn?.addEventListener("click",
-    document.querySelector(".box-hidden")?.scrollIntoView({block: "center"})
+    document.querySelector(".box-hidden")?.scrollIntoView({block: "end"})
 );
 
+/** Сокеты */
+executeFunc(function zuxjGRZu()
+{
+    if(typeof Centrifuge === 'function')
+    {
+        const dsn = window.centrifugo_dsn; // Получаем значение dsn
+        const token = window.centrifugo_token; // Получаем значение token
+
+        if(!dsn || !token)
+        {
+            return false;
+        }
+
+        /** Делаем отправку формы на AJAX */
+        const form = document.forms.support_message_add_form;
+
+        /* Блокируем событие отправки формы */
+        form.addEventListener('submit', function(event)
+        {
+            event.preventDefault();
+            submitTiketForm(this);
+            return false;
+        });
+
+        centrifuge = new Centrifuge("wss://" + dsn + "/connection/websocket",
+            {
+                token: token,
+                getToken: function(ctx)
+                {
+                    return getToken('/centrifugo/credentials/user', ctx);
+                },
+                debug: true,
+            });
+
+        centrifuge.newSubscription('ticket').on('publication', function(ctx)
+        {
+            console.log(ctx.data);
+
+            let identifier = document.getElementById('tiket-' + ctx.data.identifier);
+
+            console.log(identifier);
+
+            if(identifier)
+            {
+                /** Меняем ссылку на ответы */
+                form.action = '/admin/support/message/add/' + ctx.data.event + '/' + ctx.data.message;
+
+                /** При ответе удаляем из списка тикет */
+                document.getElementById(ctx.data.identifier)?.remove();
+
+                let messages = document.getElementById('messages-' + ctx.data.identifier);
+
+                if(messages)
+                {
+                    messages.innerHTML += ctx.data.support;
+                    messages.scrollIntoView({behavior: "smooth", block: "end"});
+
+                    reloadLazy();
+                }
+            }
+
+        }).subscribe();
+
+        centrifuge.connect();
+
+        /** При скрытии - закрываем соединение */
+
+        const offcanvas = document.getElementById('offcanvas');
+
+        offcanvas.addEventListener('hide.bs.offcanvas', event =>
+        {
+            centrifuge.disconnect();
+        });
+
+        return true;
+    }
+
+    return false;
+
+});
+
+
+async function submitTiketForm(forma)
+{
+    const data = new FormData(forma);
+
+    let indicator = forma.querySelector('.spinner-border');
+
+    if(indicator)
+    {
+        btn = indicator.closest('button');
+        indicator.classList.remove('d-none');
+        btn.disabled = true;
+        btn.type = 'button';
+    }
+
+    const frm = document.forms[forma.name];
+
+    await fetch(frm.action, {
+        method: frm.method, // *GET, POST, PUT, DELETE, etc.
+        //mode: 'same-origin', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {'X-Requested-With': 'XMLHttpRequest'},
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: data // body data type must match "Content-Type" header
+    })
+
+        .then((response) =>
+        {
+            let reply = document.getElementById(forma.name + '_reply_message');
+            reply.value = '';
+            reply.focus()
+            closeProgress();
+            btn.type = 'submit';
+        });
+
+
+    return false;
+
+
+    // .catch((error) => {
+    //     console.error('Error:', error);
+    // }); // parses JSON response into native JavaScript objects
+}

@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace BaksDev\Support\Controller\Admin;
 
+use BaksDev\Centrifugo\Server\Publish\CentrifugoPublishInterface;
 use BaksDev\Core\Controller\AbstractController;
 use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
 use BaksDev\Core\Type\UidType\ParamConverter;
@@ -57,6 +58,7 @@ final class AddController extends AbstractController
         SupportHandler $SupportHandler,
         CurrentSupportMessagesInterface $currentSupportMessages,
         CurrentUserProfileInterface $currentUserProfileDTO,
+        CentrifugoPublishInterface $publish,
         #[ParamConverter(SupportMessageUid::class)] $message,
         #[MapEntity] SupportEvent $SupportEvent,
     ): Response
@@ -100,25 +102,34 @@ final class AddController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid() && $form->has('support_message_add'))
         {
-            $this->refreshTokenForm($form);
+            /** @note Не сбрасываем токен csrf формы для чата */
 
             $SupportDTO = new SupportDTO();
             $SupportEvent->getDto($SupportDTO);
 
             /** Меняем статус на "Закрытый" */
-            $SupportDTO->setStatus(new SupportStatus(SupportStatusClose::PARAM));
+            $SupportDTO->setStatus(new SupportStatus(SupportStatusClose::class));
 
             /** Из ДТО входящего сообщения берем ДТО исходящего и добавляем с support */
             $SupportDTO->addMessage($ReplySupportMessageDto->getReply());
 
             $handle = $SupportHandler->handle($SupportDTO);
 
-            $this->addFlash(
-                'page.add',
-                $handle instanceof Support ? 'success.add' : 'danger.edit',
-                'support.admin',
-                $handle
-            );
+            if($request->isXmlHttpRequest() === false)
+            {
+                $this->addFlash(
+                    'page.add',
+                    $handle instanceof Support ? 'success.add' : 'danger.edit',
+                    'support.admin',
+                    $handle
+                );
+            }
+
+            /** Скрываем тикет у остальных пользователей */
+            $publish
+                ->addData(['profile' => (string) $this->getProfileUid()])
+                ->addData(['identifier' => (string) $SupportEvent->getMain()])
+                ->send('remove');
 
             return $handle instanceof Support ? $this->redirectToRoute('support:admin.index') : $this->redirectToReferer();
         }

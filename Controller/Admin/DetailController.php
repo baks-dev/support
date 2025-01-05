@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace BaksDev\Support\Controller\Admin;
 
 use BaksDev\Centrifugo\Server\Publish\CentrifugoPublishInterface;
+use BaksDev\Centrifugo\Services\Token\TokenUserGenerator;
 use BaksDev\Core\Controller\AbstractController;
 use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
 use BaksDev\Support\Entity\Event\SupportEvent;
@@ -51,6 +52,7 @@ final class DetailController extends AbstractController
         CurrentUserProfileInterface $currentUserProfileDTO,
         AllMessagesByEventInterface $messagesByTicket,
         CentrifugoPublishInterface $publish,
+        TokenUserGenerator $tokenUserGenerator,
     ): Response
     {
         if(is_null($SupportEvent->getTitle()))
@@ -96,9 +98,11 @@ final class DetailController extends AbstractController
         ]);
 
         return $this->render([
+            'identifier' => $SupportEvent->getMain(),
             'messages' => $messages,
             'user' => $user['profile_username'] ?? null,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'token' => $tokenUserGenerator->generate($this->getUsr()),
         ]);
     }
 }

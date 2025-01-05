@@ -21,38 +21,17 @@
  *  THE SOFTWARE.
  */
 
-declare(strict_types=1);
+namespace BaksDev\Support\Repository\SupportLastMessage;
 
-namespace BaksDev\Support\UseCase\Admin\New;
-
-use BaksDev\Core\Entity\AbstractHandler;
-use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Entity\Support;
-use BaksDev\Support\Messenger\SupportMessage;
+use BaksDev\Support\Type\Id\SupportUid;
 
-
-final class SupportHandler extends AbstractHandler
+interface SupportLastMessageInterface
 {
-    /** @see Support */
-    public function handle(SupportDTO $command): string|Support
-    {
-        $this->setCommand($command);
-        $this->preEventPersistOrUpdate(Support::class, SupportEvent::class);
+    public function forSupport(Support|SupportUid|string $support): self;
 
-        /** Валидация всех объектов */
-        if($this->validatorCollection->isInvalid())
-        {
-            return $this->validatorCollection->getErrorUniqid();
-        }
-
-        $this->flush();
-
-        /** Отправляем сообщение в шину */
-        $this->messageDispatch->dispatch(
-            message: new SupportMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
-            transport: 'support'
-        );
-
-        return $this->main;
-    }
+    /**
+     * Метод возвращает идентификатор последнего сообщения тикета
+     */
+    public function find(): array|bool;
 }

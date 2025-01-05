@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -95,6 +95,7 @@ final class SupportDTO implements SupportEventInterface
     {
         $filter = $this->messages->filter(function(Message\SupportMessageDTO $element) use ($message) {
             return
+                $element->getDate()->format('YmdHi') === $message->getDate()->format('YmdHi') &&
                 md5(trim($message->getMessage())) === md5(trim($element->getMessage())) &&
                 $message->getOut() === $element->getOut();
         });
