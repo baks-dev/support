@@ -1,0 +1,92 @@
+{% trans_default_domain("support.admin") %}
+
+{% set ROLE = 'ROLE_SUPPORT' %}
+
+{# ---- ШАБЛОН ------------------------------------------------------------ #}
+{% extends Template('/admin/base.html.twig') %}
+
+{# ---- CSS ------------------------------------------------------------ #}
+{% block title %}
+    {{ 'page.index'|trans }}
+{% endblock %}
+
+
+{# ---- CSS ------------------------------------------------------------ #}
+{% block stylesheets %}
+    <link href="/assets/plugins/nice-select2/nice-select2.min.css" rel="stylesheet">
+{% endblock %}
+
+
+{# ---- КОНТЕНТ-БЛОК ------------------------------------------------------------ #}
+{% block content %}
+    {{ include(_self|replace({ "template.html.twig": baks_settings.device~"/content.html.twig" })) }}
+
+
+    <div
+            class="offcanvas offcanvas-start"
+            tabindex="-1"
+            id="offcanvas"
+            style="width:640px"
+    >
+
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+<script nonce='{{ csp_nonce() }}' async data-src="/assets/centrifugo/centrifuge.min.js?v={{ version }}" class='lazy'></script>
+<script nonce='{{ csp_nonce() }}' async data-src='/assets/plugins/nice-select2/nice-select2.min.js?v={{ version }}' class='lazy'></script>
+
+<script nonce="{{ csp_nonce() }}">
+
+    document.addEventListener("DOMContentLoaded", (event) =>
+    {
+        const form = document.forms.support_ticket_status_filter_form;
+        form.addEventListener('change', () => { setTimeout(() => { form.submit(); }, 300); });
+
+        /** Сокеты */
+        setTimeout(function YaDxaSscx()
+        {
+            if(typeof Centrifuge === 'function')
+            {
+                centrifuge = new Centrifuge("wss://{{ centrifugo_dsn }}/connection/websocket",
+                    {
+                        token: "{{ token }}",
+                        getToken: function(ctx)
+                        {
+                            return getToken('/centrifugo/credentials/user', ctx);
+                        },
+                        debug: '{{ app.environment }}' === 'dev',
+                    });
+
+                /** Удаляем из списка тикет у других */
+                centrifuge.newSubscription('remove').on('publication', function(ctx)
+                {
+                    if(ctx.data.profile === '{{ app.user.profile }}')
+                    {
+                        return;
+                    }
+
+                    let $identifier = document.getElementById(ctx.data.identifier);
+
+                    if($identifier)
+                    {
+                        $identifier.remove();
+                    }
+
+                }).subscribe();
+
+                centrifuge.connect();
+
+                return;
+            }
+
+            setTimeout(YaDxaSscx, 100);
+
+        }, 100);
+
+
+    });
+
+</script>
+        {% endblock %}

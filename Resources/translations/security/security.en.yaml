@@ -1,0 +1,36 @@
+# Роль
+
+ROLE_SUPPORT:
+  header: 'Support'
+  name: 'Technical support service'
+  desc: 'User technical support service'
+
+# Правила
+
+ROLE_SUPPORT_INDEX:
+  name: 'view'
+  desc: ''
+
+ROLE_SUPPORT_NEW:
+  name: 'Add'
+  desc: ''
+
+ROLE_SUPPORT_EDIT:
+  name: 'Edit'
+  desc: ''
+
+ROLE_SUPPORT_DELETE:
+  name: 'Delete'
+  desc: ''
+
+ROLE_SUPPORT_CLOSED:
+  name: 'Close ticket'
+  desc: ''
+
+ROLE_SUPPORT_ADD:
+  name: 'Answer'
+  desc: ''
+
+ROLE_SUPPORT_DETAIL:
+  name: 'Detailed view'
+  desc: ''

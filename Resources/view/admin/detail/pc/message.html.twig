@@ -1,0 +1,58 @@
+{% macro icon(image_path) %}
+    <div style="width: 45px;">
+        <span
+                class="icon rounded-circle bg-cover lazy mb-1"
+                data-bg="{{ image_path }}"
+        > </span>
+    </div>
+{% endmacro %}
+
+{% set image_path = '/assets/img/blank.svg' %}
+
+
+{% if display is not defined %}
+    {% set display = message.out ? false : true %}
+{% endif %}
+
+<li class="d-flex justify-content-between {{ display != message.out ? 'mt-3' : 'mt-1' }} align-items-end gap-3">
+
+
+    {% if display == message.out and message.out == true %}
+        <div style="width: 45px;"></div>
+    {% endif %}
+
+    {% if display != message.out and message.out == true %}
+        {{ _self.icon(image_path) }}
+    {% endif %}
+
+    <div class="card w-100">
+
+        {% if display != message.out %}
+            <div class="card-header d-flex justify-content-between py-1 px-3 align-items-center {{ message.out ? 'bg-primary text-light' }}">
+                <strong>
+                    {{ message.name }}
+                </strong>
+            </div>
+        {% endif %}
+
+        <div class="card-body text-start pb-0">
+            {{ message.message|raw|nl2br }}
+        </div>
+
+        <div class="card-body py-0 text-end">
+            <i class="small text-primary">
+                {{ message.date | format_datetime(pattern="EEEE d MMMM HH:mm") }}
+            </i>
+        </div>
+
+    </div>
+
+    {% if display == message.out and message.out == false %}
+        <div style="width: 45px;"></div>
+    {% endif %}
+
+    {% if display != message.out and message.out == false %}
+        {{ _self.icon(image_path) }}
+    {% endif %}
+
+</li>

@@ -1,0 +1,36 @@
+# Роль
+
+ROLE_SUPPORT:
+  header: 'Техподдержка'
+  name: 'Служба технической поддержки'
+  desc: 'Служба технической поддержки пользователей'
+
+# Правила
+
+ROLE_SUPPORT_INDEX:
+  name: 'Просмотр'
+  desc: ''
+
+ROLE_SUPPORT_NEW:
+  name: 'Добавить'
+  desc: ''
+
+ROLE_SUPPORT_EDIT:
+  name: 'Редактировать'
+  desc: ''
+
+ROLE_SUPPORT_DELETE:
+  name: 'Удалить'
+  desc: ''
+
+ROLE_SUPPORT_CLOSED:
+  name: 'Закрыть тикет'
+  desc: ''
+
+ROLE_SUPPORT_ADD:
+  name: 'Ответить'
+  desc: ''
+
+ROLE_SUPPORT_DETAIL:
+  name: 'Детальный просмотр'
+  desc: ''
