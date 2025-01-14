@@ -1,0 +1,17 @@
+{% extends Template('/user/base.html.twig') %}
+{% block title %}
+    Свяжитесь с нами
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block content %}
+    <h1>Свяжитесь с нами</h1>
+    {{ include(_self|replace({ "template.html.twig" : baks_settings.device~"/content.html.twig" })) }}
+{% endblock %}
+
+{% block javascript %}
+<script nonce='{{ csp_nonce() }}' async data-src='/assets/homepage/script.min.js?v={{ version }}' class='lazy'></script>
+
+{% endblock %}
