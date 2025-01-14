@@ -1,4 +1,6 @@
 add:
+  title: 'Contact us'
+  message: 'Call back at number: '
   feedback: 'Technical support service'
   success: 'Message received successfully.'
   danger: 'Error sending message'
