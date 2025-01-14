@@ -1,0 +1,4 @@
+add:
+  feedback: 'Technical support service'
+  success: 'Message received successfully.'
+  danger: 'Error sending message'
