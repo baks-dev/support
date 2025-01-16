@@ -24,8 +24,8 @@
 namespace BaksDev\Support\Form\User\Tests;
 
 use BaksDev\Captcha\Security\CaptchaVerifyInterface;
-use BaksDev\Support\Form\User\SupportFeedbackDTO;
-use BaksDev\Support\Form\User\SupportFeedbackForm;
+use BaksDev\Support\UseCase\Public\Feedback\SupportFeedbackDTO;
+use BaksDev\Support\UseCase\Public\Feedback\SupportFeedbackForm;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\When;
 use Symfony\Component\Form\PreloadedExtension;
