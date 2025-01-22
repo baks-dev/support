@@ -19,6 +19,20 @@
         {% endif %}
     </td>
 
+    <td class="text-center">
+        {% if item.priority == 'low' %}
+            <div class="badge bg-light text-dark">
+                Низкий
+            </div>
+        {% endif %}
+
+        {% if item.priority == 'height' %}
+            <div class="badge bg-danger">
+                Высокий
+            </div>
+        {% endif %}
+    </td>
+
     <td>
         <div class="ms-0 text-start">
                 <span class="d-inline-block text-truncate text-emphasis align-middle"
@@ -65,21 +79,15 @@
 
     </td>
 
-    <td class="text-center">
-        {% if item.priority == 'low' %}
-            <div class="badge bg-light text-dark">
-                Низкий
-            </div>
-        {% endif %}
-
-        {% if item.priority == 'height' %}
-            <div class="badge bg-danger">
-                Высокий
-            </div>
-        {% endif %}
+    <td class="ms-0 text-center">
+        <div class="d-flex w-100 justify-content-center">
+            <span class="d-inline-block text-truncate text-emphasis align-middle"
+                  style="max-width: 150px;">{{ item.name }}</span>
+        </div>
     </td>
 
-    <td class="w-25">
+
+    <td class="w-100">
         <a
                 class="text-decoration-none offcanvas-link "
                 data-href="{{ path('support:admin.detail', { id: item.event }) }}"
@@ -88,39 +96,19 @@
                 role="button"
                 aria-controls="offcanvas"
         >
-            <span class="d-inline-block text-truncate  align-middle" style="max-width: 150px;">
+
+            <span class="d-inline-block text-truncate align-middle fw-bold" style="max-width: 600px;">
                 {{ item.title|raw }}
             </span>
-        </a>
 
-    </td>
 
-    <td class="ms-0 text-center">
-        <div class="d-flex w-100 justify-content-center">
-            <span class="d-inline-block text-truncate text-emphasis align-middle"
-                  style="max-width: 150px;">{{ item.name }}</span>
-        </div>
-    </td>
-
-    <td class="w-25 text-center">
-
-            <span class="d-inline-block text-truncate  align-middle"
-                  style="max-width: 250px;">
+            <p class="text-dark">
+            <span class="d-inline-block text-truncate  align-middle" style="max-width: 600px;">
                 {{ item.message|striptags }}
             </span>
-
+            </p>
+        </a>
     </td>
 
-    {% if is_granted('ROLE_SUPPORT_ADD') or is_granted('ROLE_ADMIN') %}
-        <td class="text-center">
-            <button data-href="{{ path('support:admin.add', {id: item.event, message: item.message_id}) }}"
-                    class="btn btn-primary text-nowrap modal-link disabled"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modal"
-            >
-                Быстрый ответ
-            </button>
-        </td>
-    {% endif %}
 
 </tr>

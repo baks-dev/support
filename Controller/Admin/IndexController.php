@@ -70,12 +70,14 @@ final class IndexController extends AbstractController
             ->filter($filter)
             ->findPaginator();
 
+
         return $this->render(
             [
                 'query' => $Support,
                 'token' => $tokenUserGenerator->generate($this->getUsr()),
                 'search' => $searchForm->createView(),
                 'filter' => $filterForm->createView(),
+                'current_profile' => $this->getCurrentProfileUid()
             ]
         );
     }

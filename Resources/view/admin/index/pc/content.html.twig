@@ -43,15 +43,13 @@
                     <th>#</th>
 
                     <th class='text-center'>Статуc</th>
-                    <th class='text-nowrap'>Тикет</th>
-
                     <th class='text-center'>&nbsp;</th>
-                    <th class=''>Тема</th>
+                    <th class='text-nowrap'>Тикет</th>
                     <th class='text-center'>Пользователь</th>
-                    <th class='w-25 text-center'>Сообщение</th>
-                    {% if is_granted('ROLE_SUPPORT_ADD') or is_granted('ROLE_ADMIN') %}
+                    <th class='w-100 text-center'>Сообщение</th>
+                    {# {% if is_granted('ROLE_SUPPORT_ADD') or is_granted('ROLE_ADMIN') %}
                         <th class='text-nowrap'>&nbsp</th>
-                    {% endif %}
+                    {% endif %} #}
 
                 </tr>
 
