@@ -37,12 +37,16 @@ use BaksDev\Support\Type\Status\SupportStatus;
 use BaksDev\Support\Type\Status\SupportStatus\Collection\SupportStatusOpen;
 use BaksDev\Users\Profile\TypeProfile\Entity\Trans\TypeProfileTrans;
 use BaksDev\Users\Profile\TypeProfile\Entity\TypeProfile;
+use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
+use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 
 final class AllSupportRepository implements AllSupportInterface
 {
     private SearchDTO|false $search = false;
 
     private SupportTicketStatusFilterDTO|false $filter = false;
+
+    private UserProfileUid|false $profile = false;
 
     public function __construct(
         private readonly DBALQueryBuilder $DBALQueryBuilder,
@@ -58,6 +62,23 @@ final class AllSupportRepository implements AllSupportInterface
     public function filter(SupportTicketStatusFilterDTO $filter): self
     {
         $this->filter = $filter;
+        return $this;
+    }
+
+    public function profile(UserProfile|UserProfileUid|string $profile): self
+    {
+        if($profile instanceof UserProfile)
+        {
+            $profile = $profile->getId();
+        }
+
+        if(is_string($profile))
+        {
+            $profile = new UserProfileUid($profile);
+        }
+
+        $this->profile = $profile;
+
         return $this;
     }
 
@@ -100,15 +121,24 @@ final class AllSupportRepository implements AllSupportInterface
         }
 
 
+
         $dbal
             ->addSelect('invariable.ticket')
             ->addSelect('invariable.title')
-            ->leftJoin(
+            ->{($this->profile ? 'join' : 'leftJoin')} (
                 'support',
                 SupportInvariable::class,
                 'invariable',
-                'invariable.main = support.id'
+                'invariable.main = support.id'.($this->profile ? ' AND invariable.profile = :profile ' : '')
             );
+
+        if($this->profile)
+        {
+            $dbal->setParameter('profile', $this->profile, UserProfileUid::TYPE);
+        }
+
+
+
 
         $dbal
             ->leftJoin(

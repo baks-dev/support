@@ -88,8 +88,8 @@
 
 
     <td class="w-100">
-        <a
-                class="text-decoration-none offcanvas-link "
+        <button
+                class="btn btn-sm text-decoration-none offcanvas-link w-100 text-start border-0"
                 data-href="{{ path('support:admin.detail', { id: item.event }) }}"
                 data-bs-toggle="#offcanvas"
                 data-bs-target="#offcanvas"
@@ -97,17 +97,17 @@
                 aria-controls="offcanvas"
         >
 
-            <span class="d-inline-block text-truncate align-middle fw-bold" style="max-width: 600px;">
+            <span class="d-inline-block text-truncate align-middle fw-bold text-primary" style="max-width: 600px;">
                 {{ item.title|raw }}
             </span>
 
+            <br>
 
-            <p class="text-dark">
-            <span class="d-inline-block text-truncate  align-middle" style="max-width: 600px;">
+            <span class="d-inline-block text-truncate align-middle text-dark" style="max-width: 600px;">
                 {{ item.message|striptags }}
             </span>
-            </p>
-        </a>
+
+        </button>
     </td>
 
 
