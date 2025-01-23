@@ -127,13 +127,15 @@ final class AddController extends AbstractController
 
             /** Скрываем тикет у остальных пользователей */
             $publish
-                ->addData(['profile' => (string) $this->getProfileUid()])
+                ->addData(['profile' => (string) $this->getCurrentProfileUid()])
                 ->addData(['identifier' => (string) $SupportEvent->getMain()])
                 ->send('remove');
 
             return $handle instanceof Support ? $this->redirectToRoute('support:admin.index') : $this->redirectToReferer();
         }
 
-        return $this->render(['form' => $form->createView()]);
+        return $this->render([
+            'form' => $form->createView()
+        ]);
     }
 }

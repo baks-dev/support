@@ -1,6 +1,7 @@
 {% trans_default_domain 'support.admin' %}
 
 {% set user = form.vars.data %}
+
 <div class="modal-dialog modal-dialog-centered" style="max-width: 800px;">
 
     {{ form_start(form) }}
@@ -47,6 +48,4 @@
 
 </div>
 
-<script nonce='{{ csp_nonce() }}' async data-src="/assets/users-table/script.min.js?v={{ version }}" defer class="lazy"
-></script>
 

@@ -39,17 +39,6 @@ executeFunc(function zuxjGRZu()
             return false;
         }
 
-        /** Делаем отправку формы на AJAX */
-        const form = document.forms.support_message_add_form;
-
-        /* Блокируем событие отправки формы */
-        form.addEventListener('submit', function(event)
-        {
-            event.preventDefault();
-            submitTiketForm(this);
-            return false;
-        });
-
         centrifuge = new Centrifuge("wss://" + dsn + "/connection/websocket",
             {
                 token: token,
@@ -57,16 +46,16 @@ executeFunc(function zuxjGRZu()
                 {
                     return getToken('/centrifugo/credentials/user', ctx);
                 },
-                debug: true,
+                debug: false,
             });
 
         centrifuge.newSubscription('ticket').on('publication', function(ctx)
         {
-            console.log(ctx.data);
+            //console.log(ctx.data);
 
             let identifier = document.getElementById('tiket-' + ctx.data.identifier);
 
-            console.log(identifier);
+            //console.log(identifier);
 
             if(identifier)
             {
@@ -90,6 +79,17 @@ executeFunc(function zuxjGRZu()
         }).subscribe();
 
         centrifuge.connect();
+
+        /** Делаем отправку формы на AJAX */
+        const form = document.forms.support_message_add_form;
+
+        /* Блокируем событие отправки формы */
+        form.addEventListener('submit', function(event)
+        {
+            event.preventDefault();
+            submitTiketForm(this);
+            return false;
+        });
 
         /** При скрытии - закрываем соединение */
 

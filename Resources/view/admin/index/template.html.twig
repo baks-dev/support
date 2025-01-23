@@ -62,7 +62,7 @@
                 /** Удаляем из списка тикет у других */
                 centrifuge.newSubscription('remove').on('publication', function(ctx)
                 {
-                    if(ctx.data.profile === '{{ app.user.profile }}')
+                    if(ctx.data.profile === '{{ current_profile }}')
                     {
                         return;
                     }

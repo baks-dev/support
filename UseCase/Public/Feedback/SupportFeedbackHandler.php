@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -21,28 +21,40 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Support\Repository\FindExistTicket\Tests;
+declare(strict_types=1);
 
-use BaksDev\Support\Repository\FindExistTicket\FindExistTicketInterface;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+namespace BaksDev\Support\UseCase\Public\Feedback;
 
-/**
- * group support
- */
-class FindExistTicketTest extends KernelTestCase
+use BaksDev\Core\Entity\AbstractHandler;
+use BaksDev\Support\Entity\Event\SupportEvent;
+use BaksDev\Support\Entity\Support;
+use BaksDev\Support\Messenger\SupportMessage;
+use BaksDev\Support\UseCase\Admin\New\SupportDTO;
+
+final class SupportFeedbackHandler extends AbstractHandler
 {
-    public function testUseCase(): void
+
+    public function handle(SupportDTO $command): bool|string|Support
     {
+        $this->setCommand($command);
 
-        /** @var FindExistTicketInterface $AFindTicketByIdInterface */
-        $AFindTicketByIdInterface = self::getContainer()->get(FindExistTicketInterface::class);
-        $AFindTicketByIdInterface->forTicket('00481e1e-cb75-4af7-b9ea-0d77dbad9914');
+        $this->preEventPersistOrUpdate(Support::class, SupportEvent::class);
 
+        /** Валидация всех объектов */
+        if($this->validatorCollection->isInvalid())
+        {
+            return $this->validatorCollection->getErrorUniqid();
+        }
 
-        $response = $AFindTicketByIdInterface->exist();
-        //        dd($response);
+        $this->flush();
 
+        /** Отправляем сообщение в шину */
+        $this->messageDispatch->dispatch(
+            message: new SupportMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
+            transport: 'support'
+        );
 
-        self::assertTrue(true);
+        return $this->main;
+
     }
 }

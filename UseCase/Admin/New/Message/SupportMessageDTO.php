@@ -50,11 +50,17 @@ final class SupportMessageDTO implements SupportMessageInterface
 
     /** Дата сообщения */
     #[Assert\NotBlank]
-    private ?DateTimeImmutable $date;
+    private DateTimeImmutable $date;
 
     /** Является ли сообщение исходящим */
     #[Assert\IsTrue]
     private bool $out;
+
+
+    public function __construct()
+    {
+        $this->date = new DateTimeImmutable();
+    }
 
     public function getId(): ?SupportMessageUid
     {
@@ -98,10 +104,11 @@ final class SupportMessageDTO implements SupportMessageInterface
 
     public function getDate(): DateTimeImmutable
     {
+
         return $this->date;
     }
 
-    public function setDate(?DateTimeImmutable $date): self
+    public function setDate(DateTimeImmutable $date): self
     {
         $this->date = $date;
         return $this;
