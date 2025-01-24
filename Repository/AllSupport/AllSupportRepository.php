@@ -186,12 +186,15 @@ final class AllSupportRepository implements AllSupportInterface
         if($this->filter && $this->filter->getStatus() instanceof SupportStatusOpen)
         {
             $dbal
-                ->addOrderBy('event.priority');
+                ->addOrderBy('event.priority')
+                ->addOrderBy('event.id', 'ASC');
         }
-
-        $dbal
-            //->addOrderBy('message.date')
-            ->addOrderBy('event.id', 'ASC');
+        else
+        {
+            $dbal
+                //->addOrderBy('message.date')
+                ->addOrderBy('event.id', 'DESC');
+        }
 
         return $this->paginator->fetchAllAssociative($dbal);
     }

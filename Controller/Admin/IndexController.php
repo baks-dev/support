@@ -64,7 +64,8 @@ final class IndexController extends AbstractController
             ->createForm(SearchForm::class, $search)
             ->handleRequest($request);
 
-        $this->isAdmin() ?: $allSupport->profile($this->getProfileUid());
+        // todo: добавить в суппорт UserUid для фильтрации
+        // $this->isAdmin() ?: $allSupport->profile($this->getProfileUid());
 
         // Получаем список
         $Support = $allSupport
