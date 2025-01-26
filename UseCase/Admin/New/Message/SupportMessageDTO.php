@@ -80,7 +80,7 @@ final class SupportMessageDTO implements SupportMessageInterface
 
     public function setName(?string $name): self
     {
-        $this->name = $name;
+        $this->name = $name ?: 'Покупатель';
         return $this;
     }
 
