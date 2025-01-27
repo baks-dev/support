@@ -56,6 +56,8 @@ final class SupportMessageDTO implements SupportMessageInterface
     #[Assert\IsTrue]
     private bool $out;
 
+    /** Ответы */
+    private string $answers;
 
     public function __construct()
     {
@@ -142,6 +144,17 @@ final class SupportMessageDTO implements SupportMessageInterface
     public function setInMessage(): self
     {
         $this->out = false;
+        return $this;
+    }
+
+    public function getAnswers(): string
+    {
+        return $this->answers;
+    }
+
+    public function setAnswers(string $answers): self
+    {
+        $this->answers = $answers;
         return $this;
     }
 }

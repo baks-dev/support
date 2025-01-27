@@ -29,6 +29,7 @@ use BaksDev\Centrifugo\Server\Publish\CentrifugoPublishInterface;
 use BaksDev\Centrifugo\Services\Token\TokenUserGenerator;
 use BaksDev\Core\Controller\AbstractController;
 use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
+use BaksDev\Support\Answer\Repository\UserProfileTypeAnswers\UserProfileTypeAnswersRepository;
 use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Repository\AllMessagesByEvent\AllMessagesByEventInterface;
 use BaksDev\Support\UseCase\Admin\Add\SupportMessageAddDTO;
@@ -49,10 +50,11 @@ final class DetailController extends AbstractController
     #[Route('/admin/support/detail/{id}', name: 'admin.detail', methods: ['GET', 'POST'])]
     public function edit(
         #[MapEntity] SupportEvent $SupportEvent,
-        CurrentUserProfileInterface $currentUserProfileDTO,
+        CurrentUserProfileInterface $currentUserProfile,
         AllMessagesByEventInterface $messagesByTicket,
         CentrifugoPublishInterface $publish,
         TokenUserGenerator $tokenUserGenerator,
+        UserProfileTypeAnswersRepository $userProfileTypeAnswersRepository,
     ): Response
     {
         if(is_null($SupportEvent->getTitle()))
@@ -66,7 +68,7 @@ final class DetailController extends AbstractController
             ->addData(['identifier' => (string) $SupportEvent->getMain()])
             ->send('remove');
 
-        $user = $currentUserProfileDTO->fetchProfileAssociative($this->getCurrentUsr());
+        $user = $currentUserProfile->fetchProfileAssociative($this->getCurrentUsr());
 
         $SupportDTO = new SupportDTO();
         $SupportEvent->getDto($SupportDTO);
@@ -89,12 +91,21 @@ final class DetailController extends AbstractController
         /** Сохраняем в ДТО входящего сообщения ДТО исходящего */
         $ReplySupportMessageDto->setReply($SupportMessageDTO);
 
+
+        /**
+         * Ответы по типу профиля пользователя
+         */
+        $userProfileType = $SupportEvent->getInvariable()?->getType();
+        $supportAnswers = $userProfileTypeAnswersRepository->findUserProfileTypeAnswers($userProfileType);
+
+
         // Форма
         $form = $this->createForm(SupportMessageAddForm::class, $ReplySupportMessageDto, [
             'action' => $this->generateUrl('support:admin.add', [
                 'id' => $SupportEvent->getId(),
                 'message' => current($messages)['message_id'] ?? null
             ]),
+            'supportAnswers' => $supportAnswers,
         ]);
 
         return $this->render([

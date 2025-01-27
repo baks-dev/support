@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -42,6 +42,7 @@ final class SupportMessageAddForm extends AbstractType
             [
                 'label' => false,
                 'disabled' => $options['data']->getName() === 'system',
+                'supportAnswers' => $options['supportAnswers']
             ],
         );
 
@@ -65,6 +66,7 @@ final class SupportMessageAddForm extends AbstractType
             'data_class' => SupportMessageAddDTO::class,
             'method' => 'POST',
             'attr' => ['class' => 'w-100'],
+            'supportAnswers' => []
         ]);
     }
 }

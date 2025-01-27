@@ -26,6 +26,73 @@ btn?.addEventListener("click",
     document.querySelector(".box-hidden")?.scrollIntoView({block: "end"})
 );
 
+/** Ответы */
+var insert_answer = document.querySelector('#support_message_add_form_insert_asnwer');
+var reply_message = document.querySelector('#support_message_add_form_reply_message');
+var answers = document.querySelector("#support_message_add_form_reply_answers");
+/**
+ * Выбор из списка ответов
+ */
+answers?.addEventListener("change", function()
+    {
+        /**
+         * Отобразить скрыть кнопку
+         */
+        if(this.value)
+        {
+            insert_answer.style.display = "inline-block"
+        } else
+        {
+            insert_answer.style.display = "none"
+        }
+    }
+);
+
+/**
+ * Добавление варианта ответа в сообщение
+ */
+insert_answer?.addEventListener("click", function(e)
+    {
+        e.preventDefault()
+        const data_content = answers.options[answers.options.selectedIndex].getAttribute("data-content");
+        if(reply_message.value)
+        {
+            reply_message.value += "\n"
+        }
+
+        reply_message.value += data_content
+        console.log(reply_message.rows)
+
+        resizeTextAreaHeight(reply_message)
+    }
+)
+
+/**
+ * Измененяет высоту textarea
+ * @param textarea
+ */
+function resizeTextAreaHeight(textarea)
+{
+    const {style, value} = textarea;
+
+    /**
+     * '4' соответствует двум границам по 2 пикселя (верхней и нижней)
+     */
+    const offset = 4;
+
+    style.height = style.minHeight = 'auto';
+    style.minHeight = `${Math.min(textarea.scrollHeight + 4, parseInt(textarea.style.maxHeight))}px`;
+    style.height = `${textarea.scrollHeight + offset}px`;
+}
+
+/**
+ * При редактировании сообщения вручную измненяем высоту textarea
+ */
+reply_message?.addEventListener('input', () =>
+{
+    resizeTextAreaHeight(reply_message);
+});
+
 /** Сокеты */
 executeFunc(function zuxjGRZu()
 {

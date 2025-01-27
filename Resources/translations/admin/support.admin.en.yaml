@@ -30,6 +30,8 @@ danger:
   restore: '%s: Ошибка при восстановлении сообщения'
   closed: '%s: Ошибка при закрытии тикета'
 
+answer:
+  insert_button: 'Insert answer'
 
 form:
   delete:
