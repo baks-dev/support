@@ -62,7 +62,6 @@ class SupportInvariable extends EntityReadonly
     #[ORM\Column(type: TypeProfileUid::TYPE)]
     private TypeProfileUid $type;
 
-
     /**  Профиль */
     #[Assert\Uuid]
     #[ORM\Column(type: UserProfileUid::TYPE, nullable: true)]
@@ -131,6 +130,11 @@ class SupportInvariable extends EntityReadonly
         }
 
         throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
+    }
+
+    public function getType(): TypeProfileUid
+    {
+        return $this->type;
     }
 
 }

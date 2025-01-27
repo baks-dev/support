@@ -29,6 +29,7 @@ use BaksDev\Centrifugo\Server\Publish\CentrifugoPublishInterface;
 use BaksDev\Centrifugo\Services\Token\TokenUserGenerator;
 use BaksDev\Core\Controller\AbstractController;
 use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
+use BaksDev\Support\Answer\Repository\UserProfileTypeAnswers\UserProfileTypeAnswersRepository;
 use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Repository\AllMessagesByEvent\AllMessagesByEventInterface;
 use BaksDev\Support\UseCase\Admin\Add\SupportMessageAddDTO;
@@ -53,6 +54,7 @@ final class DetailController extends AbstractController
         AllMessagesByEventInterface $messagesByTicket,
         CentrifugoPublishInterface $publish,
         TokenUserGenerator $tokenUserGenerator,
+        UserProfileTypeAnswersRepository $userProfileTypeAnswersRepository,
     ): Response
     {
         if(is_null($SupportEvent->getTitle()))
@@ -71,6 +73,12 @@ final class DetailController extends AbstractController
         $SupportDTO = new SupportDTO();
         $SupportEvent->getDto($SupportDTO);
 
+        /**
+         * Ответы по типу профиля пользователя
+         */
+        $userProfileType = $SupportEvent->getInvariable()->getType();
+        $supportAnswers = $userProfileTypeAnswersRepository->findUserProfileTypeAnswers($userProfileType);
+        
         $messages = $messagesByTicket
             ->forSupportEvent($SupportEvent->getId())
             ->findAll();
@@ -95,6 +103,7 @@ final class DetailController extends AbstractController
                 'id' => $SupportEvent->getId(),
                 'message' => current($messages)['message_id'] ?? null
             ]),
+            'supportAnswers' => $supportAnswers,
         ]);
 
         return $this->render([

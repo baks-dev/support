@@ -42,6 +42,7 @@ final class SupportMessageAddForm extends AbstractType
             [
                 'label' => false,
                 'disabled' => $options['data']->getName() === 'system',
+                'supportAnswers' => $options['supportAnswers']
             ],
         );
 
@@ -65,6 +66,7 @@ final class SupportMessageAddForm extends AbstractType
             'data_class' => SupportMessageAddDTO::class,
             'method' => 'POST',
             'attr' => ['class' => 'w-100'],
+            'supportAnswers' => []
         ]);
     }
 }

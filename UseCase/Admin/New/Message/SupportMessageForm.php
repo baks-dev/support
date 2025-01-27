@@ -25,16 +25,21 @@ declare(strict_types=1);
 
 namespace BaksDev\Support\UseCase\Admin\New\Message;
 
+use BaksDev\Support\Answer\Entity\SupportAnswer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class SupportMessageForm extends AbstractType
 {
+    public function __construct(private TranslatorInterface $translator) {}
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event): void {
@@ -50,6 +55,32 @@ final class SupportMessageForm extends AbstractType
 
         });
 
+        /**
+         * Варианты ответов
+         */
+        $builder->add('answers', ChoiceType::class, [
+            'choices' => $options['supportAnswers'], // Ответы для типа профиля
+            'choice_value' => 'id',
+            'choice_label' => 'title',
+            'choice_attr' => function($choice) {
+                /** @var SupportAnswer $choice */
+                return ['data-content' => $choice->getContent()];
+            },
+            'required' => false,
+            'expanded' => false,
+            'multiple' => false,
+            'label' => false,
+            'disabled' => !count($options['supportAnswers']),
+            'attr' => [
+                'title' => count($options['supportAnswers']) ?
+                    $this->translator->trans('admin.answers.title.has_answers', domain: 'admin.support.answer') :
+                    $this->translator->trans('admin.answers.title.no_answers', domain: 'admin.support.answer')
+            ]
+
+
+        ]);
+        $builder->get('answers')->resetViewTransformers();
+
         $builder->add('message', TextareaType::class, ['label' => false, 'required' => true]);
 
     }
@@ -60,6 +91,7 @@ final class SupportMessageForm extends AbstractType
             'data_class' => SupportMessageDTO::class,
             'method' => 'POST',
             'attr' => ['class' => 'w-100'],
+            'supportAnswers' => []
         ]);
     }
 }

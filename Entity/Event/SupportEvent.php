@@ -79,6 +79,11 @@ class SupportEvent extends EntityEvent
     #[ORM\OneToOne(targetEntity: SupportInvariable::class, mappedBy: 'event', cascade: ['all'])]
     private ?SupportInvariable $invariable = null;
 
+    public function getInvariable(): ?SupportInvariable
+    {
+        return $this->invariable;
+    }
+
 
     /** Сообщения (сортируем по дате) */
     #[Assert\Valid]
