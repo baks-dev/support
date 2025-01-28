@@ -59,7 +59,10 @@ final class FeedbackController extends AbstractController
         /** Форма обратной связи */
         $feedback = new SupportFeedbackDTO();
         $feedbackForm = $this
-            ->createForm(SupportFeedbackForm::class, $feedback)
+            ->createForm(
+                SupportFeedbackForm::class, $feedback,
+                ['action' => $this->generateUrl('support:public.feedback')]
+            )
             ->handleRequest($request);
 
         if($feedbackForm->isSubmitted() && $feedbackForm->isValid())
