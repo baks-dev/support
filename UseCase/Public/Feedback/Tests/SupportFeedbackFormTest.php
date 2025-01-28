@@ -21,7 +21,7 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Support\Form\User\Tests;
+namespace BaksDev\Support\UseCase\Public\Feedback\Tests;
 
 use BaksDev\Captcha\Security\CaptchaVerifyInterface;
 use BaksDev\Support\UseCase\Public\Feedback\SupportFeedbackDTO;
