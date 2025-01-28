@@ -1,4 +1,5 @@
 {% trans_default_domain('support.admin') %}
+
 <div class="offcanvas-header d-flex justify-content-between align-items-center">
     {% if messages %}
         {% set ticket = messages[0].ticket %}
@@ -10,7 +11,8 @@
 
     <h2 class="h5 m-0">{{ title|raw }}</h2>
 
-    <button type="button" class="btn-close icon rounded-circle align-self-center" style="width: 35px; height: 35px;"
+    <button type="button" class="btn-close icon rounded-circle align-self-center"
+            style="min-width: 35px; min-height: 35px;  width: 35px; height: 35px;"
             data-bs-dismiss="offcanvas"
             title="Close">
     </button>
@@ -67,20 +69,25 @@
             {{ form_row(form.reply.message, { attr: { class: 'form-control bg-body-tertiary', rows: '4', placeholder: 'Написать сообщение...' } }) }}
         </div>
 
-        <div class="my-2">
-            {{ form_row(form.reply.answers, { placeholder : 'Выбрать ответ...', attr: { class: 'form-control profile-type-answers'} } ) }}
+        <div class="d-flex gap-2">
 
-            <a href="#" id="support_message_add_form_insert_asnwer" class="btn-primary btn" style="display:none;">{{ 'answer.insert_button'|trans }}</a>
+            {{ form_widget(form.reply.answers, { placeholder : 'Выбрать ответ...', attr: { class: 'form-control profile-type-answers'} } ) }}
 
-        </div>
+            <a href="#" id="support_message_add_form_insert_asnwer" class="btn btn-outline-primary text-nowrap"
+               style="display:none;">
+                {{ 'answer.insert_button'|trans }}
+            </a>
 
-        <div class="btn-rounded float-end">
-            {# Отправить сообщение #}
-            {{ form_widget(form.support_message_add, { label: '
-                <span>'~ 'btn.new'|trans({}, 'core.btn') ~'</span>
+
+            <div class=" float-end">
+                {# Отправить сообщение #}
+                {{ form_widget(form.support_message_add, { label: '
+                <span>Ответить</span>
                 <span class="spinner-border spinner-border-sm vertical-middle d-none"></span>
             '}) }}
+            </div>
         </div>
+
 
         {{ form_end(form) }}
     </div>

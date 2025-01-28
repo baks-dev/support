@@ -50,7 +50,7 @@ final class DetailController extends AbstractController
     #[Route('/admin/support/detail/{id}', name: 'admin.detail', methods: ['GET', 'POST'])]
     public function edit(
         #[MapEntity] SupportEvent $SupportEvent,
-        CurrentUserProfileInterface $currentUserProfileDTO,
+        CurrentUserProfileInterface $currentUserProfile,
         AllMessagesByEventInterface $messagesByTicket,
         CentrifugoPublishInterface $publish,
         TokenUserGenerator $tokenUserGenerator,
@@ -68,17 +68,11 @@ final class DetailController extends AbstractController
             ->addData(['identifier' => (string) $SupportEvent->getMain()])
             ->send('remove');
 
-        $user = $currentUserProfileDTO->fetchProfileAssociative($this->getCurrentUsr());
+        $user = $currentUserProfile->fetchProfileAssociative($this->getCurrentUsr());
 
         $SupportDTO = new SupportDTO();
         $SupportEvent->getDto($SupportDTO);
 
-        /**
-         * Ответы по типу профиля пользователя
-         */
-        $userProfileType = $SupportEvent->getInvariable()->getType();
-        $supportAnswers = $userProfileTypeAnswersRepository->findUserProfileTypeAnswers($userProfileType);
-        
         $messages = $messagesByTicket
             ->forSupportEvent($SupportEvent->getId())
             ->findAll();
@@ -96,6 +90,14 @@ final class DetailController extends AbstractController
 
         /** Сохраняем в ДТО входящего сообщения ДТО исходящего */
         $ReplySupportMessageDto->setReply($SupportMessageDTO);
+
+
+        /**
+         * Ответы по типу профиля пользователя
+         */
+        $userProfileType = $SupportEvent->getInvariable()?->getType();
+        $supportAnswers = $userProfileTypeAnswersRepository->findUserProfileTypeAnswers($userProfileType);
+
 
         // Форма
         $form = $this->createForm(SupportMessageAddForm::class, $ReplySupportMessageDto, [

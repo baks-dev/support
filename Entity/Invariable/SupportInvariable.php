@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -62,6 +62,7 @@ class SupportInvariable extends EntityReadonly
     #[ORM\Column(type: TypeProfileUid::TYPE)]
     private TypeProfileUid $type;
 
+
     /**  Профиль */
     #[Assert\Uuid]
     #[ORM\Column(type: UserProfileUid::TYPE, nullable: true)]
@@ -102,11 +103,17 @@ class SupportInvariable extends EntityReadonly
             '.'
         );
 
+        return $this;
     }
 
     public function getTitle(): ?string
     {
         return $this->title;
+    }
+
+    public function getType(): TypeProfileUid
+    {
+        return $this->type;
     }
 
     public function getDto($dto): mixed
@@ -130,11 +137,6 @@ class SupportInvariable extends EntityReadonly
         }
 
         throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
-    }
-
-    public function getType(): TypeProfileUid
-    {
-        return $this->type;
     }
 
 }

@@ -56,7 +56,7 @@ final class SupportMessageDTO implements SupportMessageInterface
     #[Assert\IsTrue]
     private bool $out;
 
-    /* Ответы */
+    /** Ответы */
     private string $answers;
 
     public function __construct()
@@ -82,7 +82,7 @@ final class SupportMessageDTO implements SupportMessageInterface
 
     public function setName(?string $name): self
     {
-        $this->name = $name;
+        $this->name = $name ?: 'Покупатель';
         return $this;
     }
 
@@ -157,5 +157,4 @@ final class SupportMessageDTO implements SupportMessageInterface
         $this->answers = $answers;
         return $this;
     }
-
 }

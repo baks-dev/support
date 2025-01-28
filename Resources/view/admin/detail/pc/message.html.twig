@@ -21,13 +21,13 @@
         <div style="width: 45px;"></div>
     {% endif %}
 
-    {% if display != message.out and message.out == true %}
+    {% if (display != message.out and message.out == true) or display is null %}
         {{ _self.icon(image_path) }}
     {% endif %}
 
     <div class="card w-100">
 
-        {% if display != message.out %}
+        {% if display != message.out or display is null %}
             <div class="card-header d-flex justify-content-between py-1 px-3 align-items-center {{ message.out ? 'bg-primary text-light' }}">
                 <strong>
                     {{ message.name }}

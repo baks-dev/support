@@ -21,23 +21,15 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Support\Repository\AllSupport;
+namespace BaksDev\Support\Repository\ExistTicket;
 
-use BaksDev\Core\Form\Search\SearchDTO;
-use BaksDev\Core\Services\Paginator\PaginatorInterface;
-use BaksDev\Support\Form\Admin\Index\SupportTicketStatusFilterDTO;
-use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
-use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
-
-
-interface AllSupportInterface
+interface ExistSupportTicketInterface
 {
-    public function search(SearchDTO $search): self;
+    public function ticket(string|int $ticket): self;
 
-    public function filter(SupportTicketStatusFilterDTO $filter): self;
-
-    public function profile(UserProfile|UserProfileUid|string $profile): self;
-
-    /** Метод возвращает пагинатор Support */
-    public function findPaginator(): PaginatorInterface;
+    /**
+     * Метод проверяет, имеется ли соответствующий тикет
+     * @note call method external(string|int $ticket)
+     */
+    public function exist(): bool;
 }

@@ -71,8 +71,9 @@ insert_answer?.addEventListener("click", function(e)
  * Измененяет высоту textarea
  * @param textarea
  */
-function resizeTextAreaHeight(textarea) {
-    const { style, value } = textarea;
+function resizeTextAreaHeight(textarea)
+{
+    const {style, value} = textarea;
 
     /**
      * '4' соответствует двум границам по 2 пикселя (верхней и нижней)
@@ -80,14 +81,15 @@ function resizeTextAreaHeight(textarea) {
     const offset = 4;
 
     style.height = style.minHeight = 'auto';
-    style.minHeight = `${ Math.min(textarea.scrollHeight + 4, parseInt(textarea.style.maxHeight)) }px`;
-    style.height = `${ textarea.scrollHeight + offset }px`;
+    style.minHeight = `${Math.min(textarea.scrollHeight + 4, parseInt(textarea.style.maxHeight))}px`;
+    style.height = `${textarea.scrollHeight + offset}px`;
 }
 
 /**
  * При редактировании сообщения вручную измненяем высоту textarea
  */
-reply_message?.addEventListener('input', () => {
+reply_message?.addEventListener('input', () =>
+{
     resizeTextAreaHeight(reply_message);
 });
 
