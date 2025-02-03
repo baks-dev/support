@@ -52,16 +52,23 @@ final class IndexController extends AbstractController
     ): Response
     {
         $filter = new SupportTicketStatusFilterDTO();
-        $filterForm = $this->createForm(SupportTicketStatusFilterForm::class, $filter, [
-            'action' => $this->generateUrl('support:admin.index'),
-        ]);
-
-        $filterForm->handleRequest($request);
+        $filterForm = $this
+            ->createForm(
+                type: SupportTicketStatusFilterForm::class,
+                data: $filter,
+                options: ['action' => $this->generateUrl('support:admin.index'),]
+            )
+            ->handleRequest($request);
 
         // Поиск
         $search = new SearchDTO();
+
         $searchForm = $this
-            ->createForm(SearchForm::class, $search)
+            ->createForm(
+                type: SearchForm::class,
+                data: $search,
+                options: ['action' => $this->generateUrl('support:admin.index'),]
+            )
             ->handleRequest($request);
 
         // todo: добавить в суппорт UserUid для фильтрации

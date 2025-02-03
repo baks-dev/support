@@ -121,7 +121,6 @@ final class AllSupportRepository implements AllSupportInterface
         }
 
 
-
         $dbal
             ->addSelect('invariable.ticket')
             ->addSelect('invariable.title')
@@ -136,8 +135,6 @@ final class AllSupportRepository implements AllSupportInterface
         {
             $dbal->setParameter('profile', $this->profile, UserProfileUid::TYPE);
         }
-
-
 
 
         $dbal
