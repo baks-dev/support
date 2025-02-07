@@ -71,7 +71,13 @@
 
         <div class="d-flex gap-2">
 
-            {{ form_widget(form.reply.answers, { placeholder : 'Выбрать ответ...', attr: { class: 'form-control profile-type-answers'} } ) }}
+            {{ form_widget(form.reply.answers, {
+                placeholder : 'Выбрать ответ...',
+                attr: {
+                    class: 'form-control profile-type-answers select-revers',
+                    'data-select' : 'select2'
+                }
+            } ) }}
 
             <a href="#" id="support_message_add_form_insert_asnwer" class="btn btn-outline-primary text-nowrap"
                style="display:none;">

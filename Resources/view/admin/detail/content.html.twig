@@ -2,6 +2,8 @@
 
 <script nonce='{{ csp_nonce() }}' async data-src="/assets/support/support.js?v={{ version }}" class="lazy"></script>
 <script nonce='{{ csp_nonce() }}' async data-src="/assets/js/copy.min.js?v={{ version }}" class="lazy"></script>
+<script nonce='{{ csp_nonce() }}' async data-src='/assets/plugins/nice-select2/nice-select2.min.js?v={{ version }}'
+        class='lazy'></script>
 
 <script nonce="{{ csp_nonce() }}" class="lazy">
     window.centrifugo_dsn = "{{ centrifugo_dsn }}";
