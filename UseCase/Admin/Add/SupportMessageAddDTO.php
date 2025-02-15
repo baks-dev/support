@@ -77,6 +77,12 @@ final class SupportMessageAddDTO implements SupportMessageInterface
 
     public function setMessage(?string $message): self
     {
+        /** Форматируем сообщение */
+        $array = explode(PHP_EOL, $message);
+        $array = array_map('trim', $array);
+        $array = array_filter($array, 'strlen');
+        $message = implode(PHP_EOL.PHP_EOL, $array);
+
         $this->message = $message;
         return $this;
     }
