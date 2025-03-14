@@ -29,13 +29,14 @@ use BaksDev\Support\UseCase\Admin\New\Message\SupportMessageForm;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class SupportMessageAddForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
         $builder->add(
             'reply',
             SupportMessageForm::class,
@@ -46,17 +47,28 @@ final class SupportMessageAddForm extends AbstractType
             ],
         );
 
-        /* Сохранить ******************************************************/
-        $builder->add(
-            'support_message_add',
-            SubmitType::class,
-            [
-                'label' => 'Отправить',
-                'label_html' => true,
-                'attr' => ['class' => 'btn-primary'],
-                'disabled' => $options['data']->getName() === 'system',
-            ]
-        );
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event): void {
+
+            /** @var SupportMessageAddDTO $SupportMessageAddDTO */
+            $SupportMessageAddDTO = $event->getData();
+            $builder = $event->getForm();
+
+            if($SupportMessageAddDTO->isSubmit())
+            {
+                /* Сохранить ******************************************************/
+                $builder->add(
+                    'support_message_add',
+                    SubmitType::class,
+                    [
+                        'label' => 'Отправить',
+                        'label_html' => true,
+                        'attr' => ['class' => 'btn-primary'],
+                        // 'disabled' => $options['data']->getName() === 'system',
+                    ]
+                );
+            }
+
+        });
 
     }
 

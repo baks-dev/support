@@ -28,6 +28,7 @@ namespace BaksDev\Support\UseCase\Admin\New\Invariable;
 use BaksDev\Support\Entity\Invariable\SupportInvariableInterface;
 use BaksDev\Users\Profile\TypeProfile\Type\Id\TypeProfileUid;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
+use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /** @see SupportInvariable */
@@ -50,6 +51,9 @@ final class SupportInvariableDTO implements SupportInvariableInterface
     #[Assert\NotBlank]
     private string $title;
 
+    /** Флаг запрета на ответ */
+    #[Assert\NotBlank]
+    private bool $reply = true;
 
     public function getType(): TypeProfileUid
     {
@@ -96,4 +100,18 @@ final class SupportInvariableDTO implements SupportInvariableInterface
         return $this;
     }
 
+
+    /**
+     * Reply
+     */
+    public function isReply(): bool
+    {
+        return $this->reply;
+    }
+
+    public function notReply(): self
+    {
+        $this->reply = false;
+        return $this;
+    }
 }

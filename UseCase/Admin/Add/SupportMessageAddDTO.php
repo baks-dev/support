@@ -58,6 +58,9 @@ final class SupportMessageAddDTO implements SupportMessageInterface
     /** Является ли сообщение исходящим */
     private bool $out;
 
+    /** Флаг запрета на ответ */
+    private bool $submit = true;
+
 
     public function getName(): ?string
     {
@@ -145,6 +148,21 @@ final class SupportMessageAddDTO implements SupportMessageInterface
     public function setInMessage(): self
     {
         $this->out = false;
+        return $this;
+    }
+
+    /**
+     * Submit
+     */
+    public function isSubmit(): bool
+    {
+        return $this->submit;
+    }
+
+    public function notSubmit(): self
+    {
+        $this->submit = false;
+
         return $this;
     }
 

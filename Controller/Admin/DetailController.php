@@ -38,7 +38,6 @@ use BaksDev\Support\UseCase\Admin\New\Message\SupportMessageDTO;
 use BaksDev\Support\UseCase\Admin\New\SupportDTO;
 use BaksDev\Users\Profile\UserProfile\Repository\CurrentUserProfile\CurrentUserProfileInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -78,19 +77,16 @@ final class DetailController extends AbstractController
             ->findAll();
 
         /** Входящее сообщение */
-        $ReplySupportMessageDto = new SupportMessageAddDTO();
+        $ReplySupportMessageDto = new SupportMessageAddDTO()
+            ->setTitle($SupportEvent->getTitle());
 
         /** Исходящее сообщение */
-        $SupportMessageDTO = new SupportMessageDTO();
-
-        $SupportMessageDTO->setName($user['profile_username'] ?? null);
-
-        /** Тема тикета */
-        $ReplySupportMessageDto->setTitle($SupportEvent->getTitle());
+        $SupportMessageDTO = new SupportMessageDTO()
+            ->setName($user['profile_username'] ?? null);
 
         /** Сохраняем в ДТО входящего сообщения ДТО исходящего */
         $ReplySupportMessageDto->setReply($SupportMessageDTO);
-
+        $SupportDTO->getInvariable()?->isReply() ?: $ReplySupportMessageDto->notSubmit();
 
         /**
          * Ответы по типу профиля пользователя
@@ -100,13 +96,17 @@ final class DetailController extends AbstractController
 
 
         // Форма
-        $form = $this->createForm(SupportMessageAddForm::class, $ReplySupportMessageDto, [
-            'action' => $this->generateUrl('support:admin.add', [
-                'id' => $SupportEvent->getId(),
-                'message' => current($messages)['message_id'] ?? null
-            ]),
-            'supportAnswers' => $supportAnswers,
-        ]);
+        $form = $this->createForm(
+            type: SupportMessageAddForm::class,
+            data: $ReplySupportMessageDto,
+            options: [
+                'action' => $this->generateUrl('support:admin.add', [
+                    'id' => $SupportEvent->getId(),
+                    'message' => current($messages)['message_id'] ?? null
+                ]),
+                'supportAnswers' => $supportAnswers,
+            ]
+        );
 
         return $this->render([
             'identifier' => $SupportEvent->getMain(),

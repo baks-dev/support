@@ -55,13 +55,11 @@ class SupportInvariable extends EntityReadonly
     #[ORM\JoinColumn(name: 'event', referencedColumnName: 'id')]
     private SupportEvent $event;
 
-
     /** Тип профиля */
     #[Assert\Uuid]
     #[Assert\NotBlank]
     #[ORM\Column(type: TypeProfileUid::TYPE)]
     private TypeProfileUid $type;
-
 
     /**  Профиль */
     #[Assert\Uuid]
@@ -77,6 +75,11 @@ class SupportInvariable extends EntityReadonly
     #[Assert\NotBlank]
     #[ORM\Column(type: Types::STRING)]
     private ?string $title = null;
+
+    /** Флаг запрета на ответ */
+    #[Assert\NotBlank]
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $reply = true;
 
     public function __construct(SupportEvent $event)
     {
