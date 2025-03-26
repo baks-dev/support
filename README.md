@@ -9,7 +9,8 @@
 ## Установка
 
 ``` bash
-$ composer require baks-dev/support
+composer require baks-dev/support \
+baks-dev/support-answer
 ```
 
 Тесты
