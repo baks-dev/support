@@ -38,6 +38,7 @@ use BaksDev\Support\Type\Status\SupportStatus\Collection\SupportStatusOpen;
 use BaksDev\Users\Profile\TypeProfile\Entity\Trans\TypeProfileTrans;
 use BaksDev\Users\Profile\TypeProfile\Entity\TypeProfile;
 use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
+use BaksDev\Users\Profile\UserProfile\Repository\UserProfileTokenStorage\UserProfileTokenStorageInterface;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 
 final class AllSupportRepository implements AllSupportInterface
@@ -51,6 +52,7 @@ final class AllSupportRepository implements AllSupportInterface
     public function __construct(
         private readonly DBALQueryBuilder $DBALQueryBuilder,
         private readonly PaginatorInterface $paginator,
+        private readonly UserProfileTokenStorageInterface $UserProfileTokenStorage
     ) {}
 
     public function search(SearchDTO $search): self
@@ -120,21 +122,20 @@ final class AllSupportRepository implements AllSupportInterface
                 );
         }
 
-
         $dbal
             ->addSelect('invariable.ticket')
             ->addSelect('invariable.title')
-            ->{($this->profile ? 'join' : 'leftJoin')} (
+            ->join(
                 'support',
                 SupportInvariable::class,
                 'invariable',
-                'invariable.main = support.id'.($this->profile ? ' AND invariable.profile = :profile ' : '')
+                'invariable.main = support.id  AND (invariable.profile = :profile OR invariable.profile IS NULL) '
+            )
+            ->setParameter(
+                'profile',
+                $this->UserProfileTokenStorage->getProfile(),
+                UserProfileUid::TYPE
             );
-
-        if($this->profile)
-        {
-            $dbal->setParameter('profile', $this->profile, UserProfileUid::TYPE);
-        }
 
 
         $dbal

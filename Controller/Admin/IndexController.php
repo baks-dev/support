@@ -51,14 +51,6 @@ final class IndexController extends AbstractController
         int $page = 0,
     ): Response
     {
-        $filter = new SupportTicketStatusFilterDTO();
-        $filterForm = $this
-            ->createForm(
-                type: SupportTicketStatusFilterForm::class,
-                data: $filter,
-                options: ['action' => $this->generateUrl('support:admin.index'),]
-            )
-            ->handleRequest($request);
 
         // Поиск
         $search = new SearchDTO();
@@ -71,8 +63,18 @@ final class IndexController extends AbstractController
             )
             ->handleRequest($request);
 
+        $filter = new SupportTicketStatusFilterDTO();
+
+        $filterForm = $this
+            ->createForm(
+                type: SupportTicketStatusFilterForm::class,
+                data: $filter,
+                options: ['action' => $this->generateUrl('support:admin.index'),]
+            )
+            ->handleRequest($request);
+
+
         // todo: добавить в суппорт UserUid для фильтрации
-        // $this->isAdmin() ?: $allSupport->profile($this->getProfileUid());
 
         // Получаем список
         $Support = $allSupport

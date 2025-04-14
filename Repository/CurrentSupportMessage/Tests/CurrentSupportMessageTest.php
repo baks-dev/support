@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 /**
  * @group support
  *
- * @depends BaksDev\Support\UseCase\Admin\New\Tests\SupportNewTest::class
+ * @depends \BaksDev\Support\UseCase\Admin\New\Tests\SupportNewTest::class
  */
 class CurrentSupportMessageTest extends KernelTestCase
 {
