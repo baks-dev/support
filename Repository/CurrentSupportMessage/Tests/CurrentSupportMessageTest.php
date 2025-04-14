@@ -32,7 +32,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 /**
  * @group support
  *
- * @depends \BaksDev\Support\UseCase\Admin\New\Tests\SupportNewTest::class
+ * @depends BaksDev\Support\UseCase\Admin\New\Tests\SupportNewTest::class
  */
 class CurrentSupportMessageTest extends KernelTestCase
 {

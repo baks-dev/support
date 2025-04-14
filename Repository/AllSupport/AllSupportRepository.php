@@ -133,7 +133,7 @@ final class AllSupportRepository implements AllSupportInterface
             )
             ->setParameter(
                 'profile',
-                $this->UserProfileTokenStorage->getProfile(),
+                $this->profile ?: $this->UserProfileTokenStorage->getProfile(),
                 UserProfileUid::TYPE
             );
 

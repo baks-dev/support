@@ -25,12 +25,13 @@ namespace BaksDev\Support\Repository\AllSupport\Tests;
 
 use BaksDev\Core\Form\Search\SearchDTO;
 use BaksDev\Support\Repository\AllSupport\AllSupportInterface;
+use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * @group support
  *
- * @depends \BaksDev\Support\Repository\AllMessagesByEvent\Tests\AllMessagesByEventTest::class
+ * @depends BaksDev\Support\Repository\AllMessagesByEvent\Tests\AllMessagesByEventTest::class
  */
 class AllSupportRepositoryTest extends KernelTestCase
 {
@@ -42,6 +43,7 @@ class AllSupportRepositoryTest extends KernelTestCase
 
         $response = $AllSupportRepositoryInterface
             ->search(new SearchDTO())
+            ->profile(new UserProfileUid())
             ->findPaginator();
 
         if(!empty($response->getData()))

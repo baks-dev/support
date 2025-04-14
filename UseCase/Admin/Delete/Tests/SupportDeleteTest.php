@@ -39,7 +39,7 @@ use Symfony\Component\DependencyInjection\Attribute\When;
 /**
  * @group support
  *
- * @depends \BaksDev\Support\UseCase\Admin\Status\Tests\SupportTicketStatusTest::class
+ * @depends BaksDev\Support\UseCase\Admin\Status\Tests\SupportTicketStatusTest::class
  */
 #[When(env: 'test')]
 class SupportDeleteTest extends KernelTestCase

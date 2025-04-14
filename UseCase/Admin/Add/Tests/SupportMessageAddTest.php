@@ -44,7 +44,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @group support
  *
- * @depends \BaksDev\Support\UseCase\Admin\New\Tests\SupportEditTest::class
+ * @depends BaksDev\Support\UseCase\Admin\New\Tests\SupportEditTest::class
  */
 #[When(env: 'test')]
 class SupportMessageAddTest extends KernelTestCase
