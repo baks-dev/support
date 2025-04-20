@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -30,18 +30,29 @@ use BaksDev\Support\Type\Id\SupportUid;
 
 final readonly class SupportMessage
 {
+    private string $id;
+
+    private string $event;
+
+    private ?string $last;
+
     public function __construct(
-        private SupportUid $id,
-        private SupportEventUid $event,
-        private ?SupportEventUid $last = null
-    ) {}
+        SupportUid $id,
+        SupportEventUid $event,
+        ?SupportEventUid $last = null
+    )
+    {
+        $this->id = (string) $id;
+        $this->event = (string) $event;
+        $this->last = null === $last ? null : (string) $event;
+    }
 
     /**
      * Идентификатор
      */
     public function getId(): SupportUid
     {
-        return $this->id;
+        return new SupportUid($this->id);
     }
 
 
@@ -50,7 +61,7 @@ final readonly class SupportMessage
      */
     public function getEvent(): SupportEventUid
     {
-        return $this->event;
+        return new SupportEventUid($this->event);
     }
 
     /**
@@ -58,7 +69,7 @@ final readonly class SupportMessage
      */
     public function getLast(): ?SupportEventUid
     {
-        return $this->last;
+        return $this->last ? new SupportEventUid($this->last) : null;
     }
 
 }

@@ -32,13 +32,13 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Twig\Environment;
 
 #[AsMessageHandler(priority: 0)]
-final class SupportHandler
+final readonly class SupportHandler
 {
     public function __construct(
-        private readonly SupportLastMessageInterface $supportLastMessage,
-        private readonly CentrifugoPublishInterface $publish,
-        private readonly Environment $environment,
-        private readonly TemplateExtension $templateExtension,
+        private SupportLastMessageInterface $supportLastMessage,
+        private CentrifugoPublishInterface $publish,
+        private Environment $environment,
+        private TemplateExtension $templateExtension,
     ) {}
 
     public function __invoke(SupportMessage $message): void
