@@ -133,6 +133,11 @@ class SupportEvent extends EntityEvent
 
     public function getDto($dto): mixed
     {
+        if(is_string($dto) && class_exists($dto))
+        {
+            $dto = new $dto();
+        }
+
         if($dto instanceof SupportEventInterface)
         {
             return parent::getDto($dto);
