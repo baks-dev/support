@@ -72,18 +72,18 @@ class SupportEvent extends EntityEvent
 
 
     /**  Модификатор */
-    #[ORM\OneToOne(targetEntity: SupportModify::class, mappedBy: 'event', cascade: ['all'])]
+    #[ORM\OneToOne(targetEntity: SupportModify::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
     private SupportModify $modify;
 
     /**  Постоянная величина */
-    #[ORM\OneToOne(targetEntity: SupportInvariable::class, mappedBy: 'event', cascade: ['all'])]
+    #[ORM\OneToOne(targetEntity: SupportInvariable::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
     private ?SupportInvariable $invariable = null;
 
 
     /** Сообщения (сортируем по дате) */
     #[Assert\Valid]
     #[ORM\OrderBy(["date" => "ASC"])]
-    #[ORM\OneToMany(targetEntity: SupportMessage::class, mappedBy: 'event', cascade: ['all'])]
+    #[ORM\OneToMany(targetEntity: SupportMessage::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
     private Collection $messages;
 
 

@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -62,7 +62,10 @@ final class CurrentSupportEventByTicketRepository implements CurrentSupportEvent
         $orm
             ->from(SupportInvariable::class, 'invariable')
             ->where('invariable.ticket = :ticket')
-            ->setParameter('ticket', $this->ticket);
+            ->setParameter(
+                key: 'ticket',
+                value: $this->ticket
+            );
 
         $orm
             ->select('event')
@@ -73,6 +76,6 @@ final class CurrentSupportEventByTicketRepository implements CurrentSupportEvent
                 'event.id = invariable.event'
             );
 
-        return $orm->getQuery()->getOneOrNullResult() ?: false;
+        return $orm->getOneOrNullResult() ?: false;
     }
 }
