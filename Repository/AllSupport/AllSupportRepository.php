@@ -129,7 +129,14 @@ final class AllSupportRepository implements AllSupportInterface
                 'support',
                 SupportInvariable::class,
                 'invariable',
-                'invariable.main = support.id  AND (invariable.profile = :profile OR invariable.profile IS NULL) '
+
+                /**
+                 * TODO: добавить соответствующий фильтр !!!
+                 * AND (invariable.profile = :profile OR invariable.profile IS NULL)
+                 */
+
+                'invariable.main = support.id',
+
             )
             ->setParameter(
                 'profile',
