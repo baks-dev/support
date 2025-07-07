@@ -93,17 +93,17 @@ final class AllSupportRepository implements AllSupportInterface
 
         $dbal
             ->select('support.id')
+            ->addSelect('support.event')
             ->from(Support::class, 'support');
 
         $dbal
-            ->addSelect('event.id AS event')
             ->addSelect('event.status AS status')
             ->addSelect('event.priority AS priority')
             ->join(
                 'support',
                 SupportEvent::class,
                 'event',
-                'event.id = support.event'
+                'event.id = support.event',
             );
 
         if($this->filter)
@@ -118,7 +118,7 @@ final class AllSupportRepository implements AllSupportInterface
                 ->setParameter(
                     'status',
                     $this->filter->getStatus(),
-                    SupportStatus::TYPE
+                    SupportStatus::TYPE,
                 );
         }
 
@@ -141,7 +141,7 @@ final class AllSupportRepository implements AllSupportInterface
             ->setParameter(
                 'profile',
                 $this->profile ?: $this->UserProfileTokenStorage->getProfile(),
-                UserProfileUid::TYPE
+                UserProfileUid::TYPE,
             );
 
 
@@ -150,7 +150,7 @@ final class AllSupportRepository implements AllSupportInterface
                 'invariable',
                 TypeProfile::class,
                 'type_profile',
-                'type_profile.id = invariable.type'
+                'type_profile.id = invariable.type',
             );
 
         $dbal
@@ -159,7 +159,7 @@ final class AllSupportRepository implements AllSupportInterface
                 'type_profile',
                 TypeProfileTrans::class,
                 'type_profile_trans',
-                'type_profile_trans.event = type_profile.event AND type_profile_trans.local = :local'
+                'type_profile_trans.event = type_profile.event AND type_profile_trans.local = :local',
             );
 
 
@@ -173,7 +173,7 @@ final class AllSupportRepository implements AllSupportInterface
                 SupportMessage::class,
                 'message',
                 'message.event = support.event',
-                sort: 'date'
+                sort: 'date',
             );
 
         /* Поиск */
@@ -201,7 +201,9 @@ final class AllSupportRepository implements AllSupportInterface
                 ->addOrderBy('event.id', 'DESC');
         }
 
-        return $this->paginator->fetchAllAssociative($dbal);
+
+        return $this->paginator
+            ->fetchAllHydrate($dbal, AllSupportResult::class);
     }
 
 }

@@ -1,5 +1,7 @@
 {% trans_default_domain("support.admin") %}
 
+{# @var item \BaksDev\Support\Repository\AllSupport\AllSupportResult #}
+
 <tr class="vertical-middle" id="{{ item.id }}">
 
     <td class="text-nowrap">
@@ -35,11 +37,12 @@
 
     <td>
         <div class="ms-0 text-start">
-                <span class="d-inline-block text-truncate text-emphasis align-middle"
-                      style="max-width: 150px;">{{ item.type_profile_name|trans }}</span>
+            <span class="d-inline-block text-truncate text-emphasis align-middle" style="max-width: 150px;">
+                {{ item.typeProfileName|trans }}
+            </span>
         </div>
 
-        {% set dedline = date(item.date) %}
+        {% set dedline = date(item.messageDate) %}
         {% set difference = dedline.diff(date("now")) %}
         {% set day = difference.days ?: null %}
         {% set hour = difference.h ?: null %}
@@ -47,15 +50,15 @@
 
         <div class="small text-nowrap">
 
-            <span class="small text-muted ">{{ item.date|date('d.m H:i') }} | </span>
+            <span class="small text-muted ">{{ item.messageDate|date('d.m H:i') }} | </span>
             <strong
-
                     role="tooltip"
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
                     data-bs-delay='{"show":600,"hide":100}'
                     title="Последнее движение по заказу"
-                    class="small {{ day ? 'text-danger' : 'text-success' }}">
+                    class="small {{ day ? 'text-danger' : 'text-success' }}"
+            >
 
                 {% if day %}
                     {{ day }}<span class="small">д.</span>
@@ -81,8 +84,9 @@
 
     <td class="ms-0 text-center">
         <div class="d-flex w-100 justify-content-center">
-            <span class="d-inline-block text-truncate text-emphasis align-middle"
-                  style="max-width: 150px;">{{ item.name }}</span>
+            <span class="d-inline-block text-truncate text-emphasis align-middle" style="max-width: 150px;">
+                {{ item.name }}
+            </span>
         </div>
     </td>
 
@@ -104,7 +108,7 @@
             <br>
 
             <span class="d-inline-block text-truncate align-middle text-dark" style="max-width: 600px;">
-                {{ item.message|striptags }}
+                {{ item.message }}
             </span>
 
         </button>
