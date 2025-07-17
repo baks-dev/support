@@ -1,0 +1,118 @@
+{% trans_default_domain("support.admin") %}
+
+{# @var item \BaksDev\Support\Repository\AllSupport\AllSupportResult #}
+
+<tr class="vertical-middle" id="{{ item.id }}">
+
+    <td class="text-nowrap">
+        {# Пользовательское меню #}
+        {{ include(_self|replace({ "card.html.twig": "_usecase.html.twig" })) }}
+    </td>
+
+    <td class="text-center">
+        {% if item.status == 'open' %}
+            <div class="badge bg-success">
+                Открытый
+            </div>
+        {% else %}
+            <div class="badge bg-danger">
+                Закрытый
+            </div>
+        {% endif %}
+    </td>
+
+    <td class="text-center">
+        {% if item.priority == 'low' %}
+            <div class="badge bg-light text-dark">
+                Низкий
+            </div>
+        {% endif %}
+
+        {% if item.priority == 'height' %}
+            <div class="badge bg-danger">
+                Высокий
+            </div>
+        {% endif %}
+    </td>
+
+    <td>
+        <div class="ms-0 text-start">
+            <span class="d-inline-block text-truncate text-emphasis align-middle" style="max-width: 150px;">
+                {{ item.typeProfileName|trans }}
+            </span>
+        </div>
+
+        {% set dedline = date(item.messageDate) %}
+        {% set difference = dedline.diff(date("now")) %}
+        {% set day = difference.days ?: null %}
+        {% set hour = difference.h ?: null %}
+
+
+        <div class="small text-nowrap">
+
+            <span class="small text-muted ">{{ item.messageDate|date('d.m H:i') }} | </span>
+            <strong
+                    role="tooltip"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-delay='{"show":600,"hide":100}'
+                    title="Последнее движение по заказу"
+                    class="small {{ day ? 'text-danger' : 'text-success' }}"
+            >
+
+                {% if day %}
+                    {{ day }}<span class="small">д.</span>
+                {% endif %}
+
+                {% if hour %}
+                    {{ hour }}<span class="small">ч.</span>
+                {% endif %}
+
+                {% if day is null %}
+                    {% if hour is empty and difference.i is empty %}
+                        Новый
+                    {% else %}
+                        {{ difference.i }}<span class="small">м.</span>
+                    {% endif %}
+                {% endif %}
+
+            </strong>
+        </div>
+
+
+    </td>
+
+    <td class="ms-0 text-center">
+        <div class="d-flex w-100 justify-content-center">
+            <span class="d-inline-block text-truncate text-emphasis align-middle" style="max-width: 150px;">
+                {{ item.name }}
+            </span>
+        </div>
+    </td>
+
+
+    <td class="w-100">
+        <button
+                class="btn btn-sm text-decoration-none offcanvas-link w-100 text-start border-0"
+                data-href="{{ path('support:admin.detail', { id: item.event }) }}"
+                data-bs-toggle="#offcanvas"
+                data-bs-target="#offcanvas"
+                role="button"
+                aria-controls="offcanvas"
+        >
+
+            <span class="d-inline-block text-truncate align-middle fw-bold text-primary" style="max-width: 200px;">
+                {{ item.title|raw }}
+            </span>
+
+            <br>
+
+            <span class="d-inline-block text-truncate align-middle text-dark" style="max-width: 200px;">
+                {{ item.message }}
+            </span>
+
+        </button>
+    </td>
+
+
+</tr>
