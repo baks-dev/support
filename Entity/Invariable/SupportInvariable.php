@@ -119,6 +119,11 @@ class SupportInvariable extends EntityReadonly
         return $this->type;
     }
 
+    public function getProfile(): ?UserProfileUid
+    {
+        return $this->profile;
+    }
+
     public function getDto($dto): mixed
     {
         $dto = is_string($dto) && class_exists($dto) ? new $dto() : $dto;

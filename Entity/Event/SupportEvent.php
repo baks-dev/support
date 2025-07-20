@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace BaksDev\Support\Entity\Event;
 
 use BaksDev\Core\Entity\EntityEvent;
+use BaksDev\Orders\Order\Entity\Invariable\OrderInvariable;
 use BaksDev\Support\Entity\Invariable\SupportInvariable;
 use BaksDev\Support\Entity\Message\SupportMessage;
 use BaksDev\Support\Entity\Modify\SupportModify;
@@ -124,6 +125,21 @@ class SupportEvent extends EntityEvent
     public function getTitle(): ?string
     {
         return $this->invariable?->getTitle();
+    }
+
+    public function isInvariable(): bool
+    {
+        return $this->invariable instanceof SupportInvariable;
+    }
+
+    public function setInvariable(SupportInvariable|false $invariable): self
+    {
+        if($invariable instanceof SupportInvariable)
+        {
+            $this->invariable = $invariable;
+        }
+
+        return $this;
     }
 
     public function getInvariable(): ?SupportInvariable
