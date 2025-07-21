@@ -1,1 +1,102 @@
-<div>Временно недоступно</div>
+{% trans_default_domain('support.admin') %}
+
+<div class="offcanvas-header d-flex justify-content-between align-items-center">
+    {% if messages %}
+        {% set ticket = messages[0].ticket %}
+        {% set title = messages[0].title %}
+    {% else %}
+        {% set ticket ='-' %}
+        {% set title = '-' %}
+    {% endif %}
+
+    <h2 class="h5 m-0">{{ title|raw }}</h2>
+
+    <button type="button" class="btn-close icon rounded-circle align-self-center"
+            style="min-width: 35px; min-height: 35px;  width: 35px; height: 35px;"
+            data-bs-dismiss="offcanvas"
+            title="Close">
+    </button>
+</div>
+
+<hr>
+
+{# Список сообщений тикета #}
+
+<div class="offcanvas-body">
+
+
+            <div class="row">
+                <div class="col-md-6 col-lg-7 col-xl-8">
+                    <ul class="list-unstyled" id="messages-{{ identifier }}">
+
+                        {% set display = null %}
+
+                        {% for message in messages %}
+
+                            {# {% if display is null %}
+                                {% set display = message.out %}
+                            {% endif %} #}
+
+                            {{ include(_self|replace({ "content.html.twig": "message.html.twig" })) }}
+
+                            {% set display = message.out %}
+
+                        {% endfor %}
+
+                        <li class="box-hidden invisible">&nbsp;</li>
+                    </ul>
+                </div>
+            </div>
+
+
+</div>
+
+{# Форма ответа на сообщение #}
+
+<div class="offcanvas-bottom sticky-bottom py-3 mx-3">
+
+    <hr>
+
+    <div data-mdb-input-init class="form-outline" id="tiket-{{ identifier }}">
+        {{ form_start(form) }}
+
+        <div class="my-2">
+
+            {% if user == false and form.reply.name is defined %}
+                {{ form_row(form.reply.name, { label: 'Имя администратора' }) }}
+            {% endif %}
+
+            {{ form_row(form.reply.message, { attr: { class: 'form-control bg-body-tertiary', rows: '4', placeholder: 'Написать сообщение...' } }) }}
+        </div>
+
+        {% if form.support_message_add is defined %}
+
+            <div class="d-flex gap-2">
+
+                {{ form_widget(form.reply.answers, {
+                    placeholder : 'Выбрать ответ...',
+                    attr: {
+                        class: 'form-control profile-type-answers select-revers',
+                        'data-select' : 'select2'
+                    }
+                } ) }}
+
+                <a href="#" id="support_message_add_form_insert_asnwer" class="btn btn-outline-primary text-nowrap"
+                   style="display:none;">
+                    {{ 'answer.insert_button'|trans }}
+                </a>
+
+
+                <div class="float-end text-nowrap">
+                    {# Отправить сообщение #}
+                    {{ form_widget(form.support_message_add, { label: ' <span>Ответить</span>
+                    <span class="spinner-border spinner-border-sm vertical-middle d-none"></span>'}) }}
+                </div>
+
+            </div>
+
+        {% endif %}
+
+        {{ form_end(form) }}
+    </div>
+</div>
