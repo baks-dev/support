@@ -99,9 +99,9 @@ class SupportEditTest extends KernelTestCase
         self::assertTrue($SupportInvariableDTO->getType()->equals(TypeProfileUser::TYPE));
 
 
-        self::assertSame('00481e1e-cb75-4af7-b9ea-0d77dbad9914', $SupportInvariableDTO->getTicket());
-        $SupportInvariableDTO->setTicket('84557148-cd8b-422e-bc93-dacd8aa6551e');
-        self::assertSame('84557148-cd8b-422e-bc93-dacd8aa6551e', $SupportInvariableDTO->getTicket());
+        self::assertSame('b7d886ab-8fdd-7275-9dba-bf7e1327e885', $SupportInvariableDTO->getTicket());
+        $SupportInvariableDTO->setTicket('f7610d5d-d919-7ebb-847a-b56169c784f6');
+        self::assertSame('f7610d5d-d919-7ebb-847a-b56169c784f6', $SupportInvariableDTO->getTicket());
 
         self::assertSame('New Test Title', $SupportInvariableDTO->getTitle());
         $SupportInvariableDTO->setTitle('Edit Test Title');

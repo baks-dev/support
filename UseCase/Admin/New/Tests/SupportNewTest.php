@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -112,8 +112,8 @@ class SupportNewTest extends KernelTestCase
         self::assertTrue($SupportInvariableDTO->getType()->equals(TypeProfileOrganization::TYPE));
 
 
-        $SupportInvariableDTO->setTicket('00481e1e-cb75-4af7-b9ea-0d77dbad9914');
-        self::assertSame('00481e1e-cb75-4af7-b9ea-0d77dbad9914', $SupportInvariableDTO->getTicket());
+        $SupportInvariableDTO->setTicket('b7d886ab-8fdd-7275-9dba-bf7e1327e885');
+        self::assertSame('b7d886ab-8fdd-7275-9dba-bf7e1327e885', $SupportInvariableDTO->getTicket());
 
         $SupportInvariableDTO->setTitle('New Test Title');
         self::assertSame('New Test Title', $SupportInvariableDTO->getTitle());
