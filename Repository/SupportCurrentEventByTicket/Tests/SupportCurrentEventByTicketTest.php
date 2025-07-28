@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ class SupportCurrentEventByTicketTest extends KernelTestCase
 
         /** @var CurrentSupportEventByTicketInterface $CurrentSupportEventByTicketInterface */
         $CurrentSupportEventByTicketInterface = self::getContainer()->get(CurrentSupportEventByTicketInterface::class);
-        $CurrentSupportEventByTicketInterface->forTicket('00481e1e-cb75-4af7-b9ea-0d77dbad9914');
+        $CurrentSupportEventByTicketInterface->forTicket('3aa48ee2-3c89-7280-af76-b1072980b38f');
 
 
         $response = $CurrentSupportEventByTicketInterface->find();
