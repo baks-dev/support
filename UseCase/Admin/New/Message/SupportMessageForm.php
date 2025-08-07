@@ -45,6 +45,8 @@ final class SupportMessageForm extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $builder->add('message', TextareaType::class, ['label' => false, 'required' => true]);
+
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event): void {
 
             /** @var SupportMessageDTO $data */
@@ -84,19 +86,17 @@ final class SupportMessageForm extends AbstractType
             'expanded' => false,
             'multiple' => false,
             'label' => false,
-            'disabled' => $supportAnswers->valid() === false,
+            'disabled' => (empty($supportAnswers) || $supportAnswers->valid() === false),
             'attr' => [
-                'title' => $supportAnswers->valid() === true ?
-                    $this->translator->trans('answers.title.has_answers', domain: 'support-answer.admin') :
-                    $this->translator->trans('answers.title.no_answers', domain: 'support-answer.admin'),
+                'title' => (empty($supportAnswers) || $supportAnswers->valid() === false) ?
+                    $this->translator->trans('answers.title.no_answers', domain: 'support-answer.admin') :
+                    $this->translator->trans('answers.title.has_answers', domain: 'support-answer.admin'),
             ],
 
             'translation_domain' => 'support-answer.admin',
         ]);
 
         $builder->get('answers')->resetViewTransformers();
-
-        $builder->add('message', TextareaType::class, ['label' => false, 'required' => true]);
 
     }
 
