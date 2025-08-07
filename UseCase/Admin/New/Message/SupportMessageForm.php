@@ -25,7 +25,10 @@ declare(strict_types=1);
 
 namespace BaksDev\Support\UseCase\Admin\New\Message;
 
+use BaksDev\Auth\Telegram\Type\Status\AccountTelegramStatus;
 use BaksDev\Support\Answer\Entity\SupportAnswer;
+use BaksDev\Support\Answer\Repository\UserProfileTypeAnswers\UserProfileTypeAnswersResult;
+use Generator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -58,26 +61,37 @@ final class SupportMessageForm extends AbstractType
         /**
          * Варианты ответов
          */
+
+        /** @var Generator<int, UserProfileTypeAnswersResult> $supportAnswers */
+        $supportAnswers = $options['supportAnswers'];
+
         $builder->add('answers', ChoiceType::class, [
-            'choices' => $options['supportAnswers'], // Ответы для типа профиля
-            'choice_value' => 'id',
-            'choice_label' => 'title',
-            'choice_attr' => function($choice) {
-                /** @var SupportAnswer $choice */
-                return ['data-content' => $choice->getContent()];
+            'choices' => $supportAnswers, // Ответы для типа профиля
+
+            'choice_value' => function(?UserProfileTypeAnswersResult $answer) {
+                return $answer?->getId();
             },
+
+            'choice_label' => function(UserProfileTypeAnswersResult $answer) {
+                return $answer->getTitle();
+            },
+
+            'choice_attr' => function(?UserProfileTypeAnswersResult $choice) {
+                return ['data-content' => $choice?->getContent()];
+            },
+
             'required' => false,
             'expanded' => false,
             'multiple' => false,
             'label' => false,
-            'disabled' => !count($options['supportAnswers']),
+            'disabled' => $supportAnswers->valid() === false,
             'attr' => [
-                'title' => count($options['supportAnswers']) ?
+                'title' => $supportAnswers->valid() === true ?
                     $this->translator->trans('answers.title.has_answers', domain: 'support-answer.admin') :
-                    $this->translator->trans('answers.title.no_answers', domain: 'support-answer.admin')
-            ]
+                    $this->translator->trans('answers.title.no_answers', domain: 'support-answer.admin'),
+            ],
 
-
+            'translation_domain' => 'support-answer.admin',
         ]);
 
         $builder->get('answers')->resetViewTransformers();
@@ -92,7 +106,7 @@ final class SupportMessageForm extends AbstractType
             'data_class' => SupportMessageDTO::class,
             'method' => 'POST',
             'attr' => ['class' => 'w-100'],
-            'supportAnswers' => []
+            'supportAnswers' => [],
         ]);
     }
 }

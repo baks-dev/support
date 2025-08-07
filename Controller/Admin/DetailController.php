@@ -92,7 +92,7 @@ final class DetailController extends AbstractController
          * Ответы по типу профиля пользователя
          */
         $userProfileType = $SupportEvent->getInvariable()?->getType();
-        $supportAnswers = $userProfileTypeAnswersRepository->findUserProfileTypeAnswers($userProfileType);
+        $UserProfileTypeAnswersResult = $userProfileTypeAnswersRepository->findAll($userProfileType);
 
 
         // Форма
@@ -104,7 +104,7 @@ final class DetailController extends AbstractController
                     'id' => $SupportEvent->getId(),
                     'message' => current($messages)['message_id'] ?? null
                 ]),
-                'supportAnswers' => $supportAnswers,
+                'supportAnswers' => $UserProfileTypeAnswersResult,
             ]
         );
 
