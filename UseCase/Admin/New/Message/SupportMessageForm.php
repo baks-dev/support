@@ -27,6 +27,8 @@ namespace BaksDev\Support\UseCase\Admin\New\Message;
 
 use BaksDev\Auth\Telegram\Type\Status\AccountTelegramStatus;
 use BaksDev\Support\Answer\Entity\SupportAnswer;
+use BaksDev\Support\Answer\Repository\UserProfileTypeAnswers\UserProfileTypeAnswersInterface;
+use BaksDev\Support\Answer\Repository\UserProfileTypeAnswers\UserProfileTypeAnswersRepository;
 use BaksDev\Support\Answer\Repository\UserProfileTypeAnswers\UserProfileTypeAnswersResult;
 use Generator;
 use Symfony\Component\Form\AbstractType;
@@ -41,7 +43,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class SupportMessageForm extends AbstractType
 {
-    public function __construct(private readonly TranslatorInterface $translator) {}
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+    ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -57,15 +61,19 @@ final class SupportMessageForm extends AbstractType
             {
                 $form->add('name', TextType::class);
             }
-
         });
 
         /**
-         * Варианты ответов
+         * Варианты ответов на тикет
          */
 
         /** @var Generator<int, UserProfileTypeAnswersResult> $supportAnswers */
         $supportAnswers = $options['supportAnswers'];
+
+        if(false === $supportAnswers)
+        {
+            return;
+        }
 
         $builder->add('answers', ChoiceType::class, [
             'choices' => $supportAnswers, // Ответы для типа профиля
@@ -86,12 +94,12 @@ final class SupportMessageForm extends AbstractType
             'expanded' => false,
             'multiple' => false,
             'label' => false,
-            'disabled' => (empty($supportAnswers) || $supportAnswers->valid() === false),
-            'attr' => [
-                'title' => (empty($supportAnswers) || $supportAnswers->valid() === false) ?
-                    $this->translator->trans('answers.title.no_answers', domain: 'support-answer.admin') :
-                    $this->translator->trans('answers.title.has_answers', domain: 'support-answer.admin'),
-            ],
+            'disabled' => false,
+            //            'attr' => [
+            //                'title' => true === empty($supportAnswers) ?
+            //                    $this->translator->trans('answers.title.no_answers', domain: 'support-answer.admin') :
+            //                    $this->translator->trans('answers.title.has_answers', domain: 'support-answer.admin'),
+            //            ],
 
             'translation_domain' => 'support-answer.admin',
         ]);

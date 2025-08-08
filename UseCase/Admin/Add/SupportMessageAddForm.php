@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace BaksDev\Support\UseCase\Admin\Add;
 
+use BaksDev\Support\Answer\Repository\UserProfileTypeAnswers\UserProfileTypeAnswersInterface;
 use BaksDev\Support\UseCase\Admin\New\Message\SupportMessageForm;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -35,23 +36,33 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class SupportMessageAddForm extends AbstractType
 {
+    public function __construct(private readonly UserProfileTypeAnswersInterface $UserProfileTypeAnswersRepository) {}
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'reply',
-            SupportMessageForm::class,
-            [
-                'label' => false,
-                'disabled' => $options['data']->getName() === 'system',
-                'supportAnswers' => $options['supportAnswers']
-            ],
-        );
-
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event): void {
 
             /** @var SupportMessageAddDTO $SupportMessageAddDTO */
             $SupportMessageAddDTO = $event->getData();
             $builder = $event->getForm();
+
+            /** Список вариантов быстрых ответов на тикет */
+            $UserProfileTypeAnswersResults = $this
+                ->UserProfileTypeAnswersRepository
+                ->forType($SupportMessageAddDTO->getTicketType())
+                ->findAll();
+
+
+            $builder->add(
+                'reply',
+                SupportMessageForm::class,
+                [
+                    'label' => false,
+                    'disabled' => $SupportMessageAddDTO->getName() === 'system',
+                    'supportAnswers' => $UserProfileTypeAnswersResults->valid() ? $UserProfileTypeAnswersResults : false,
+                ],
+            );
+
 
             if($SupportMessageAddDTO->isSubmit())
             {
@@ -63,13 +74,12 @@ final class SupportMessageAddForm extends AbstractType
                         'label' => 'Отправить',
                         'label_html' => true,
                         'attr' => ['class' => 'btn-primary'],
-                        // 'disabled' => $options['data']->getName() === 'system',
-                    ]
+                        'disabled' => $SupportMessageAddDTO->getName() === 'system',
+                    ],
                 );
             }
 
         });
-
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -78,7 +88,7 @@ final class SupportMessageAddForm extends AbstractType
             'data_class' => SupportMessageAddDTO::class,
             'method' => 'POST',
             'attr' => ['class' => 'w-100'],
-            'supportAnswers' => []
+            'supportAnswers' => [],
         ]);
     }
 }

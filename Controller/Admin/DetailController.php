@@ -67,33 +67,40 @@ final class DetailController extends AbstractController
             ->addData(['identifier' => (string) $SupportEvent->getMain()])
             ->send('remove');
 
+        /**
+         * Исходящее сообщение
+         * Присваивавшем имя пользователя исходящего сообщения
+         */
+
         $user = $currentUserProfile->fetchProfileAssociative($this->getCurrentUsr());
-
-        $SupportDTO = new SupportDTO();
-        $SupportEvent->getDto($SupportDTO);
-
-        $messages = $messagesByTicket
-            ->forSupportEvent($SupportEvent->getId())
-            ->findAll();
-
-        /** Входящее сообщение */
-        $ReplySupportMessageDto = new SupportMessageAddDTO()
-            ->setTitle($SupportEvent->getTitle());
-
-        /** Исходящее сообщение */
         $SupportMessageDTO = new SupportMessageDTO()
             ->setName($user['profile_username'] ?? null);
 
-        /** Сохраняем в ДТО входящего сообщения ДТО исходящего */
-        $ReplySupportMessageDto->setReply($SupportMessageDTO);
+        /**
+         * Сохраняем в ДТО входящего сообщения ДТО исходящего
+         */
+        $ReplySupportMessageDto = new SupportMessageAddDTO()
+            ->setTitle($SupportEvent->getTitle())
+            ->setReply($SupportMessageDTO)
+            ->setTicketType($SupportEvent->getInvariable()?->getType());
+
+        $SupportDTO = new SupportDTO();
+        $SupportEvent->getDto($SupportDTO);
         $SupportDTO->getInvariable()?->isReply() ?: $ReplySupportMessageDto->notSubmit();
 
         /**
          * Ответы по типу профиля пользователя
          */
-        $userProfileType = $SupportEvent->getInvariable()?->getType();
-        $UserProfileTypeAnswersResult = $userProfileTypeAnswersRepository->findAll($userProfileType);
+        //        $userProfileType = $SupportEvent->getInvariable()?->getType();
+        //        $UserProfileTypeAnswersResults = $userProfileTypeAnswersRepository
+        //            ->forType($userProfileType)
+        //            ->findAll();
 
+
+        /** Список всех сообщений */
+        $messages = $messagesByTicket
+            ->forSupportEvent($SupportEvent->getId())
+            ->findAll();
 
         // Форма
         $form = $this->createForm(
@@ -104,7 +111,7 @@ final class DetailController extends AbstractController
                     'id' => $SupportEvent->getId(),
                     'message' => current($messages)['message_id'] ?? null
                 ]),
-                'supportAnswers' => $UserProfileTypeAnswersResult,
+                //'supportAnswers' => $UserProfileTypeAnswersResults,
             ]
         );
 

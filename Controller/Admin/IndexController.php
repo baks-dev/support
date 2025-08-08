@@ -74,8 +74,6 @@ final class IndexController extends AbstractController
             ->handleRequest($request);
 
 
-        // todo: добавить в суппорт UserUid для фильтрации
-
         // Получаем список
         $Support = $allSupport
             ->search($search)

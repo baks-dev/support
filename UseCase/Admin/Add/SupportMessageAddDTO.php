@@ -28,6 +28,7 @@ namespace BaksDev\Support\UseCase\Admin\Add;
 use BaksDev\Support\Entity\Message\SupportMessageInterface;
 use BaksDev\Support\Type\Message\SupportMessageUid;
 use BaksDev\Support\UseCase\Admin\New\Message\SupportMessageDTO;
+use BaksDev\Users\Profile\TypeProfile\Type\Id\TypeProfileUid;
 use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -61,6 +62,8 @@ final class SupportMessageAddDTO implements SupportMessageInterface
     /** Флаг запрета на ответ */
     private bool $submit = true;
 
+    /** Тип сообщений (для быстрых ответов) */
+    private ?TypeProfileUid $type = null;
 
     public function getName(): ?string
     {
@@ -166,4 +169,14 @@ final class SupportMessageAddDTO implements SupportMessageInterface
         return $this;
     }
 
+    public function getTicketType(): ?TypeProfileUid
+    {
+        return $this->type;
+    }
+
+    public function setTicketType(?TypeProfileUid $type): self
+    {
+        $this->type = $type;
+        return $this;
+    }
 }
