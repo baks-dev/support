@@ -37,10 +37,12 @@ use BaksDev\Support\Type\Status\SupportStatus;
 use BaksDev\Support\Type\Status\SupportStatus\Collection\SupportStatusClose;
 use BaksDev\Support\UseCase\Admin\Add\SupportMessageAddDTO;
 use BaksDev\Support\UseCase\Admin\Add\SupportMessageAddForm;
+use BaksDev\Support\UseCase\Admin\New\Invariable\SupportInvariableDTO;
 use BaksDev\Support\UseCase\Admin\New\Message\SupportMessageDTO;
 use BaksDev\Support\UseCase\Admin\New\SupportDTO;
 use BaksDev\Support\UseCase\Admin\New\SupportHandler;
 use BaksDev\Users\Profile\UserProfile\Repository\CurrentUserProfile\CurrentUserProfileInterface;
+use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use DateTimeImmutable;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
@@ -107,21 +109,36 @@ final class AddController extends AbstractController
             $SupportDTO = new SupportDTO();
             $SupportEvent->getDto($SupportDTO);
 
-            /** Меняем статус на "Закрытый" */
-            $SupportDTO->setStatus(new SupportStatus(SupportStatusClose::class));
+            /**
+             * Присваиваем профиль пользователя бизнес-профиля, если не указано в тикете
+             */
 
-            /** Из ДТО входящего сообщения берем ДТО исходящего и добавляем с support */
-            $SupportDTO->addMessage($ReplySupportMessageDto->getReply());
+            $SupportInvariableDTO = $SupportDTO->getInvariable();
 
-            $handle = $SupportHandler->handle($SupportDTO);
+            if(
+                true === ($SupportInvariableDTO instanceof SupportInvariableDTO)
+                && false === ($SupportInvariableDTO->getProfile() instanceof UserProfileUid)
+            )
+            {
+                $SupportInvariableDTO->setProfile($this->getProfileUid());
+            }
+
+            /**
+             * Меняем статус на "Закрытый" и добавляем ответ на сообщение
+             */
+            $SupportDTO
+                ->setStatus(new SupportStatus(SupportStatusClose::class))
+                ->addMessage($ReplySupportMessageDto->getReply());
+
+            $Support = $SupportHandler->handle($SupportDTO);
 
             if($request->isXmlHttpRequest() === false)
             {
                 $this->addFlash(
                     'page.add',
-                    $handle instanceof Support ? 'success.add' : 'danger.edit',
+                    $Support instanceof Support ? 'success.add' : 'danger.edit',
                     'support.admin',
-                    $handle
+                    $Support,
                 );
             }
 
@@ -131,7 +148,7 @@ final class AddController extends AbstractController
                 ->addData(['identifier' => (string) $SupportEvent->getMain()])
                 ->send('remove');
 
-            return $handle instanceof Support ? $this->redirectToRoute('support:admin.index') : $this->redirectToReferer();
+            return $Support instanceof Support ? $this->redirectToRoute('support:admin.index') : $this->redirectToReferer();
         }
 
         return $this->render([
