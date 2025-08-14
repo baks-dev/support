@@ -33,6 +33,7 @@ use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
 use BaksDev\Support\Form\Admin\Index\SupportTicketStatusFilterDTO;
 use BaksDev\Support\Form\Admin\Index\SupportTicketStatusFilterForm;
 use BaksDev\Support\Repository\AllSupport\AllSupportInterface;
+use BaksDev\Support\Type\Status\SupportStatus\Collection\SupportStatusOpen;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -59,20 +60,26 @@ final class IndexController extends AbstractController
             ->createForm(
                 type: SearchForm::class,
                 data: $search,
-                options: ['action' => $this->generateUrl('support:admin.index'),]
+                options: ['action' => $this->generateUrl('support:admin.index'),],
             )
             ->handleRequest($request);
 
         $filter = new SupportTicketStatusFilterDTO();
 
+
         $filterForm = $this
             ->createForm(
                 type: SupportTicketStatusFilterForm::class,
                 data: $filter,
-                options: ['action' => $this->generateUrl('support:admin.index'),]
+                options: ['action' => $this->generateUrl('support:admin.index'),],
             )
             ->handleRequest($request);
 
+        // Для виджета получать открытые тикеты, для этого указать статус 'open'
+        if($request->headers->get('X-Requested-With') === 'XMLHttpRequest')
+        {
+            $filter->setStatus(new SupportStatusOpen());
+        }
 
         // Получаем список
         $Support = $allSupport
@@ -80,6 +87,19 @@ final class IndexController extends AbstractController
             ->filter($filter)
             ->findPaginator();
 
+        // Данные для виджета
+        if($request->headers->get('X-Requested-With') === 'XMLHttpRequest')
+        {
+
+            return $this->render(
+                [
+                    'query' => $Support,
+                ],
+                module: 'support-widget',
+                routingName: $request->headers->get('x-device'),
+                file: 'widget-content.html.twig',
+            );
+        }
 
         return $this->render(
             [
@@ -87,8 +107,8 @@ final class IndexController extends AbstractController
                 'token' => $tokenUserGenerator->generate($this->getUsr()),
                 'search' => $searchForm->createView(),
                 'filter' => $filterForm->createView(),
-                'current_profile' => $this->getCurrentProfileUid()
-            ]
+                'current_profile' => $this->getCurrentProfileUid(),
+            ],
         );
     }
 }

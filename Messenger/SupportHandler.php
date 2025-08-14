@@ -55,12 +55,15 @@ final readonly class SupportHandler
         $template = $this->templateExtension->extends('@support:admin/detail/pc/message.html.twig');
         $render = $this->environment->render($template, ['message' => $SupportMessage]);
 
+
         /** Возвращаем идентификаторы для обновления формы c сообщением */
         $this->publish
             ->addData(['identifier' => (string) $message->getId()])
             ->addData(['event' => (string) $message->getEvent()])
             ->addData(['message' => $SupportMessage['message_id']])
             ->addData(['support' => $render])
+            // Добавить статус
+            ->addData(['status' => (string) $message->getStatus()])
             ->send('ticket');
     }
 }

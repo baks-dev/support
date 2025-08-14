@@ -27,6 +27,7 @@ namespace BaksDev\Support\Messenger;
 
 use BaksDev\Support\Type\Event\SupportEventUid;
 use BaksDev\Support\Type\Id\SupportUid;
+use BaksDev\Support\Type\Status\SupportStatus;
 
 final readonly class SupportMessage
 {
@@ -36,15 +37,20 @@ final readonly class SupportMessage
 
     private ?string $last;
 
+    private ?string $status;
+
     public function __construct(
         SupportUid $id,
         SupportEventUid $event,
-        ?SupportEventUid $last = null
+        ?SupportEventUid $last = null,
+        ?SupportStatus $status = null,
     )
     {
         $this->id = (string) $id;
         $this->event = (string) $event;
         $this->last = null === $last ? null : (string) $event;
+
+        $this->status = null === $status ? null : (string) $status;
     }
 
     /**
@@ -70,6 +76,11 @@ final readonly class SupportMessage
     public function getLast(): ?SupportEventUid
     {
         return $this->last ? new SupportEventUid($this->last) : null;
+    }
+
+    public function getStatus(): ?SupportStatus
+    {
+        return new SupportStatus($this->status);
     }
 
 }
