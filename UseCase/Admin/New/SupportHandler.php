@@ -39,6 +39,7 @@ final class SupportHandler extends AbstractHandler
         $this->setCommand($command);
         $this->preEventPersistOrUpdate(Support::class, SupportEvent::class);
 
+
         /** Валидация всех объектов */
         if($this->validatorCollection->isInvalid())
         {
@@ -49,7 +50,7 @@ final class SupportHandler extends AbstractHandler
 
         /** Отправляем сообщение в шину */
         $this->messageDispatch->dispatch(
-            message: new SupportMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
+            message: new SupportMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent(), $command->getStatus()),
             transport: 'support'
         );
 
