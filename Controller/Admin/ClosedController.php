@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -53,25 +53,20 @@ final class ClosedController extends AbstractController
     ): Response
     {
 
-        $SupportDTO = new SupportDTO();
-        $SupportEvent->getDto($SupportDTO);
+        $SupportDTO = $SupportEvent->getDto(SupportDTO::class);
 
         $SupportTicketClosedDTO = new SupportTicketStatusDTO();
-        $SupportEvent->getDto($SupportDTO);
-
 
         $form = $this
-            ->createForm(SupportTicketStatusForm::class, $SupportTicketClosedDTO, [
-                'action' => $this->generateUrl(
-                    'support:admin.closed',
-                    ['id' => $SupportEvent->getId()]
-                ),
-            ])
+            ->createForm(
+                type: SupportTicketStatusForm::class,
+                data: $SupportTicketClosedDTO,
+                options: ['action' => $this->generateUrl('support:admin.closed', ['id' => $SupportEvent->getId()])],
+            )
             ->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid() && $form->has('support_ticket_closed'))
         {
-
             $this->refreshTokenForm($form);
 
             $SupportDTO->setStatus(new SupportStatus(SupportStatusClose::PARAM));
@@ -82,7 +77,7 @@ final class ClosedController extends AbstractController
                 'page.closed',
                 $handle instanceof Support ? 'success.closed' : 'danger.closed',
                 'support.admin',
-                $handle
+                $handle,
             );
 
             return $handle instanceof Support ? $this->redirectToRoute('support:admin.index') : $this->redirectToReferer();

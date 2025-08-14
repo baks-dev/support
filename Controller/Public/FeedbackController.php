@@ -39,6 +39,7 @@ use BaksDev\Support\UseCase\Public\Feedback\SupportFeedbackForm;
 use BaksDev\Support\UseCase\Public\Feedback\SupportFeedbackHandler;
 use BaksDev\Users\Profile\TypeProfile\Type\Id\Choice\TypeProfileUser;
 use BaksDev\Users\Profile\TypeProfile\Type\Id\TypeProfileUid;
+use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -61,7 +62,7 @@ final class FeedbackController extends AbstractController
         $feedbackForm = $this
             ->createForm(
                 SupportFeedbackForm::class, $feedback,
-                ['action' => $this->generateUrl('support:public.feedback')]
+                ['action' => $this->generateUrl('support:public.feedback')],
             )
             ->handleRequest($request);
 
@@ -80,7 +81,11 @@ final class FeedbackController extends AbstractController
 
             /** SupportDTO */
 
-            $SupportDTO = new SupportDTO();
+            $SupportDTO = new SupportDTO(); // done
+
+            /** Присваиваем токен для последующего поиска */
+            $SupportDTO->getToken()->setValue($this->getProfileUid() ?: new UserProfileUid());
+
             $SupportDTO
                 ->setStatus(new SupportStatus(SupportStatusOpen::PARAM))
                 ->setPriority(new SupportPriority(SupportPriorityLow::PARAM))
@@ -104,8 +109,8 @@ final class FeedbackController extends AbstractController
                     $translator->trans(
                         id: 'add.message',
                         parameters: ['phone' => $feedback->getPhone()],
-                        domain: 'support.public'
-                    )
+                        domain: 'support.public',
+                    ),
                 );
 
             $SupportDTO->addMessage($SupportMessageDataDTO);
@@ -117,7 +122,7 @@ final class FeedbackController extends AbstractController
                 'add.feedback',
                 $handle instanceof Support ? 'add.success' : 'add.danger',
                 'support.public',
-                $handle
+                $handle,
             );
 
             return $this->redirectToReferer();

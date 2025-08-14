@@ -31,6 +31,7 @@ use BaksDev\Support\Entity\Invariable\SupportInvariable;
 use BaksDev\Support\Entity\Message\SupportMessage;
 use BaksDev\Support\Entity\Modify\SupportModify;
 use BaksDev\Support\Entity\Support;
+use BaksDev\Support\Entity\Token\SupportToken;
 use BaksDev\Support\Type\Event\SupportEventUid;
 use BaksDev\Support\Type\Id\SupportUid;
 use BaksDev\Support\Type\Priority\SupportPriority;
@@ -86,6 +87,10 @@ class SupportEvent extends EntityEvent
     #[ORM\OrderBy(["date" => "ASC"])]
     #[ORM\OneToMany(targetEntity: SupportMessage::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
     private Collection $messages;
+
+    /** SupportToken */
+    #[ORM\OneToOne(targetEntity: SupportToken::class, mappedBy: 'event', cascade: ['all'])]
+    private ?SupportToken $token = null;
 
 
     public function __construct()

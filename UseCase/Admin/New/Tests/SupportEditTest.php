@@ -77,9 +77,7 @@ class SupportEditTest extends KernelTestCase
 
 
         /** @see SupportDTO */
-        $SupportDTO = new SupportDTO();
-        $SupportEvent->getDto($SupportDTO);
-
+        $SupportDTO = $SupportEvent->getDto(SupportDTO::class);
 
         self::assertTrue($SupportDTO->getPriority()->equals(SupportPriorityLow::PARAM));
         $SupportDTO->setPriority(new SupportPriority(SupportPriorityHeight::PARAM));

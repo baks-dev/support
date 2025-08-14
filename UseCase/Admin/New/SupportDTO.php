@@ -30,6 +30,7 @@ use BaksDev\Support\Type\Event\SupportEventUid;
 use BaksDev\Support\Type\Priority\SupportPriority;
 use BaksDev\Support\Type\Status\SupportStatus;
 use BaksDev\Support\UseCase\Admin\New\Invariable\SupportInvariableDTO;
+use BaksDev\Support\UseCase\Admin\New\Token\SupportTokenDTO;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -57,9 +58,15 @@ final class SupportDTO implements SupportEventInterface
     /** Сообщения */
     private ArrayCollection $messages;
 
+
+    /** Токен маркетплейса */
+    private SupportTokenDTO $token;
+
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
+        $this->token = new SupportTokenDTO();
     }
 
     public function getEvent(): ?SupportEventUid
@@ -77,6 +84,11 @@ final class SupportDTO implements SupportEventInterface
     public function getInvariable(): ?SupportInvariableDTO
     {
         return $this->invariable;
+    }
+
+    public function getToken(): SupportTokenDTO
+    {
+        return $this->token;
     }
 
     public function setInvariable(?SupportInvariableDTO $invariable): self

@@ -92,8 +92,10 @@ class SupportNewTest extends KernelTestCase
     {
 
         /** SupportDTO */
-        $SupportDTO = new SupportDTO();
+        $SupportDTO = new SupportDTO(); // done
 
+        /** Присваиваем токен для последующего поиска */
+        $SupportDTO->getToken()->setValue(new UserProfileUid(UserProfileUid::TEST));
 
         $SupportDTO->setPriority(new SupportPriority(SupportPriorityLow::PARAM));
         self::assertTrue($SupportDTO->getPriority()->equals(SupportPriorityLow::PARAM));

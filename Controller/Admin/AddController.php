@@ -105,9 +105,7 @@ final class AddController extends AbstractController
         if($form->isSubmitted() && $form->isValid() && $form->has('support_message_add'))
         {
             /** @note Не сбрасываем токен csrf формы для чата */
-
-            $SupportDTO = new SupportDTO();
-            $SupportEvent->getDto($SupportDTO);
+            $SupportDTO = $SupportEvent->getDto(SupportDTO::class);
 
             /**
              * Присваиваем профиль пользователя бизнес-профиля, если не указано в тикете

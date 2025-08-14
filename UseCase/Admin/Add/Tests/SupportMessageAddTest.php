@@ -68,8 +68,7 @@ class SupportMessageAddTest extends KernelTestCase
 
 
         /** @see SupportDTO */
-        $SupportDTO = new SupportDTO();
-        $SupportEvent->getDto($SupportDTO);
+        $SupportDTO = $SupportEvent->getDto(SupportDTO::class);
 
 
         /** First SupportMessageDTO */
