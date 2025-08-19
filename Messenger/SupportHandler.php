@@ -28,6 +28,8 @@ namespace BaksDev\Support\Messenger;
 use BaksDev\Centrifugo\Server\Publish\CentrifugoPublishInterface;
 use BaksDev\Core\Twig\TemplateExtension;
 use BaksDev\Support\Repository\SupportLastMessage\SupportLastMessageInterface;
+use BaksDev\Support\Repository\SupportLastMessage\SupportLastMessageResult;
+use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Twig\Environment;
 
@@ -43,6 +45,7 @@ final readonly class SupportHandler
 
     public function __invoke(SupportMessage $message): void
     {
+        /** @var SupportLastMessageResult $SupportMessage */
         $SupportMessage = $this->supportLastMessage
             ->forSupport($message->getId())
             ->find();
@@ -56,14 +59,19 @@ final readonly class SupportHandler
         $render = $this->environment->render($template, ['message' => $SupportMessage]);
 
 
+        // Канал указать в зав-ти от наличия профиля
+        $channel = ($SupportMessage->getProfile() instanceof UserProfileUid) ? $SupportMessage->getProfile().'_ticket' : 'ticket';
+
+
         /** Возвращаем идентификаторы для обновления формы c сообщением */
         $this->publish
             ->addData(['identifier' => (string) $message->getId()])
             ->addData(['event' => (string) $message->getEvent()])
-            ->addData(['message' => $SupportMessage['message_id']])
+            ->addData(['message' => $SupportMessage->getMessageId()])
             ->addData(['support' => $render])
             // Добавить статус
             ->addData(['status' => (string) $message->getStatus()])
-            ->send('ticket');
+            ->send($channel);
+
     }
 }

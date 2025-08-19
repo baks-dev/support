@@ -116,34 +116,38 @@ executeFunc(function zuxjGRZu()
                 debug: false,
             });
 
-        centrifuge.newSubscription('ticket').on('publication', function(ctx)
+        const user_channel = window.current_profile + '_ticket';
+
+        const subscriptions = [user_channel, 'ticket'];
+
+        for(const subscription of subscriptions)
         {
-            //console.log(ctx.data);
 
-            let identifier = document.getElementById('tiket-' + ctx.data.identifier);
-
-            //console.log(identifier);
-
-            if(identifier)
+            centrifuge.newSubscription(subscription).on('publication', function(ctx)
             {
-                /** Меняем ссылку на ответы */
-                form.action = '/admin/support/message/add/' + ctx.data.event + '/' + ctx.data.message;
+                let identifier = document.getElementById('tiket-' + ctx.data.identifier);
 
-                /** При ответе удаляем из списка тикет */
-                document.getElementById(ctx.data.identifier)?.remove();
-
-                let messages = document.getElementById('messages-' + ctx.data.identifier);
-
-                if(messages)
+                if(identifier)
                 {
-                    messages.innerHTML += ctx.data.support;
-                    messages.scrollIntoView({behavior: "smooth", block: "end"});
+                    /** Меняем ссылку на ответы */
+                    form.action = '/admin/support/message/add/' + ctx.data.event + '/' + ctx.data.message;
 
-                    reloadLazy();
+                    /** При ответе удаляем из списка тикет */
+                    document.getElementById(ctx.data.identifier)?.remove();
+
+                    let messages = document.getElementById('messages-' + ctx.data.identifier);
+
+                    if(messages)
+                    {
+                        messages.innerHTML += ctx.data.support;
+                        messages.scrollIntoView({behavior: "smooth", block: "end"});
+
+                        reloadLazy();
+                    }
                 }
-            }
 
-        }).subscribe();
+            }).subscribe();
+        }
 
         centrifuge.connect();
 

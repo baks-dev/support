@@ -1,17 +1,17 @@
 <?php
 /*
  *  Copyright 2025.  Baks.dev <admin@baks.dev>
- *  
+ *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
  *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  *  copies of the Software, and to permit persons to whom the Software is furnished
  *  to do so, subject to the following conditions:
- *  
+ *
  *  The above copyright notice and this permission notice shall be included in all
  *  copies or substantial portions of the Software.
- *  
+ *
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  *  FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,15 +23,56 @@
 
 namespace BaksDev\Support\Repository\SupportLastMessage;
 
-use BaksDev\Support\Entity\Support;
 use BaksDev\Support\Type\Id\SupportUid;
+use BaksDev\Support\Type\Message\SupportMessageUid;
+use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
+use DateTimeImmutable;
 
-interface SupportLastMessageInterface
+class SupportLastMessageResult
 {
-    public function forSupport(Support|SupportUid|string $support): self;
+    public function __construct(
+        private string $id,
+        private string $name,
+        private string $message,
+        private string $message_id,
+        private string $date,
+        private bool $out,
+        private ?string $profile,
+    ) {}
 
-    /**
-     * Метод возвращает идентификатор последнего сообщения тикета
-     */
-    public function find(): SupportLastMessageResult|false;
+    public function getOut(): bool
+    {
+        return $this->out === true;
+    }
+
+    public function getId(): SupportUid
+    {
+        return new SupportUid($this->id);
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getMessageId(): SupportMessageUid
+    {
+        return new SupportMessageUid($this->message_id);
+    }
+
+    public function getDate(): DateTimeImmutable
+    {
+        return new DateTimeImmutable($this->date);
+    }
+
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
+
+    public function getProfile(): ?UserProfileUid
+    {
+        return $this->profile ? new UserProfileUid($this->profile) : null;
+    }
+
 }

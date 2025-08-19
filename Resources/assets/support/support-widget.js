@@ -25,13 +25,13 @@ async function updateWidgetList()
 {
 
     await fetch('/admin/supports', {
-        method : "GET",
-        cache : "no-cache",
-        credentials : "same-origin",
-        headers : {
-            "X-Requested-With" : "XMLHttpRequest",
-        }, redirect : "follow",
-        referrerPolicy : "no-referrer",
+        method: "GET",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+        }, redirect: "follow",
+        referrerPolicy: "no-referrer",
     })
 
         .then((response) =>
@@ -96,27 +96,36 @@ executeFunc(function quxjTRYv()
                 debug: false,
             });
 
-        centrifuge.newSubscription('ticket').on('publication', function(ctx)
+        // "пользовательский" channel
+        const user_channel = window.current_profile + '_ticket';
+
+        const subscriptions = [user_channel, 'ticket'];
+
+        for(const subscription of subscriptions)
         {
-            if (ctx.data.status === 'open')
+
+            centrifuge.newSubscription(subscription).on('publication', function(ctx)
             {
-                // Отобразить индикатор
-                document.getElementById('widget_notification').classList.remove('d-none');
+                if(ctx.data.status === 'open')
+                {
+                    // Отобразить индикатор
+                    document.getElementById('widget_notification').classList.remove('d-none');
 
-                // Обновить список и создать toast-сообщение
-                // updateWidgetList();
+                    // Обновить список и создать toast-сообщение
+                    // updateWidgetList();
 
-                // Создать Toast сообщение
-                const header = 'Сообщение поддержки';
-                const warningMessageHandler = '{ "type":"notice" , ' +
-                    '"header":"' + header + '"  , ' +
-                    '"message" : "Добавлено новое сообщение." }';
+                    // Создать Toast сообщение
+                    const header = 'Сообщение поддержки';
+                    const warningMessageHandler = '{ "type":"notice" , ' +
+                        '"header":"' + header + '"  , ' +
+                        '"message" : "Добавлено новое сообщение." }';
 
-                createToast(JSON.parse(warningMessageHandler));
+                    createToast(JSON.parse(warningMessageHandler));
 
-            }
+                }
 
-        }).subscribe();
+            }).subscribe();
+        }
 
         centrifuge.connect();
 
@@ -139,6 +148,7 @@ executeFunc(function quxjTRYv()
 });
 
 // Скрыть индикатор
-document.querySelector('.collapse-link-content').addEventListener('click', function(){
+document.querySelector('.collapse-link-content').addEventListener('click', function()
+{
     document.getElementById('widget_notification').classList.add('d-none');
 })
