@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace BaksDev\Support\Repository\SupportLastMessage;
 
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
+use BaksDev\Support\Entity\Invariable\SupportInvariable;
 use BaksDev\Support\Entity\Message\SupportMessage;
 use BaksDev\Support\Entity\Support;
 use BaksDev\Support\Type\Id\SupportUid;
@@ -57,9 +58,9 @@ final class SupportLastMessageRepository implements SupportLastMessageInterface
     /**
      * Метод возвращает идентификатор последнего сообщения тикета
      */
-    public function find(): array|false
+    public function find(): SupportLastMessageResult|false
     {
-        if($this->support === false)
+        if(false === ($this->support instanceof SupportUid))
         {
             throw new InvalidArgumentException('Invalid Argument $support');
         }
@@ -86,7 +87,18 @@ final class SupportLastMessageRepository implements SupportLastMessageInterface
                 sort: 'date'
             );
 
+        $dbal
+            ->addSelect('invariable.profile')
+            ->leftJoin(
+                'support',
+                SupportInvariable::class,
+                'invariable',
+                'invariable.event = support.event',
+            );
 
-        return $dbal->fetchAssociative();
+        $result = $dbal->fetchHydrate(SupportLastMessageResult::class);
+
+        return ($result instanceof SupportLastMessageResult) ? $result : false;
+
     }
 }
