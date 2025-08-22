@@ -96,7 +96,7 @@ final class IndexController extends AbstractController
                     'query' => $Support,
                 ],
                 module: 'support-widget',
-                routingName: $request->headers->get('x-device'),
+                dir: $request->headers->get('x-device'),
                 file: 'widget-content.html.twig',
             );
         }
