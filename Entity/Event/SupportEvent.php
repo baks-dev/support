@@ -152,6 +152,11 @@ class SupportEvent extends EntityEvent
         return $this->invariable;
     }
 
+    public function getToken(): ?SupportToken
+    {
+        return $this->token;
+    }
+
     public function getDto($dto): mixed
     {
         if(is_string($dto) && class_exists($dto))
