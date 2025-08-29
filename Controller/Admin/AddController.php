@@ -37,7 +37,6 @@ use BaksDev\Support\Type\Status\SupportStatus;
 use BaksDev\Support\Type\Status\SupportStatus\Collection\SupportStatusClose;
 use BaksDev\Support\UseCase\Admin\Add\SupportMessageAddDTO;
 use BaksDev\Support\UseCase\Admin\Add\SupportMessageAddForm;
-use BaksDev\Support\UseCase\Admin\New\Invariable\SupportInvariableDTO;
 use BaksDev\Support\UseCase\Admin\New\Message\SupportMessageDTO;
 use BaksDev\Support\UseCase\Admin\New\SupportDTO;
 use BaksDev\Support\UseCase\Admin\New\SupportHandler;
@@ -106,20 +105,6 @@ final class AddController extends AbstractController
         {
             /** @note Не сбрасываем токен csrf формы для чата */
             $SupportDTO = $SupportEvent->getDto(SupportDTO::class);
-
-            /**
-             * Присваиваем профиль пользователя бизнес-профиля, если не указано в тикете
-             */
-
-            $SupportInvariableDTO = $SupportDTO->getInvariable();
-
-            if(
-                true === ($SupportInvariableDTO instanceof SupportInvariableDTO)
-                && false === ($SupportInvariableDTO->getProfile() instanceof UserProfileUid)
-            )
-            {
-                $SupportInvariableDTO->setProfile($this->getProfileUid());
-            }
 
             /**
              * Меняем статус на "Закрытый" и добавляем ответ на сообщение
