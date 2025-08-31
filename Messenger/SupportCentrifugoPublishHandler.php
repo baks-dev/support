@@ -56,7 +56,7 @@ final readonly class SupportCentrifugoPublishHandler
             ->forSupport($message->getId())
             ->find();
 
-        if(false === $SupportMessage)
+        if(false === ($SupportMessage instanceof SupportLastMessageResult))
         {
             return;
         }
