@@ -24,22 +24,21 @@
 namespace BaksDev\Support\Controller\Admin\Tests;
 
 use BaksDev\Users\User\Tests\TestUserAccount;
+use PHPUnit\Framework\Attributes\DependsOnClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\Attribute\When;
 
-/**
- * @group support
- *
- * @depends BaksDev\Support\Controller\Admin\Tests\MessageAddControllerTest::class
- */
 #[When(env: 'test')]
+#[Group('support')]
 final class IndexControllerTest extends WebTestCase
 {
     private const string URL = '/admin/supports';
 
     private const string ROLE = 'ROLE_SUPPORT';
 
-    /** Доступ по роли  */
+    /** Доступ по роли */
+    #[DependsOnClass(MessageAddControllerTest::class)]
     public function testRoleSuccessful(): void
     {
         self::ensureKernelShutdown();
@@ -59,6 +58,7 @@ final class IndexControllerTest extends WebTestCase
     }
 
     /** Доступ по роли ROLE_ADMIN */
+    #[DependsOnClass(MessageAddControllerTest::class)]
     public function testRoleAdminSuccessful(): void
     {
         self::ensureKernelShutdown();
@@ -78,6 +78,7 @@ final class IndexControllerTest extends WebTestCase
     }
 
     /** Доступ по роли ROLE_USER */
+    #[DependsOnClass(MessageAddControllerTest::class)]
     public function testRoleUserFiled(): void
     {
         self::ensureKernelShutdown();
@@ -97,6 +98,7 @@ final class IndexControllerTest extends WebTestCase
     }
 
     /** Доступ по без роли */
+    #[DependsOnClass(MessageAddControllerTest::class)]
     public function testGuestFiled(): void
     {
         self::ensureKernelShutdown();

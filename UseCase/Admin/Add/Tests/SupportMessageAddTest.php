@@ -32,7 +32,10 @@ use BaksDev\Support\Type\Status\SupportStatus;
 use BaksDev\Support\UseCase\Admin\New\Message\SupportMessageDTO;
 use BaksDev\Support\UseCase\Admin\New\SupportDTO;
 use BaksDev\Support\UseCase\Admin\New\SupportHandler;
+use BaksDev\Support\UseCase\Admin\New\Tests\SupportEditTest;
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\DependsOnClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
@@ -41,14 +44,11 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\Attribute\When;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @group support
- *
- * @depends BaksDev\Support\UseCase\Admin\New\Tests\SupportEditTest::class
- */
 #[When(env: 'test')]
+#[Group('support')]
 class SupportMessageAddTest extends KernelTestCase
 {
+    #[DependsOnClass(SupportEditTest::class)]
     public function testUseCase(): void
     {
         // Бросаем событие консольной комманды

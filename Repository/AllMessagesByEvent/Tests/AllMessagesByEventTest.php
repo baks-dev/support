@@ -25,11 +25,12 @@ namespace BaksDev\Support\Repository\AllMessagesByEvent\Tests;
 
 use BaksDev\Support\Repository\AllMessagesByEvent\AllMessagesByEventInterface;
 use BaksDev\Support\Type\Event\SupportEventUid;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\DependencyInjection\Attribute\When;
 
-/**
- * @group support
- */
+#[When(env: 'test')]
+#[Group('support')]
 class AllMessagesByEventTest extends KernelTestCase
 {
     public function testUseCase(): void

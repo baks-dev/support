@@ -24,20 +24,21 @@
 namespace BaksDev\Support\Repository\AllSupport\Tests;
 
 use BaksDev\Core\Form\Search\SearchDTO;
+use BaksDev\Support\Repository\AllMessagesByEvent\Tests\AllMessagesByEventTest;
 use BaksDev\Support\Repository\AllSupport\AllSupportInterface;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
+use PHPUnit\Framework\Attributes\DependsOnClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\DependencyInjection\Attribute\When;
 
-/**
- * @group support
- *
- * @depends BaksDev\Support\Repository\AllMessagesByEvent\Tests\AllMessagesByEventTest::class
- */
+#[When(env: 'test')]
+#[Group('support')]
 class AllSupportRepositoryTest extends KernelTestCase
 {
+    #[DependsOnClass(AllMessagesByEventTest::class)]
     public function testUseCase(): void
     {
-
         /** @var AllSupportInterface $AllSupportRepositoryInterface */
         $AllSupportRepositoryInterface = self::getContainer()->get(AllSupportInterface::class);
 

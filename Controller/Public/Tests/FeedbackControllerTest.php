@@ -24,13 +24,13 @@
 namespace BaksDev\Support\Controller\Public\Tests;
 
 use BaksDev\Users\User\Tests\TestUserAccount;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DependencyInjection\Attribute\When;
 
-/**
- * @group support
- */
 #[When(env: 'test')]
+#[Group('support')]
 final class FeedbackControllerTest extends WebTestCase
 {
     private static $url = '/feedback';

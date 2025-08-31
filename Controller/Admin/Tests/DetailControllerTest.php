@@ -25,29 +25,26 @@ namespace BaksDev\Support\Controller\Admin\Tests;
 
 use BaksDev\Support\Type\Event\SupportEventUid;
 use BaksDev\Users\User\Tests\TestUserAccount;
+use PHPUnit\Framework\Attributes\DependsOnClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\Attribute\When;
 
-/**
- * @group support
- *
- * @depends BaksDev\Support\Controller\Admin\Tests\IndexControllerTest::class
- */
 #[When(env: 'test')]
+#[Group('support')]
 final class DetailControllerTest extends WebTestCase
 {
     private static ?string $url = null;
 
     private const string ROLE = 'ROLE_SUPPORT_DETAIL';
 
-
     public static function setUpBeforeClass(): void
     {
         self::$url = sprintf('/admin/support/detail/%s', SupportEventUid::TEST);
     }
 
-
-    /** Доступ по роли  */
+    /** Доступ по роли */
+    #[DependsOnClass(IndexControllerTest::class)]
     public function testRoleSuccessful(): void
     {
         self::ensureKernelShutdown();
@@ -68,6 +65,7 @@ final class DetailControllerTest extends WebTestCase
 
 
     /** Доступ по роли ROLE_ADMIN */
+    #[DependsOnClass(IndexControllerTest::class)]
     public function testRoleAdminSuccessful(): void
     {
         self::ensureKernelShutdown();
@@ -87,6 +85,7 @@ final class DetailControllerTest extends WebTestCase
     }
 
     /** Доступ по роли ROLE_USER */
+    #[DependsOnClass(IndexControllerTest::class)]
     public function testRoleUserFiled(): void
     {
         self::ensureKernelShutdown();
@@ -106,6 +105,7 @@ final class DetailControllerTest extends WebTestCase
     }
 
     /** Доступ по без роли */
+    #[DependsOnClass(IndexControllerTest::class)]
     public function testGuestFiled(): void
     {
         self::ensureKernelShutdown();

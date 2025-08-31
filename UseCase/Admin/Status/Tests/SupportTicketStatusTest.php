@@ -31,8 +31,11 @@ use BaksDev\Support\Type\Id\SupportUid;
 use BaksDev\Support\Type\Status\SupportStatus;
 use BaksDev\Support\Type\Status\SupportStatus\Collection\SupportStatusClose;
 use BaksDev\Support\Type\Status\SupportStatus\Collection\SupportStatusOpen;
+use BaksDev\Support\UseCase\Admin\Add\Tests\SupportMessageAddTest;
 use BaksDev\Support\UseCase\Admin\New\SupportDTO;
 use BaksDev\Support\UseCase\Admin\Status\SupportTicketStatusHandler;
+use PHPUnit\Framework\Attributes\DependsOnClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
@@ -41,14 +44,11 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\Attribute\When;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @group support
- *
- * @depends BaksDev\Support\UseCase\Admin\Add\Tests\SupportMessageAddTest::class
- */
 #[When(env: 'test')]
+#[Group('support')]
 class SupportTicketStatusTest extends KernelTestCase
 {
+    #[DependsOnClass(SupportMessageAddTest::class)]
     public function testUseCase(): void
     {
         // Бросаем событие консольной комманды

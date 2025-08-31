@@ -24,16 +24,15 @@
 namespace BaksDev\Support\Controller\Admin\Tests;
 
 use BaksDev\Support\Type\Event\SupportEventUid;
+use BaksDev\Support\UseCase\Admin\New\Tests\SupportNewTest;
 use BaksDev\Users\User\Tests\TestUserAccount;
+use PHPUnit\Framework\Attributes\DependsOnClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\Attribute\When;
 
-/**
- * @group support
- *
- * @depends BaksDev\Support\UseCase\Admin\New\Tests\SupportNewTest::class
- */
 #[When(env: 'test')]
+#[Group('support')]
 final class DeleteControllerTest extends WebTestCase
 {
     private static ?string $url = null;
@@ -47,6 +46,7 @@ final class DeleteControllerTest extends WebTestCase
 
 
     /** Доступ по роли  */
+    #[DependsOnClass(SupportNewTest::class)]
     public function testRoleSuccessful(): void
     {
         self::ensureKernelShutdown();
@@ -67,6 +67,7 @@ final class DeleteControllerTest extends WebTestCase
 
 
     /** Доступ по роли ROLE_ADMIN */
+    #[DependsOnClass(SupportNewTest::class)]
     public function testRoleAdminSuccessful(): void
     {
         self::ensureKernelShutdown();
@@ -86,6 +87,7 @@ final class DeleteControllerTest extends WebTestCase
     }
 
     /** Доступ по роли ROLE_USER */
+    #[DependsOnClass(SupportNewTest::class)]
     public function testRoleUserFiled(): void
     {
         self::ensureKernelShutdown();
@@ -105,6 +107,7 @@ final class DeleteControllerTest extends WebTestCase
     }
 
     /** Доступ по без роли */
+    #[DependsOnClass(SupportNewTest::class)]
     public function testGuestFiled(): void
     {
         self::ensureKernelShutdown();

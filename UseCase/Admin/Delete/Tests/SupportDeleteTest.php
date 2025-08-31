@@ -32,18 +32,18 @@ use BaksDev\Support\Type\Id\SupportUid;
 use BaksDev\Support\UseCase\Admin\Delete\SupportDeleteDTO;
 use BaksDev\Support\UseCase\Admin\Delete\SupportDeleteHandler;
 use BaksDev\Support\UseCase\Admin\New\SupportDTO;
+use BaksDev\Support\UseCase\Admin\Status\Tests\SupportTicketStatusTest;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\DependsOnClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Attribute\When;
 
-/**
- * @group support
- *
- * @depends BaksDev\Support\UseCase\Admin\Status\Tests\SupportTicketStatusTest::class
- */
 #[When(env: 'test')]
+#[Group('support')]
 class SupportDeleteTest extends KernelTestCase
 {
+    #[DependsOnClass(SupportTicketStatusTest::class)]
     public function testUseCase(): void
     {
         /** @var CurrentSupportEventInterface $SupportCurrentEvent */
@@ -70,6 +70,7 @@ class SupportDeleteTest extends KernelTestCase
 
     }
 
+    #[DependsOnClass(SupportTicketStatusTest::class)]
     public static function tearDownAfterClass(): void
     {
         /** @var EntityManagerInterface $em */

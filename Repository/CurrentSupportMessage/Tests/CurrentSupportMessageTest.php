@@ -27,18 +27,19 @@ use BaksDev\Support\Entity\Message\SupportMessage;
 use BaksDev\Support\Repository\CurrentSupportMessage\CurrentSupportMessagesInterface;
 use BaksDev\Support\Type\Event\SupportEventUid;
 use BaksDev\Support\Type\Message\SupportMessageUid;
+use BaksDev\Support\UseCase\Admin\New\Tests\SupportNewTest;
+use PHPUnit\Framework\Attributes\DependsOnClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\DependencyInjection\Attribute\When;
 
-/**
- * @group support
- *
- * @depends BaksDev\Support\UseCase\Admin\New\Tests\SupportNewTest::class
- */
+#[When(env: 'test')]
+#[Group('support')]
 class CurrentSupportMessageTest extends KernelTestCase
 {
+    #[DependsOnClass(SupportNewTest::class)]
     public function testUseCase(): void
     {
-
         /** @var CurrentSupportMessagesInterface $CurrentSupportMessageInterface */
         $CurrentSupportMessageInterface = self::getContainer()->get(CurrentSupportMessagesInterface::class);
 

@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace BaksDev\Support\UseCase\Admin\New\Tests;
 
+use BaksDev\Support\Controller\Admin\Tests\DeleteControllerTest;
 use BaksDev\Support\Entity\Support;
 use BaksDev\Support\Repository\SupportCurrentEvent\CurrentSupportEventInterface;
 use BaksDev\Support\Type\Id\SupportUid;
@@ -41,6 +42,8 @@ use BaksDev\Users\Profile\TypeProfile\Type\Id\Choice\TypeProfileOrganization;
 use BaksDev\Users\Profile\TypeProfile\Type\Id\Choice\TypeProfileUser;
 use BaksDev\Users\Profile\TypeProfile\Type\Id\TypeProfileUid;
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\DependsOnClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
@@ -49,15 +52,11 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\Attribute\When;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @group support
- *
- * @depends BaksDev\Support\Controller\Admin\Tests\DeleteControllerTest::class
- *
- */
 #[When(env: 'test')]
+#[Group('support')]
 class SupportEditTest extends KernelTestCase
 {
+    #[DependsOnClass(DeleteControllerTest::class)]
     public function testUseCase(): void
     {
         // Бросаем событие консольной комманды
