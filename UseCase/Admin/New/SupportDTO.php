@@ -91,6 +91,12 @@ final class SupportDTO implements SupportEventInterface
         return $this->token;
     }
 
+    public function setToken(SupportTokenDTO $token): self
+    {
+        $this->token = $token;
+        return $this;
+    }
+
     public function setInvariable(?SupportInvariableDTO $invariable): self
     {
         $this->invariable = $invariable;
