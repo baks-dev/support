@@ -83,6 +83,11 @@ final class SupportMessageAddDTO implements SupportMessageInterface
 
     public function setMessage(?string $message): self
     {
+        if(empty(trim($message)))
+        {
+            return $this;
+        }
+
         /** Форматируем сообщение */
         $array = explode(PHP_EOL, $message);
         $array = array_map('trim', $array);
@@ -90,6 +95,7 @@ final class SupportMessageAddDTO implements SupportMessageInterface
         $message = implode(PHP_EOL.PHP_EOL, $array);
 
         $this->message = $message;
+
         return $this;
     }
 

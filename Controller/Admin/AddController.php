@@ -27,6 +27,7 @@ namespace BaksDev\Support\Controller\Admin;
 
 use BaksDev\Centrifugo\Server\Publish\CentrifugoPublishInterface;
 use BaksDev\Core\Controller\AbstractController;
+use BaksDev\Core\Deduplicator\DeduplicatorInterface;
 use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
 use BaksDev\Core\Type\UidType\ParamConverter;
 use BaksDev\Support\Entity\Event\SupportEvent;
@@ -62,6 +63,7 @@ final class AddController extends AbstractController
         CentrifugoPublishInterface $publish,
         #[ParamConverter(SupportMessageUid::class)] $message,
         #[MapEntity] SupportEvent $SupportEvent,
+        DeduplicatorInterface $deduplicator
     ): Response
     {
 
@@ -95,7 +97,7 @@ final class AddController extends AbstractController
             ->createForm(SupportMessageAddForm::class, $ReplySupportMessageDto, [
                 'action' => $this->generateUrl('support:admin.add', [
                     'id' => $SupportEvent->getId(),
-                    'message' => $message
+                    'message' => $message,
                 ]),
             ])
             ->handleRequest($request);
@@ -103,6 +105,26 @@ final class AddController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid() && $form->has('support_message_add'))
         {
+
+            /** Дедубликатор от ложного срабатывания */
+
+            $Deduplicator = $deduplicator
+                ->namespace('support')
+                ->expiresAfter('5 seconds')
+                ->deduplication([
+                    (string) $SupportEvent->getMain(),
+                    $ReplySupportMessageDto->getMessage(),
+                    self::class,
+                ]);
+
+            if($Deduplicator->isExecuted())
+            {
+                return new Response('Дубликат сообщения. Повторите попытку через 5 секунд.', 429);
+            }
+
+            $Deduplicator->save();
+
+
             /** @note Не сбрасываем токен csrf формы для чата */
             $SupportDTO = $SupportEvent->getDto(SupportDTO::class);
 
@@ -135,7 +157,7 @@ final class AddController extends AbstractController
         }
 
         return $this->render([
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 }
