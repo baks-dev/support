@@ -42,10 +42,10 @@ final class AllSupportResult
         private string $ticket, //" => "u2i-3LpXN05j9eSa6Iks0OXs_A"
         private string $title, //" => "Triangle TH201 Sportex 245/45 R18 100Y"
         private string $type_profile_name, //" => "Авито сообщения"
-        private string $name, //" => "Владимир"
-        private string $message, //" => "и отзывы кстати хуже на 202"
-        private string $message_id, //" => "0197dfb0-f5a0-7b78-9b0a-2ea88c7c013b"
-        private string $date, //" => "2025-07-06 15:22:46"
+        private ?string $name, //" => "Владимир"
+        private ?string $message, //" => "и отзывы кстати хуже на 202"
+        private ?string $message_id, //" => "0197dfb0-f5a0-7b78-9b0a-2ea88c7c013b"
+        private ?string $date, //" => "2025-07-06 15:22:46"
         // сопутствующее производство
     ) {}
 
@@ -84,13 +84,18 @@ final class AllSupportResult
         return $this->type_profile_name;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function getMessage(): string
+    public function getMessage(): ?string
     {
+        if(empty($this->message))
+        {
+            return null;
+        }
+
         $message = strip_tags($this->message);
         $message = str_replace('Ссылка на товар', '', $message);
 
@@ -104,6 +109,6 @@ final class AllSupportResult
 
     public function getMessageDate(): DateTimeImmutable
     {
-        return new DateTimeImmutable($this->date);
+        return new DateTimeImmutable($this->date ?? 'now');
     }
 }
