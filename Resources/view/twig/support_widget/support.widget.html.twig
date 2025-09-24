@@ -1,15 +1,6 @@
 {# Шаблон виджета поддержки #}
-<div
-        class="offcanvas offcanvas-start"
-        tabindex="-1"
-        id="offcanvas"
-        style="width:640px"
->
-
-</div>
 
 {{ include(_self|replace({ "support.widget.html.twig": baks_settings.device~"/support-widget.html.twig" })) }}
-
 
 <script nonce='{{ csp_nonce() }}' async data-src="/assets/centrifugo/centrifuge.min.js?v={{ version }}"
         class="lazy"></script>
