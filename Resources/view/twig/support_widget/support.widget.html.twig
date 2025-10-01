@@ -2,9 +2,10 @@
 
 {{ include(_self|replace({ "support.widget.html.twig": baks_settings.device~"/support-widget.html.twig" })) }}
 
-<script nonce='{{ csp_nonce() }}' async data-src="/assets/centrifugo/centrifuge.min.js?v={{ version }}"
+<script nonce='{{ csp_nonce() }}' async data-src="/assets/{{ version }}/centrifugo/centrifuge.min.js?v={{ version }}"
         class="lazy"></script>
-<script nonce='{{ csp_nonce() }}' async data-src="/assets/support/support-widget.min.js?v={{ version }}" class="lazy"></script>
+<script nonce='{{ csp_nonce() }}' async data-src="/assets/{{ version }}/support/support-widget.min.js?v={{ version }}"
+        class="lazy"></script>
 
 <script nonce="{{ csp_nonce() }}" class="lazy">
     window.centrifugo_dsn = "{{ centrifugo_dsn }}";
