@@ -63,7 +63,7 @@ async function updateWidgetList()
 
                 /** Обновляем Preload */
                 let lazy = document.createElement("script");
-                lazy.src = "/assets/{{ version }}/js/lazyload.min.js?v=" + Date.now();
+                lazy.src = "/assets/" + $version + "/js/lazyload.min.js";
                 document.head.appendChild(lazy);
             }
         });
