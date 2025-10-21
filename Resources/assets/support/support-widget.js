@@ -23,7 +23,6 @@
 /** Обновить содержимое виджета */
 async function updateWidgetList()
 {
-
     await fetch('/admin/supports', {
         method: "GET",
         cache: "no-cache",
