@@ -30,6 +30,7 @@ btn?.addEventListener("click",
 var insert_answer = document.querySelector('#support_message_add_form_insert_asnwer');
 var reply_message = document.querySelector('#support_message_add_form_reply_message');
 var answers = document.querySelector("#support_message_add_form_reply_answers");
+
 /**
  * Выбор из списка ответов
  */
