@@ -20,7 +20,6 @@
  *  THE SOFTWARE.
  */
 
-
 /** Обновить содержимое виджета */
 async function updateWidgetList()
 {
