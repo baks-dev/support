@@ -84,8 +84,9 @@ final class DetailController extends AbstractController
             ->setReply($SupportMessageDTO)
             ->setTicketType($SupportEvent->getInvariable()?->getType());
 
+        /** @var SupportDTO $SupportDTO */
         $SupportDTO = $SupportEvent->getDto(SupportDTO::class);
-        $SupportDTO->getInvariable()?->isReply() ?: $ReplySupportMessageDto->notSubmit();
+        true === $SupportDTO->getInvariable()?->isReply() ? $ReplySupportMessageDto->notSubmit() : null;
 
         /**
          * Ответы по типу профиля пользователя
