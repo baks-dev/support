@@ -41,7 +41,7 @@ final class AllSupportResult
         private string $priority, //" => "height"
         private string $ticket, //" => "u2i-3LpXN05j9eSa6Iks0OXs_A"
         private string $title, //" => "Triangle TH201 Sportex 245/45 R18 100Y"
-        private string $type_profile_name, //" => "Авито сообщения"
+        private ?string $type_profile_name, //" => "Авито сообщения"
         private ?string $name, //" => "Владимир"
         private ?string $message, //" => "и отзывы кстати хуже на 202"
         private ?string $message_id, //" => "0197dfb0-f5a0-7b78-9b0a-2ea88c7c013b"
@@ -81,7 +81,7 @@ final class AllSupportResult
 
     public function getTypeProfileName(): string
     {
-        return $this->type_profile_name;
+        return $this->type_profile_name ?: 'Не определен';
     }
 
     public function getName(): ?string
