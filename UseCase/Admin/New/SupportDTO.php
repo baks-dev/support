@@ -43,7 +43,7 @@ final class SupportDTO implements SupportEventInterface
 
 
     /** Постоянная величина */
-    private ?SupportInvariableDTO $invariable = null;
+    private ?SupportInvariableDTO $invariable;
 
     /** Статус тикета */
     #[Assert\NotBlank]
@@ -67,6 +67,7 @@ final class SupportDTO implements SupportEventInterface
     {
         $this->messages = new ArrayCollection();
         $this->token = new SupportTokenDTO();
+        $this->invariable = new SupportInvariableDTO();
     }
 
     public function getEvent(): ?SupportEventUid
