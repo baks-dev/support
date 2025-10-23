@@ -86,7 +86,7 @@ final class DetailController extends AbstractController
 
         /** @var SupportDTO $SupportDTO */
         $SupportDTO = $SupportEvent->getDto(SupportDTO::class);
-        true === $SupportDTO->getInvariable()?->isReply() ? $ReplySupportMessageDto->notSubmit() : null;
+        true === $SupportDTO->getInvariable()?->isReply() ?: $ReplySupportMessageDto->notSubmit();
 
         /**
          * Ответы по типу профиля пользователя
