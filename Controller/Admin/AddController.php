@@ -113,7 +113,7 @@ final class AddController extends AbstractController
                 ->expiresAfter('5 seconds')
                 ->deduplication([
                     (string) $SupportEvent->getMain(),
-                    $ReplySupportMessageDto->getMessage(),
+                    str_replace(PHP_EOL, '', $ReplySupportMessageDto->getMessage()),
                     self::class,
                 ]);
 
