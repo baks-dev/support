@@ -112,13 +112,24 @@ final class SupportDTO implements SupportEventInterface
 
     public function addMessage(Message\SupportMessageDTO $message): bool
     {
+        /**
+         * Проверяем, что такой текст уже был добавлен
+         */
+
         $filter = $this->messages->filter(function(Message\SupportMessageDTO $element) use ($message) {
+
+            $clean1 = mb_strtolower(preg_replace('/\s+/', '', $message->getMessage()));
+            $clean2 = mb_strtolower(preg_replace('/\s+/', '', $element->getMessage()));
 
             return
                 $element->getDate()->format('YmdHi') === $message->getDate()->format('YmdHi') &&
-                md5(trim(str_replace(PHP_EOL, '', $message->getMessage()))) === md5(trim(str_replace(PHP_EOL, '', $element->getMessage()))) &&
+                md5($clean1) === md5($clean2) &&
                 $message->getOut() === $element->getOut();
         });
+
+        /**
+         * Добавляем новое сообщение если текст не был найден
+         */
 
         if($filter->isEmpty())
         {
