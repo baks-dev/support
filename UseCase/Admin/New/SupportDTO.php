@@ -113,9 +113,10 @@ final class SupportDTO implements SupportEventInterface
     public function addMessage(Message\SupportMessageDTO $message): bool
     {
         $filter = $this->messages->filter(function(Message\SupportMessageDTO $element) use ($message) {
+
             return
                 $element->getDate()->format('YmdHi') === $message->getDate()->format('YmdHi') &&
-                md5(trim($message->getMessage())) === md5(trim($element->getMessage())) &&
+                md5(trim(str_replace(PHP_EOL, '', $message->getMessage()))) === md5(trim(str_replace(PHP_EOL, '', $element->getMessage()))) &&
                 $message->getOut() === $element->getOut();
         });
 
