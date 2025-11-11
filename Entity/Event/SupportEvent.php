@@ -27,6 +27,7 @@ namespace BaksDev\Support\Entity\Event;
 
 use BaksDev\Core\Entity\EntityEvent;
 use BaksDev\Support\Entity\Comment\SupportComment;
+use BaksDev\Support\Entity\Event\Rating\SupportRating;
 use BaksDev\Support\Entity\Invariable\SupportInvariable;
 use BaksDev\Support\Entity\Message\SupportMessage;
 use BaksDev\Support\Entity\Modify\SupportModify;
@@ -95,6 +96,10 @@ class SupportEvent extends EntityEvent
     /** SupportComment */
     #[ORM\OneToOne(targetEntity: SupportComment::class, mappedBy: 'event', cascade: ['all'])]
     private ?SupportComment $comment = null;
+
+    /** SupportRating */
+    #[ORM\OneToOne(targetEntity: SupportRating::class, mappedBy: 'event', cascade: ['all'])]
+    private ?SupportRating $rating = null;
 
     public function __construct()
     {

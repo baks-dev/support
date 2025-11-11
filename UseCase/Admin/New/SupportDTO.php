@@ -30,6 +30,7 @@ use BaksDev\Support\Type\Event\SupportEventUid;
 use BaksDev\Support\Type\Priority\SupportPriority;
 use BaksDev\Support\Type\Status\SupportStatus;
 use BaksDev\Support\UseCase\Admin\New\Invariable\SupportInvariableDTO;
+use BaksDev\Support\UseCase\Admin\New\Message\SupportMessageDTO;
 use BaksDev\Support\UseCase\Admin\New\Token\SupportTokenDTO;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -104,6 +105,7 @@ final class SupportDTO implements SupportEventInterface
         return $this;
     }
 
+    /** @return  ArrayCollection<SupportMessageDTO> */
     public function getMessages(): ArrayCollection
     {
         return $this->messages;
