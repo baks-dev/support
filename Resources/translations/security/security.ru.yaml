@@ -34,3 +34,7 @@ ROLE_SUPPORT_ADD:
 ROLE_SUPPORT_DETAIL:
   name: 'Детальный просмотр'
   desc: ''
+
+ROLE_SUPPORT_COMMENT:
+  name: 'Комментирование тикетов'
+  desc: ''

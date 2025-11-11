@@ -34,3 +34,7 @@ ROLE_SUPPORT_ADD:
 ROLE_SUPPORT_DETAIL:
   name: 'Detailed view'
   desc: ''
+
+ROLE_SUPPORT_COMMENT:
+  name: 'Comment on ticket'
+  desc: ''

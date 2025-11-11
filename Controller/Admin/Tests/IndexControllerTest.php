@@ -31,6 +31,7 @@ use Symfony\Component\DependencyInjection\Attribute\When;
 
 #[When(env: 'test')]
 #[Group('support')]
+#[Group('support-controller')]
 final class IndexControllerTest extends WebTestCase
 {
     private const string URL = '/admin/supports';

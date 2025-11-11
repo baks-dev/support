@@ -32,6 +32,7 @@ use Symfony\Component\DependencyInjection\Attribute\When;
 
 #[When(env: 'test')]
 #[Group('support')]
+#[Group('support-controller')]
 final class DetailControllerTest extends WebTestCase
 {
     private static ?string $url = null;

@@ -29,11 +29,12 @@ use BaksDev\Centrifugo\Server\Publish\CentrifugoPublishInterface;
 use BaksDev\Centrifugo\Services\Token\TokenUserGenerator;
 use BaksDev\Core\Controller\AbstractController;
 use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
-use BaksDev\Support\Answer\Repository\UserProfileTypeAnswers\UserProfileTypeAnswersRepository;
 use BaksDev\Support\Entity\Event\SupportEvent;
 use BaksDev\Support\Repository\AllMessagesByEvent\AllMessagesByEventInterface;
 use BaksDev\Support\UseCase\Admin\Add\SupportMessageAddDTO;
 use BaksDev\Support\UseCase\Admin\Add\SupportMessageAddForm;
+use BaksDev\Support\UseCase\Admin\Comment\EditSupportMessageCommentDTO;
+use BaksDev\Support\UseCase\Admin\Comment\EditSupportMessageCommentForm;
 use BaksDev\Support\UseCase\Admin\New\Message\SupportMessageDTO;
 use BaksDev\Support\UseCase\Admin\New\SupportDTO;
 use BaksDev\Users\Profile\UserProfile\Repository\CurrentUserProfile\CurrentUserProfileInterface;
@@ -48,15 +49,14 @@ final class DetailController extends AbstractController
 {
     #[Route('/admin/support/detail/{id}', name: 'admin.detail', methods: ['GET', 'POST'])]
     public function edit(
-        #[MapEntity] SupportEvent $SupportEvent,
+        #[MapEntity] SupportEvent $supportEvent,
         CurrentUserProfileInterface $currentUserProfile,
         AllMessagesByEventInterface $messagesByTicket,
         CentrifugoPublishInterface $publish,
         TokenUserGenerator $tokenUserGenerator,
-        UserProfileTypeAnswersRepository $userProfileTypeAnswersRepository,
     ): Response
     {
-        if(is_null($SupportEvent->getTitle()))
+        if(is_null($supportEvent->getTitle()))
         {
             return $this->redirectToRoute('support:admin.index');
         }
@@ -64,8 +64,9 @@ final class DetailController extends AbstractController
         /** Скрываем тикет у остальных пользователей */
         $publish
             ->addData(['profile' => (string) $this->getCurrentProfileUid()])
-            ->addData(['identifier' => (string) $SupportEvent->getMain()])
+            ->addData(['identifier' => (string) $supportEvent->getMain()])
             ->send('remove');
+
 
         /**
          * Исходящее сообщение
@@ -76,50 +77,58 @@ final class DetailController extends AbstractController
         $SupportMessageDTO = new SupportMessageDTO()
             ->setName($user['profile_username'] ?? null);
 
+
         /**
          * Сохраняем в ДТО входящего сообщения ДТО исходящего
          */
         $ReplySupportMessageDto = new SupportMessageAddDTO()
-            ->setTitle($SupportEvent->getTitle())
+            ->setTitle($supportEvent->getTitle())
             ->setReply($SupportMessageDTO)
-            ->setTicketType($SupportEvent->getInvariable()?->getType());
+            ->setTicketType($supportEvent->getInvariable()?->getType());
 
         /** @var SupportDTO $SupportDTO */
-        $SupportDTO = $SupportEvent->getDto(SupportDTO::class);
+        $SupportDTO = $supportEvent->getDto(SupportDTO::class);
         true === $SupportDTO->getInvariable()?->isReply() ?: $ReplySupportMessageDto->notSubmit();
-
-        /**
-         * Ответы по типу профиля пользователя
-         */
-        //        $userProfileType = $SupportEvent->getInvariable()?->getType();
-        //        $UserProfileTypeAnswersResults = $userProfileTypeAnswersRepository
-        //            ->forType($userProfileType)
-        //            ->findAll();
 
 
         /** Список всех сообщений */
         $messages = $messagesByTicket
-            ->forSupportEvent($SupportEvent->getId())
+            ->forSupportEvent($supportEvent->getId())
             ->findAll();
 
-        // Форма
+
+        // Форма добавления сообщения
         $form = $this->createForm(
             type: SupportMessageAddForm::class,
             data: $ReplySupportMessageDto,
             options: [
                 'action' => $this->generateUrl('support:admin.add', [
-                    'id' => $SupportEvent->getId(),
+                    'id' => $supportEvent->getId(),
                     'message' => current($messages)['message_id'] ?? null
                 ]),
-                //'supportAnswers' => $UserProfileTypeAnswersResults,
             ]
         );
 
+
+        // Форма добавления комментария
+        $editSupportMessageCommentDTO = new EditSupportMessageCommentDTO();
+        $supportEvent->getDto($editSupportMessageCommentDTO);
+
+        $commentForm = $this->createForm(
+            type: EditSupportMessageCommentForm::class,
+            data: $editSupportMessageCommentDTO,
+            options: ['action' => $this->generateUrl(
+                'support:admin.comment.newedit',
+                ['id' => $supportEvent->getId()]
+            )]
+        );
+
         return $this->render([
-            'identifier' => $SupportEvent->getMain(),
+            'identifier' => $supportEvent->getMain(),
             'messages' => $messages,
             'user' => $user['profile_username'] ?? null,
             'form' => $form->createView(),
+            'commentForm' => $commentForm->createView(),
             'token' => $tokenUserGenerator->generate($this->getUsr()),
         ]);
     }
