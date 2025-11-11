@@ -51,13 +51,14 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\Attribute\When;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-#[When(env: 'test')]
 #[Group('support')]
-class SupportNewTest extends KernelTestCase
+#[Group('support-usecase')]
+#[Group('support-controller')]
+#[When(env: 'test')]
+final class SupportNewTest extends KernelTestCase
 {
     public static function setUpBeforeClass(): void
     {
-
         // Бросаем событие консольной комманды
         $dispatcher = self::getContainer()->get(EventDispatcherInterface::class);
         $event = new ConsoleCommandEvent(new Command(), new StringInput(''), new NullOutput());

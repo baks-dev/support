@@ -26,7 +26,7 @@ declare(strict_types=1);
 namespace BaksDev\Support\Entity\Event;
 
 use BaksDev\Core\Entity\EntityEvent;
-use BaksDev\Orders\Order\Entity\Invariable\OrderInvariable;
+use BaksDev\Support\Entity\Comment\SupportComment;
 use BaksDev\Support\Entity\Invariable\SupportInvariable;
 use BaksDev\Support\Entity\Message\SupportMessage;
 use BaksDev\Support\Entity\Modify\SupportModify;
@@ -92,12 +92,14 @@ class SupportEvent extends EntityEvent
     #[ORM\OneToOne(targetEntity: SupportToken::class, mappedBy: 'event', cascade: ['all'])]
     private ?SupportToken $token = null;
 
+    /** SupportComment */
+    #[ORM\OneToOne(targetEntity: SupportComment::class, mappedBy: 'event', cascade: ['all'])]
+    private ?SupportComment $comment = null;
 
     public function __construct()
     {
         $this->id = new SupportEventUid();
         $this->modify = new SupportModify($this);
-
     }
 
     /**  Идентификатор события */
@@ -157,6 +159,11 @@ class SupportEvent extends EntityEvent
         return $this->token;
     }
 
+    public function getComment(): ?string
+    {
+        return $this->comment?->getValue();
+    }
+
     public function getDto($dto): mixed
     {
         if(is_string($dto) && class_exists($dto))
@@ -181,6 +188,4 @@ class SupportEvent extends EntityEvent
 
         throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
     }
-
-
 }

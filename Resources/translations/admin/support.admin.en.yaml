@@ -8,6 +8,7 @@ page:
   delete: 'Удалить тикет'
   control: 'Редактирование тикета'
   closed: 'Закрыть тикет'
+  comment: 'Ticket comment'
 
 breadcrumb:
   index: 'Служба поддержки пользователей'
@@ -24,6 +25,7 @@ success:
   delete: 'Успешно удалено'
   restore: 'Сообщение успешно восстановлено'
   closed: 'Тикет успешно закрыт'
+  comment: 'Ticket comment was successfully edited'
 
 danger:
   new: '%s: Ошибка при добавлении сообщения'
@@ -31,6 +33,7 @@ danger:
   delete: '%s: Ошибка при удалении сообщения'
   restore: '%s: Ошибка при восстановлении сообщения'
   closed: '%s: Ошибка при закрытии тикета'
+  comment: 'Error editing ticket comment'
 
 answer:
   insert_button: 'Вставить ответ'
