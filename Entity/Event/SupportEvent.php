@@ -129,6 +129,12 @@ class SupportEvent extends EntityEvent
         $this->main = $main instanceof Support ? $main->getId() : $main;
     }
 
+    public function isStatusEquals(mixed $status): bool
+    {
+        return $this->status->equals($status) === true;
+
+    }
+
     public function getMain(): ?SupportUid
     {
         return $this->main;
