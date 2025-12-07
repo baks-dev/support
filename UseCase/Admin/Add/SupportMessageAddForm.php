@@ -36,7 +36,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class SupportMessageAddForm extends AbstractType
 {
-    public function __construct(private readonly UserProfileTypeAnswersInterface $UserProfileTypeAnswersRepository) {}
+    public function __construct(
+        private readonly UserProfileTypeAnswersInterface $UserProfileTypeAnswersRepository
+    ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
