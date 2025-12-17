@@ -28,6 +28,7 @@ namespace BaksDev\Support\UseCase\Admin\New;
 use BaksDev\Support\Entity\Event\SupportEventInterface;
 use BaksDev\Support\Type\Event\SupportEventUid;
 use BaksDev\Support\Type\Priority\SupportPriority;
+use BaksDev\Support\Type\Priority\SupportPriority\Collection\SupportPriorityLow;
 use BaksDev\Support\Type\Status\SupportStatus;
 use BaksDev\Support\UseCase\Admin\New\Invariable\SupportInvariableDTO;
 use BaksDev\Support\UseCase\Admin\New\Message\SupportMessageDTO;
@@ -69,6 +70,9 @@ final class SupportDTO implements SupportEventInterface
         $this->messages = new ArrayCollection();
         $this->token = new SupportTokenDTO();
         $this->invariable = new SupportInvariableDTO();
+
+        /** По умолчанию устанавливаем низкий приоритет */
+        $this->priority = new SupportPriority(SupportPriorityLow::class);
     }
 
     public function getEvent(): ?SupportEventUid
