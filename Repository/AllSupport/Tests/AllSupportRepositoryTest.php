@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2025.  Baks.dev <admin@baks.dev>
+ *  Copyright 2026.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -26,9 +26,12 @@ namespace BaksDev\Support\Repository\AllSupport\Tests;
 use BaksDev\Core\Form\Search\SearchDTO;
 use BaksDev\Support\Repository\AllMessagesByEvent\Tests\AllMessagesByEventTest;
 use BaksDev\Support\Repository\AllSupport\AllSupportInterface;
+use BaksDev\Support\Repository\AllSupport\AllSupportResult;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use PHPUnit\Framework\Attributes\DependsOnClass;
 use PHPUnit\Framework\Attributes\Group;
+use ReflectionClass;
+use ReflectionMethod;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Attribute\When;
 
@@ -39,29 +42,39 @@ class AllSupportRepositoryTest extends KernelTestCase
     #[DependsOnClass(AllMessagesByEventTest::class)]
     public function testUseCase(): void
     {
+        self::assertTrue(true);
+
         /** @var AllSupportInterface $AllSupportRepositoryInterface */
         $AllSupportRepositoryInterface = self::getContainer()->get(AllSupportInterface::class);
 
-        $response = $AllSupportRepositoryInterface
+        $paginator = $AllSupportRepositoryInterface
             ->search(new SearchDTO())
             ->profile(new UserProfileUid())
             ->findPaginator();
 
-        if(!empty($response->getData()))
+        if(empty($paginator->getData()))
         {
-            $current = current($response->getData());
-
-            self::assertTrue(array_key_exists("id", $current));
-            self::assertTrue(array_key_exists("event", $current));
-            self::assertTrue(array_key_exists("status", $current));
-            self::assertTrue(array_key_exists("priority", $current));
-            self::assertTrue(array_key_exists("ticket", $current));
-            self::assertTrue(array_key_exists("title", $current));
-            self::assertTrue(array_key_exists("name", $current));
-            self::assertTrue(array_key_exists("message", $current));
-            self::assertTrue(array_key_exists("message_id", $current));
+            return;
         }
 
-        self::assertTrue(true);
+        foreach($paginator->getData() as $AllSupportResult)
+        {
+            // Вызываем все геттеры
+            $reflectionClass = new ReflectionClass(AllSupportResult::class);
+            $methods = $reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC);
+
+            foreach($methods as $method)
+            {
+                // Методы без аргументов
+                if($method->getNumberOfParameters() === 0)
+                {
+                    // Вызываем метод
+                    $data = $method->invoke($AllSupportResult);
+                    // dump($data);
+                }
+            }
+
+        }
+
     }
 }
