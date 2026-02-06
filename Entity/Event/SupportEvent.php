@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2025.  Baks.dev <admin@baks.dev>
+ *  Copyright 2026.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -174,6 +174,17 @@ class SupportEvent extends EntityEvent
     {
         return $this->comment?->getValue();
     }
+
+    public function isTypeEquals(mixed $type): bool
+    {
+        if(empty($this->invariable))
+        {
+            return false;
+        }
+
+        return $this->invariable->getType()->equals($type) === true;
+    }
+
 
     public function getDto($dto): mixed
     {
