@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2025.  Baks.dev <admin@baks.dev>
+ *  Copyright 2026.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +32,7 @@ use BaksDev\Support\Type\Priority\SupportPriority\Collection\SupportPriorityLow;
 use BaksDev\Support\Type\Status\SupportStatus;
 use BaksDev\Support\UseCase\Admin\New\Invariable\SupportInvariableDTO;
 use BaksDev\Support\UseCase\Admin\New\Message\SupportMessageDTO;
+use BaksDev\Support\UseCase\Admin\New\Rating\SupportRatingDTO;
 use BaksDev\Support\UseCase\Admin\New\Token\SupportTokenDTO;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -64,12 +65,15 @@ final class SupportDTO implements SupportEventInterface
     /** Токен маркетплейса */
     private SupportTokenDTO $token;
 
+    /** Рейтинг в случае отзыва  */
+    private SupportRatingDTO $rating;
 
     public function __construct()
     {
         $this->messages = new ArrayCollection();
         $this->token = new SupportTokenDTO();
         $this->invariable = new SupportInvariableDTO();
+        $this->rating = new SupportRatingDTO();
 
         /** По умолчанию устанавливаем низкий приоритет */
         $this->priority = new SupportPriority(SupportPriorityLow::class);
@@ -173,4 +177,8 @@ final class SupportDTO implements SupportEventInterface
         return $this;
     }
 
+    public function getRating(): SupportRatingDTO
+    {
+        return $this->rating;
+    }
 }

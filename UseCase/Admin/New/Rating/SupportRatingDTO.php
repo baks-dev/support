@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2025.  Baks.dev <admin@baks.dev>
+ *  Copyright 2026.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -40,9 +40,9 @@ final class SupportRatingDTO implements SupportRatingInterface
         return $this->value;
     }
 
-    public function setValue(?int $value): self
+    public function setValue(int|null|false $value): self
     {
-        $this->value = $value;
+        $this->value = empty($value) ? null : $value;
         return $this;
     }
 }
