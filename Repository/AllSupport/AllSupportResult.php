@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2025.  Baks.dev <admin@baks.dev>
+ *  Copyright 2026.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,13 @@ declare(strict_types=1);
 
 namespace BaksDev\Support\Repository\AllSupport;
 
+use BaksDev\Ozon\Support\BaksDevOzonSupportBundle;
+use BaksDev\Ozon\Support\Type\OzonQuestionProfileType;
 use BaksDev\Support\Type\Event\SupportEventUid;
 use BaksDev\Support\Type\Id\SupportUid;
 use BaksDev\Support\Type\Message\SupportMessageUid;
+use BaksDev\Yandex\Support\BaksDevYandexSupportBundle;
+use BaksDev\Yandex\Support\Types\ProfileType\TypeProfileYandexQuestionSupport;
 use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -41,7 +45,10 @@ final class AllSupportResult
         private string $priority, //" => "height"
         private string $ticket, //" => "u2i-3LpXN05j9eSa6Iks0OXs_A"
         private string $title, //" => "Triangle TH201 Sportex 245/45 R18 100Y"
+
+        private ?string $type_profile_id, //" => "Авито сообщения"
         private ?string $type_profile_name, //" => "Авито сообщения"
+
         private ?string $name, //" => "Владимир"
         private ?string $message, //" => "и отзывы кстати хуже на 202"
         private ?string $message_id, //" => "0197dfb0-f5a0-7b78-9b0a-2ea88c7c013b"
@@ -78,6 +85,35 @@ final class AllSupportResult
     {
         return $this->title;
     }
+
+    public function getTypeProfileId(): ?string
+    {
+        return $this->type_profile_id;
+    }
+
+    public function isClosedAction(): bool
+    {
+        /** Запрещаем закрывать тикет на Ozon Support Question «Вопрос» */
+        if(
+            class_exists(BaksDevOzonSupportBundle::class)
+            && OzonQuestionProfileType::equals($this->type_profile_id)
+        )
+        {
+            return false;
+        }
+
+        /** Запрещаем закрывать тикет на Yandex Support Question «Вопрос» */
+        if(
+            class_exists(BaksDevYandexSupportBundle::class)
+            && TypeProfileYandexQuestionSupport::equals($this->type_profile_id)
+        )
+        {
+            return false;
+        }
+
+        return true;
+    }
+
 
     public function getTypeProfileName(): string
     {

@@ -1,5 +1,7 @@
 {# Пользовательское меню #}
 
+{# @var item \BaksDev\Support\Repository\AllSupport\AllSupportResult #}
+
 <button class="btn btn-link btn-sm p-0"
         id="usecase-{{ item.event }}"
         data-bs-container="body"
@@ -61,8 +63,11 @@ value="{{ item.event }}"
             </li>
         {% endif %}
 
+
         {# Закрыть #}
-        {% if item.status != 'closed' and (is_granted(ROLE~'_CLOSED') or is_granted('ROLE_ADMIN')) %}
+        {% if
+            item.status != 'closed' and item.isClosedAction()
+            and (is_granted(ROLE~'_CLOSED') or is_granted('ROLE_ADMIN')) %}
             <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-truncate rounded-5">
                 <a href="{{ path('support:admin.closed', { id: item.event }) }}"
                    class="text-decoration-none text-dark w-100 modal-link disabled"
