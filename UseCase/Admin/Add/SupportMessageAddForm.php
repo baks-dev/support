@@ -27,6 +27,8 @@ namespace BaksDev\Support\UseCase\Admin\Add;
 
 use BaksDev\Support\Answer\Repository\UserProfileTypeAnswers\UserProfileTypeAnswersInterface;
 use BaksDev\Support\UseCase\Admin\New\Message\SupportMessageForm;
+use BaksDev\Users\Profile\UserProfile\Repository\UserProfileTokenStorage\UserProfileTokenStorageInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -37,7 +39,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class SupportMessageAddForm extends AbstractType
 {
     public function __construct(
-        private readonly UserProfileTypeAnswersInterface $UserProfileTypeAnswersRepository
+        private readonly UserProfileTypeAnswersInterface $UserProfileTypeAnswersRepository,
+        private readonly Security $Security,
+        private readonly UserProfileTokenStorageInterface $UserProfileTokenStorageRepository,
     ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -47,6 +51,14 @@ final class SupportMessageAddForm extends AbstractType
             /** @var SupportMessageAddDTO $SupportMessageAddDTO */
             $SupportMessageAddDTO = $event->getData();
             $builder = $event->getForm();
+
+
+            /** Если пользователь не админ - указываем его профиль, чтобы отобразить только соответствующие ответы */
+            if(false === $this->Security->isGranted('ROLE_ADMIN'))
+            {
+                $profile = $this->UserProfileTokenStorageRepository->getProfile();
+                $this->UserProfileTypeAnswersRepository->forProfile($profile);
+             }
 
             /** Список вариантов быстрых ответов на тикет */
             $UserProfileTypeAnswersResults = $this
