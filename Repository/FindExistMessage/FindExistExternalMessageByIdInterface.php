@@ -25,7 +25,7 @@ namespace BaksDev\Support\Repository\FindExistMessage;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
-#[Autoconfigure(public: true)]
+// #[Autoconfigure(public: true)]
 interface FindExistExternalMessageByIdInterface
 {
     public function external(string|int|null $externalId): self;

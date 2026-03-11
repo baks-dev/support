@@ -26,7 +26,7 @@ namespace BaksDev\Support\Repository\SupportCurrentEventByTicket;
 use BaksDev\Support\Entity\Event\SupportEvent;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
-#[Autoconfigure(public: true)]
+// #[Autoconfigure(public: true)]
 interface CurrentSupportEventByTicketInterface
 {
     public function forTicket(string|int|null $ticket): self;
