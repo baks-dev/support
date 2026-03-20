@@ -19,6 +19,7 @@
  *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
+ *
  */
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
@@ -56,6 +57,11 @@ return static function(ContainerConfigurator $configurator) {
     $services->load(
         $NAMESPACE.'Type\Priority\SupportPriority\\',
         $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'Priority', 'SupportPriority']),
+    );
+
+    $services->load(
+        $NAMESPACE.'Type\Profile\\',
+        $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'Profile'])
     );
 
     $services->set(SupportMessageUid::class)->class(SupportMessageUid::class);
