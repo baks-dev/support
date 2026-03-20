@@ -22,18 +22,16 @@
     {{ include(_self|replace({ "template.html.twig": baks_settings.device~"/content.html.twig" })) }}
 
 
-    <div
-            class="offcanvas offcanvas-start"
-            tabindex="-1"
-            id="offcanvas"
-            style="width:640px"
-    >
-
+    <div id="offcanvas"
+         class="offcanvas offcanvas-start"
+         style="width:640px"
+         tabindex="-1">
     </div>
 
 {% endblock %}
 
 {% block javascript %}
+
 <script nonce='{{ csp_nonce() }}' async data-src="/assets/{{ version }}/centrifugo/centrifuge.min.js?v={{ version }}" class='lazy'></script>
 <script nonce='{{ csp_nonce() }}' async data-src='/assets/{{ version }}/plugins/nice-select2/nice-select2.min.js?v={{ version }}' class='lazy'></script>
 
@@ -89,4 +87,5 @@
     });
 
 </script>
-        {% endblock %}
+
+{% endblock %}
