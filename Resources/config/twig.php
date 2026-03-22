@@ -30,12 +30,12 @@ return static function(TwigConfig $twig) {
 
     $twig->path(
         BaksDevSupportBundle::PATH.implode(DIRECTORY_SEPARATOR, ['Resources', 'view', '']),
-        'support'
+        'support',
     );
 
     $twig->path(
         BaksDevSupportBundle::PATH.implode(DIRECTORY_SEPARATOR, ['Resources', 'view', 'twig', 'support_widget', '']),
-        'support-widget'
+        'support-widget',
     );
 
 };

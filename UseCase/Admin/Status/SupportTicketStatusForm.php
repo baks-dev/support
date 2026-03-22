@@ -39,7 +39,7 @@ final class SupportTicketStatusForm extends AbstractType
         $builder->add(
             'support_ticket_closed',
             SubmitType::class,
-            ['label' => 'Closed', 'label_html' => true, 'attr' => ['class' => 'btn-danger']]
+            ['label' => 'Closed', 'label_html' => true, 'attr' => ['class' => 'btn-danger']],
         );
     }
 

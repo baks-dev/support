@@ -44,6 +44,32 @@ use Symfony\Component\DependencyInjection\Attribute\When;
 class SupportDeleteTest extends KernelTestCase
 {
     #[DependsOnClass(SupportTicketStatusTest::class)]
+    public static function tearDownAfterClass(): void
+    {
+        /** @var EntityManagerInterface $em */
+        $em = self::getContainer()->get(EntityManagerInterface::class);
+
+        $main = $em->getRepository(Support::class)
+            ->findOneBy(['id' => SupportUid::TEST]);
+
+        if($main)
+        {
+            $em->remove($main);
+        }
+
+        $event = $em->getRepository(SupportEvent::class)
+            ->findBy(['main' => SupportUid::TEST]);
+
+        foreach($event as $remove)
+        {
+            $em->remove($remove);
+        }
+
+        $em->flush();
+        $em->clear();
+    }
+
+    #[DependsOnClass(SupportTicketStatusTest::class)]
     public function testUseCase(): void
     {
         /** @var CurrentSupportEventInterface $SupportCurrentEvent */
@@ -68,31 +94,5 @@ class SupportDeleteTest extends KernelTestCase
 
         self::assertTrue(($handle instanceof Support), $handle.': Ошибка Support');
 
-    }
-
-    #[DependsOnClass(SupportTicketStatusTest::class)]
-    public static function tearDownAfterClass(): void
-    {
-        /** @var EntityManagerInterface $em */
-        $em = self::getContainer()->get(EntityManagerInterface::class);
-
-        $main = $em->getRepository(Support::class)
-            ->findOneBy(['id' => SupportUid::TEST]);
-
-        if($main)
-        {
-            $em->remove($main);
-        }
-
-        $event = $em->getRepository(SupportEvent::class)
-            ->findBy(['main' => SupportUid::TEST]);
-
-        foreach($event as $remove)
-        {
-            $em->remove($remove);
-        }
-
-        $em->flush();
-        $em->clear();
     }
 }

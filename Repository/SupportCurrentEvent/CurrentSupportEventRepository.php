@@ -70,7 +70,7 @@ final class CurrentSupportEventRepository implements CurrentSupportEventInterfac
             ->setParameter(
                 key: 'support',
                 value: $this->support,
-                type: SupportUid::TYPE
+                type: SupportUid::TYPE,
             );
 
         $orm
@@ -79,7 +79,7 @@ final class CurrentSupportEventRepository implements CurrentSupportEventInterfac
                 SupportEvent::class,
                 'event',
                 'WITH',
-                'event.id = support.event'
+                'event.id = support.event',
             );
 
         return $orm->getOneOrNullResult() ?: false;

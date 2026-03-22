@@ -57,7 +57,7 @@ final class DeleteController extends AbstractController
             ->createForm(SupportDeleteForm::class, $SupportDeleteDTO, [
                 'action' => $this->generateUrl(
                     'support:admin.delete',
-                    ['id' => $SupportDeleteDTO->getEvent()]
+                    ['id' => $SupportDeleteDTO->getEvent()],
                 ),
             ])
             ->handleRequest($request);
@@ -73,7 +73,7 @@ final class DeleteController extends AbstractController
                 'page.delete',
                 $handle instanceof Support ? 'success.delete' : 'danger.delete',
                 'support.admin',
-                $handle
+                $handle,
             );
 
             return $handle instanceof Support ? $this->redirectToRoute('support:admin.index') : $this->redirectToReferer();

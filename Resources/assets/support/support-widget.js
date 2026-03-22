@@ -23,49 +23,47 @@
 /** Обновить содержимое виджета */
 async function updateWidgetList()
 {
-    await fetch('/admin/supports', {
-        method: "GET",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-            "X-Requested-With": "XMLHttpRequest",
-        }, redirect: "follow",
-        referrerPolicy: "no-referrer",
-    })
+    await fetch("/admin/supports", {
+        method : "GET",
+        cache : "no-cache",
+        credentials : "same-origin",
+        headers : {
+            "X-Requested-With" : "XMLHttpRequest",
+        }, redirect : "follow",
+        referrerPolicy : "no-referrer",
+    }).then((response) =>
+    {
 
-        .then((response) =>
+        if(response.status !== 200)
+        {
+            return false;
+        }
+
+        return response.text();
+    }).then((data) =>
+    {
+
+        if(data)
         {
 
-            if(response.status !== 200)
+            var myCollapse = document.getElementById("collapseChat");
+
+            if(myCollapse === null)
             {
-                return false;
+                console.log("Элемент с идентификатором id=\"collapseChat\" не найден");
+                return;
             }
 
-            return response.text();
-        }).then((data) =>
-        {
+            let bsCollapse = bootstrap.Collapse.getOrCreateInstance(myCollapse);
 
-            if(data)
-            {
+            myCollapse.innerHTML = data;
 
-                var myCollapse = document.getElementById("collapseChat");
-
-                if(myCollapse === null)
-                {
-                    console.log('Элемент с идентификатором id="collapseChat" не найден');
-                    return;
-                }
-
-                let bsCollapse = bootstrap.Collapse.getOrCreateInstance(myCollapse);
-
-                myCollapse.innerHTML = data;
-
-                /** Обновляем Preload */
-                let lazy = document.createElement("script");
-                lazy.src = "/assets/" + $version + "/js/lazyload.min.js";
-                document.head.appendChild(lazy);
-            }
-        });
+            /** Обновляем Preload */
+            let lazy = document.createElement("script");
+            lazy.src = "/assets/" + $version + "/js/lazyload.min.js";
+            document.head.appendChild(lazy);
+        }
+    });
 
     return false;
 
@@ -74,7 +72,7 @@ async function updateWidgetList()
 /** Сокеты support widget */
 executeFunc(function quxjTRYv()
 {
-    if(typeof Centrifuge === 'function')
+    if(typeof Centrifuge === "function")
     {
 
         const dsn = window.centrifugo_dsn; // Получаем значение dsn
@@ -87,37 +85,37 @@ executeFunc(function quxjTRYv()
 
         centrifuge = new Centrifuge("wss://" + dsn + "/connection/websocket",
             {
-                token: token,
-                getToken: function(ctx)
+                token : token,
+                getToken : function(ctx)
                 {
-                    return getToken('/centrifugo/credentials/user', ctx);
+                    return getToken("/centrifugo/credentials/user", ctx);
                 },
-                debug: false,
+                debug : false,
             });
 
         // "пользовательский" channel
-        const user_channel = window.current_profile + '_ticket';
+        const user_channel = window.current_profile + "_ticket";
 
-        const subscriptions = [user_channel, 'ticket'];
+        const subscriptions = [user_channel, "ticket"];
 
         for(const subscription of subscriptions)
         {
 
-            centrifuge.newSubscription(subscription).on('publication', function(ctx)
+            centrifuge.newSubscription(subscription).on("publication", function(ctx)
             {
-                if(ctx.data.status === 'open')
+                if(ctx.data.status === "open")
                 {
                     // Отобразить индикатор
-                    document.getElementById('widget_notification').classList.remove('d-none');
+                    document.getElementById("widget_notification").classList.remove("d-none");
 
                     // Обновить список и создать toast-сообщение
                     // updateWidgetList();
 
                     // Создать Toast сообщение
-                    const header = 'Сообщение поддержки';
-                    const warningMessageHandler = '{ "type":"notice" , ' +
-                        '"header":"' + header + '"  , ' +
-                        '"message" : "Добавлено новое сообщение." }';
+                    const header = "Сообщение поддержки";
+                    const warningMessageHandler = "{ \"type\":\"notice\" , " +
+                        "\"header\":\"" + header + "\"  , " +
+                        "\"message\" : \"Добавлено новое сообщение.\" }";
 
                     createToast(JSON.parse(warningMessageHandler));
 
@@ -131,9 +129,9 @@ executeFunc(function quxjTRYv()
 
         /** При скрытии - закрываем соединение */
 
-        const collapse = document.querySelector('.collapse-link-content');
+        const collapse = document.querySelector(".collapse-link-content");
 
-        collapse.addEventListener('hide.bs.collapse', event =>
+        collapse.addEventListener("hide.bs.collapse", event =>
         {
             centrifuge.disconnect();
         });
@@ -147,7 +145,7 @@ executeFunc(function quxjTRYv()
 });
 
 // Скрыть индикатор
-document.querySelector('.collapse-link-content').addEventListener('click', function()
+document.querySelector(".collapse-link-content").addEventListener("click", function()
 {
-    document.getElementById('widget_notification').classList.add('d-none');
-})
+    document.getElementById("widget_notification").classList.add("d-none");
+});

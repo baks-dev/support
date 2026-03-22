@@ -84,7 +84,7 @@ final class AllMessagesByEventRepository implements AllMessagesByEventInterface
                 'event',
                 SupportInvariable::class,
                 'invariable',
-                'invariable.main = event.main AND invariable.event = event.id'
+                'invariable.main = event.main AND invariable.event = event.id',
             );
 
 
@@ -99,7 +99,7 @@ final class AllMessagesByEventRepository implements AllMessagesByEventInterface
                 'event',
                 SupportMessage::class,
                 'message',
-                'message.event = event.id'
+                'message.event = event.id',
             );
 
         $dbal->addOrderBy('message.date', 'ASC');

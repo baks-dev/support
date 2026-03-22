@@ -42,25 +42,25 @@
     document.addEventListener("DOMContentLoaded", (event) =>
     {
         const form = document.forms.support_ticket_status_filter_form;
-        form.addEventListener('change', () => { setTimeout(() => { form.submit(); }, 300); });
+        form.addEventListener("change", () => { setTimeout(() => { form.submit(); }, 300); });
 
         /** Сокеты */
         setTimeout(function YaDxaSscx()
         {
-            if(typeof Centrifuge === 'function')
+            if(typeof Centrifuge === "function")
             {
                 centrifuge = new Centrifuge("wss://{{ centrifugo_dsn }}/connection/websocket",
                     {
                         token: "{{ token }}",
                         getToken: function(ctx)
                         {
-                            return getToken('/centrifugo/credentials/user', ctx);
+                            return getToken("/centrifugo/credentials/user", ctx);
                         },
-                        debug: '{{ app.environment }}' === 'dev',
+                        debug: '{{ app.environment }}' === "dev",
                     });
 
                 /** Удаляем из списка тикет у других */
-                centrifuge.newSubscription('remove').on('publication', function(ctx)
+                centrifuge.newSubscription("remove").on("publication", function(ctx)
                 {
                     if(ctx.data.profile === '{{ current_profile }}')
                     {

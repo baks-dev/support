@@ -35,13 +35,13 @@ final class EditSupportMessageCommentForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-         $builder->add('comment', EditSupportMessageCommentCommentForm::class, ['required' => false]);
+        $builder->add('comment', EditSupportMessageCommentCommentForm::class, ['required' => false]);
 
         /* Сохранить ******************************************************/
         $builder->add(
             'edit_support_message_comment',
             SubmitType::class,
-            ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-primary']]
+            ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-primary']],
         );
     }
 

@@ -39,28 +39,28 @@
 <div class="offcanvas-body">
 
 
-            <div class="row">
-                <div class="col-md-6 col-lg-7 col-xl-8">
-                    <ul class="list-unstyled" id="messages-{{ identifier }}">
+    <div class="row">
+        <div class="col-md-6 col-lg-7 col-xl-8">
+            <ul class="list-unstyled" id="messages-{{ identifier }}">
 
-                        {% set display = null %}
+                {% set display = null %}
 
-                        {% for message in messages %}
+                {% for message in messages %}
 
-                            {# {% if display is null %}
+                    {# {% if display is null %}
                                 {% set display = message.out %}
                             {% endif %} #}
 
-                            {{ include(_self|replace({ "content.html.twig": "message.html.twig" })) }}
+                    {{ include(_self|replace({ "content.html.twig": "message.html.twig" })) }}
 
-                            {% set display = message.out %}
+                    {% set display = message.out %}
 
-                        {% endfor %}
+                {% endfor %}
 
-                        <li class="box-hidden invisible">&nbsp;</li>
-                    </ul>
-                </div>
-            </div>
+                <li class="box-hidden invisible">&nbsp;</li>
+            </ul>
+        </div>
+    </div>
 
 
 </div>
@@ -114,7 +114,7 @@
 
                 <div class="float-end text-nowrap">
 
-                {# Отправить сообщение #}
+                    {# Отправить сообщение #}
                     {{ form_widget(form.support_message_add, { label: ' <span>Ответить</span>
                     <span class="spinner-border spinner-border-sm vertical-middle d-none"></span>'}) }}
                 </div>

@@ -39,33 +39,6 @@ class SupportFeedbackFormTest extends TypeTestCase
     private readonly Security $security;
     private readonly CaptchaVerifyInterface $captchaVerify;
 
-    protected function setUp(): void
-    {
-        /**
-         * Мокируем зависимости
-         */
-        $this->security = $this->createMock(Security::class);
-        $this->captchaVerify = $this->createMock(CaptchaVerifyInterface::class);
-
-        parent::setUp();
-    }
-
-    protected function getExtensions(): array
-    {
-        /**
-         * Создание экземпляра формы с мокированными зависимости
-         */
-        $type = new SupportFeedbackForm($this->security, $this->captchaVerify);
-
-        return [
-            /**
-             * Регистрация экземпляра с использованием PreloadedExtension
-             */
-            new PreloadedExtension([$type], []),
-        ];
-    }
-
-
     public function testSubmitValidData(): void
     {
         /* DATA */
@@ -109,5 +82,31 @@ class SupportFeedbackFormTest extends TypeTestCase
         }
 
         self::assertTrue(true);
+    }
+
+    protected function setUp(): void
+    {
+        /**
+         * Мокируем зависимости
+         */
+        $this->security = $this->createMock(Security::class);
+        $this->captchaVerify = $this->createMock(CaptchaVerifyInterface::class);
+
+        parent::setUp();
+    }
+
+    protected function getExtensions(): array
+    {
+        /**
+         * Создание экземпляра формы с мокированными зависимости
+         */
+        $type = new SupportFeedbackForm($this->security, $this->captchaVerify);
+
+        return [
+            /**
+             * Регистрация экземпляра с использованием PreloadedExtension
+             */
+            new PreloadedExtension([$type], []),
+        ];
     }
 }

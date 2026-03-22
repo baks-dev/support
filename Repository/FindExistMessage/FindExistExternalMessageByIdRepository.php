@@ -75,7 +75,7 @@ final class FindExistExternalMessageByIdRepository implements FindExistExternalM
                 'message',
                 SupportEvent::class,
                 'event',
-                'message.event = event.id'
+                'message.event = event.id',
             );
 
         $dbal
@@ -83,7 +83,7 @@ final class FindExistExternalMessageByIdRepository implements FindExistExternalM
                 'event',
                 Support::class,
                 'support',
-                'event.id = support.event'
+                'event.id = support.event',
             );
 
 

@@ -39,7 +39,7 @@ final class SupportDeleteForm extends AbstractType
         $builder->add(
             'support_delete',
             SubmitType::class,
-            ['label' => 'Delete', 'label_html' => true, 'attr' => ['class' => 'btn-danger']]
+            ['label' => 'Delete', 'label_html' => true, 'attr' => ['class' => 'btn-danger']],
         );
     }
 

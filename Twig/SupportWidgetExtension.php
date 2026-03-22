@@ -42,14 +42,29 @@ final class SupportWidgetExtension extends AbstractExtension
         private readonly TokenUserGenerator $tokenUserGenerator,
         private readonly TokenStorageInterface $tokenStorage
     ) {}
+
     public function getFunctions(): array
     {
         return [
             new TwigFunction('render_support_widget',
                 [$this, 'renderSupportWidget'],
-                ['needs_environment' => true, 'is_safe' => ['html']]
+                ['needs_environment' => true, 'is_safe' => ['html']],
             ),
         ];
+    }
+
+    public function renderSupportWidget(Environment $twig): string
+    {
+
+        $path = $this->template->extends('@support-widget:support.widget.html.twig');
+
+        return $twig->render
+        (
+            name: $path,
+            context: [
+                'token' => $this->tokenUserGenerator->generate($this->getUsr()),
+            ],
+        );
     }
 
     protected function getUsr(): UserInterface|User|null
@@ -64,19 +79,5 @@ final class SupportWidgetExtension extends AbstractExtension
         }
 
         return $token?->getUser();
-    }
-
-    public function renderSupportWidget(Environment $twig): string
-    {
-
-        $path = $this->template->extends('@support-widget:support.widget.html.twig');
-
-        return $twig->render
-        (
-            name: $path,
-            context: [
-                'token' => $this->tokenUserGenerator->generate($this->getUsr())
-            ]
-        );
     }
 }

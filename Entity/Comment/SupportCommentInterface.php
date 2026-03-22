@@ -27,5 +27,5 @@ namespace BaksDev\Support\Entity\Comment;
 
 interface SupportCommentInterface
 {
-    public function getValue() : ?string;
+    public function getValue(): ?string;
 }

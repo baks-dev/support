@@ -30,13 +30,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class SupportFeedbackDTO
 {
+    #[Assert\NotBlank(groups: ['anonymous_user'])]
+    public ?string $code = null;
     /** Капча */
     #[Assert\NotBlank(groups: ['anonymous_user'])]
     private bool $captcha = false;
-
-    #[Assert\NotBlank(groups: ['anonymous_user'])]
-    public ?string $code = null;
-
 
     public function __construct(
         #[Assert\NotBlank(message: 'Имя обязательно для заполнения')]

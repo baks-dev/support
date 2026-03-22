@@ -37,10 +37,8 @@ use Symfony\Component\DependencyInjection\Attribute\When;
 #[Group('support-controller')]
 final class MessageAddControllerTest extends WebTestCase
 {
-    private static ?string $url = null;
-
     private const string ROLE = 'ROLE_SUPPORT_ADD';
-
+    private static ?string $url = null;
 
     public static function setUpBeforeClass(): void
     {

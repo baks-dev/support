@@ -62,14 +62,6 @@ class Support
     }
 
     /**
-     * Идентификатор
-     */
-    public function getId(): SupportUid
-    {
-        return $this->id;
-    }
-
-    /**
      * Идентификатор события
      */
     public function getEvent(): SupportEventUid
@@ -80,5 +72,13 @@ class Support
     public function setEvent(SupportEventUid|SupportEvent $event): void
     {
         $this->event = $event instanceof SupportEvent ? $event->getId() : $event;
+    }
+
+    /**
+     * Идентификатор
+     */
+    public function getId(): SupportUid
+    {
+        return $this->id;
     }
 }

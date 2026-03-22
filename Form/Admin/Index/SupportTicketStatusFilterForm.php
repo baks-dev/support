@@ -63,7 +63,7 @@ final class SupportTicketStatusFilterForm extends AbstractType
                 return 'filter.'.$status->getValue();
             },
             'label' => false,
-            'translation_domain' => 'support.admin'
+            'translation_domain' => 'support.admin',
         ]);
 
 

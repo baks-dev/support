@@ -61,12 +61,7 @@ class SupportComment extends EntityEvent
         return (string) $this->event;
     }
 
-    public function getValue(): ?string
-    {
-        return $this->value;
-    }
-
-    public function getDto($dto) : mixed
+    public function getDto($dto): mixed
     {
         if($dto instanceof SupportCommentInterface)
         {
@@ -89,5 +84,10 @@ class SupportComment extends EntityEvent
         }
 
         throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
+    }
+
+    public function getValue(): ?string
+    {
+        return $this->value;
     }
 }

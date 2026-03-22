@@ -93,7 +93,7 @@ final class CurrentSupportMessagesRepository implements CurrentSupportMessagesIn
             ->setParameter(
                 key: 'event',
                 value: $this->event,
-                type: SupportEventUid::TYPE
+                type: SupportEventUid::TYPE,
             );
 
         $orm
@@ -101,7 +101,7 @@ final class CurrentSupportMessagesRepository implements CurrentSupportMessagesIn
             ->setParameter(
                 'id',
                 $this->message,
-                SupportMessageUid::TYPE
+                SupportMessageUid::TYPE,
             );
 
         return $orm->getOneOrNullResult() ?: false;

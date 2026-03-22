@@ -118,17 +118,6 @@ class SupportEvent extends EntityEvent
         return (string) $this->id;
     }
 
-    public function getId(): SupportEventUid
-    {
-        return $this->id;
-    }
-
-    /** Идентификатор Support */
-    public function setMain(SupportUid|Support $main): void
-    {
-        $this->main = $main instanceof Support ? $main->getId() : $main;
-    }
-
     public function isStatusEquals(mixed $status): bool
     {
         return $this->status->equals($status) === true;
@@ -138,6 +127,17 @@ class SupportEvent extends EntityEvent
     public function getMain(): ?SupportUid
     {
         return $this->main;
+    }
+
+    /** Идентификатор Support */
+    public function setMain(SupportUid|Support $main): void
+    {
+        $this->main = $main instanceof Support ? $main->getId() : $main;
+    }
+
+    public function getId(): SupportEventUid
+    {
+        return $this->id;
     }
 
     public function getTitle(): ?string
@@ -150,6 +150,11 @@ class SupportEvent extends EntityEvent
         return $this->invariable instanceof SupportInvariable;
     }
 
+    public function getInvariable(): ?SupportInvariable
+    {
+        return $this->invariable;
+    }
+
     public function setInvariable(SupportInvariable|false $invariable): self
     {
         if($invariable instanceof SupportInvariable)
@@ -158,11 +163,6 @@ class SupportEvent extends EntityEvent
         }
 
         return $this;
-    }
-
-    public function getInvariable(): ?SupportInvariable
-    {
-        return $this->invariable;
     }
 
     public function getToken(): ?SupportToken

@@ -29,6 +29,7 @@ interface ExistSupportTicketInterface
 
     /**
      * Метод проверяет, имеется ли соответствующий тикет
+     *
      * @note call method external(string|int $ticket)
      */
     public function exist(): bool;

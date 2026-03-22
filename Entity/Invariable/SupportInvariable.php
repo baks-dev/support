@@ -103,7 +103,7 @@ class SupportInvariable extends EntityReadonly
             (microtime(true) * 100),
             0,
             '.',
-            '.'
+            '.',
         );
 
         return $this;

@@ -49,13 +49,13 @@ return static function(ContainerConfigurator $configurator) {
     /* Коллекция статусов */
     $services->load(
         $NAMESPACE.'Type\Status\SupportStatus\\',
-        $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'Status', 'SupportStatus'])
+        $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'Status', 'SupportStatus']),
     );
 
     /* Коллекция приоритетов */
     $services->load(
         $NAMESPACE.'Type\Priority\SupportPriority\\',
-        $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'Priority', 'SupportPriority'])
+        $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'Priority', 'SupportPriority']),
     );
 
     $services->set(SupportMessageUid::class)->class(SupportMessageUid::class);

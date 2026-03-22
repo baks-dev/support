@@ -33,11 +33,6 @@ final class SupportPriorityHeight implements SupportPriorityInterface
 {
     public const string PARAM = 'height';
 
-    public function getValue(): string
-    {
-        return self::PARAM;
-    }
-
     public static function priority(): int
     {
         return 10;
@@ -47,6 +42,11 @@ final class SupportPriorityHeight implements SupportPriorityInterface
     public static function equals(string $param): bool
     {
         return self::PARAM === $param;
+    }
+
+    public function getValue(): string
+    {
+        return self::PARAM;
     }
 
 }

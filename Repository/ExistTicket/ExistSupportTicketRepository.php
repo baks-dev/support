@@ -45,6 +45,7 @@ final class ExistSupportTicketRepository implements ExistSupportTicketInterface
 
     /**
      * Метод проверяет, имеется ли соответствующий тикет
+     *
      * @note call method ticket(string|int $ticket)
      */
     public function exist(): bool

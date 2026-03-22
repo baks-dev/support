@@ -58,7 +58,7 @@ final class SupportMessageAddForm extends AbstractType
             {
                 $profile = $this->UserProfileTokenStorageRepository->getProfile();
                 $this->UserProfileTypeAnswersRepository->forProfile($profile);
-             }
+            }
 
             /** Список вариантов быстрых ответов на тикет */
             $UserProfileTypeAnswersResults = $this

@@ -70,20 +70,9 @@ final class SupportPriority
         throw new InvalidArgumentException(sprintf('Undefined Support Status %s', $property));
     }
 
-
-    public function __toString(): string
-    {
-        return $this->property ? $this->property->getvalue() : '';
-    }
-
     public function getSupportPriority(): ?SupportPriorityInterface
     {
         return $this->property;
-    }
-
-    public function getSupportPriorityValue(): string
-    {
-        return $this->property->getValue();
     }
 
     public static function getDeclared(): array
@@ -92,7 +81,7 @@ final class SupportPriority
             get_declared_classes(),
             static function($className) {
                 return in_array(SupportPriorityInterface::class, class_implements($className), true);
-            }
+            },
         );
     }
 
@@ -101,5 +90,15 @@ final class SupportPriority
         $property = new self($property);
 
         return $this->getSupportPriorityValue() === $property->getSupportPriorityValue();
+    }
+
+    public function getSupportPriorityValue(): string
+    {
+        return $this->property->getValue();
+    }
+
+    public function __toString(): string
+    {
+        return $this->property ? $this->property->getvalue() : '';
     }
 }

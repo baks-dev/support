@@ -31,9 +31,9 @@ use BaksDev\Support\Entity\Support;
 
 final class EditSupportMessageCommentHandler extends AbstractHandler
 {
-	public function handle(EditSupportMessageCommentDTO $command): string|Support
-	{
-	    $this->setCommand($command);
+    public function handle(EditSupportMessageCommentDTO $command): string|Support
+    {
+        $this->setCommand($command);
 
         $this->preEventPersistOrUpdate(Support::class, SupportEvent::class);
 
@@ -49,5 +49,5 @@ final class EditSupportMessageCommentHandler extends AbstractHandler
         $this->messageDispatch->addClearCacheOther('support');
 
         return $this->main;
-	}
+    }
 }

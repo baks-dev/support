@@ -84,7 +84,7 @@ final class SupportLastMessageRepository implements SupportLastMessageInterface
                 SupportMessage::class,
                 'message',
                 'message.event = support.event',
-                sort: 'date'
+                sort: 'date',
             );
 
         $dbal

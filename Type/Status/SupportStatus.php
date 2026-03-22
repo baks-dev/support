@@ -71,22 +71,32 @@ final class SupportStatus
         throw new InvalidArgumentException(sprintf('Undefined Support Status %s', $property));
     }
 
-
-    public function __toString(): string
-    {
-        return $this->property ? $this->property->getvalue() : '';
-    }
-
     public function getSupportStatus(): ?SupportStatusInterface
     {
         return $this->property;
+    }
+
+    public static function getDeclared(): array
+    {
+        return array_filter(
+            get_declared_classes(),
+            static function($className) {
+                return in_array(SupportStatusInterface::class, class_implements($className), true);
+            },
+        );
+    }
+
+    public function equals(mixed $property): bool
+    {
+        $property = new self($property);
+
+        return $this->getSupportStatusValue() === $property->getSupportStatusValue();
     }
 
     public function getSupportStatusValue(): string
     {
         return $this->property->getValue();
     }
-
 
     public static function cases(): array
     {
@@ -102,20 +112,8 @@ final class SupportStatus
         return $case;
     }
 
-    public static function getDeclared(): array
+    public function __toString(): string
     {
-        return array_filter(
-            get_declared_classes(),
-            static function($className) {
-                return in_array(SupportStatusInterface::class, class_implements($className), true);
-            }
-        );
-    }
-
-    public function equals(mixed $property): bool
-    {
-        $property = new self($property);
-
-        return $this->getSupportStatusValue() === $property->getSupportStatusValue();
+        return $this->property ? $this->property->getvalue() : '';
     }
 }

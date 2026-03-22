@@ -104,9 +104,9 @@ final class DetailController extends AbstractController
             options: [
                 'action' => $this->generateUrl('support:admin.add', [
                     'id' => $supportEvent->getId(),
-                    'message' => current($messages)['message_id'] ?? null
+                    'message' => current($messages)['message_id'] ?? null,
                 ]),
-            ]
+            ],
         );
 
 
@@ -119,8 +119,8 @@ final class DetailController extends AbstractController
             data: $editSupportMessageCommentDTO,
             options: ['action' => $this->generateUrl(
                 'support:admin.comment.newedit',
-                ['id' => $supportEvent->getId()]
-            )]
+                ['id' => $supportEvent->getId()],
+            )],
         );
 
         return $this->render([

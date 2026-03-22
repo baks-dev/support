@@ -64,7 +64,7 @@ final class CurrentSupportEventByTicketRepository implements CurrentSupportEvent
             ->where('invariable.ticket = :ticket')
             ->setParameter(
                 key: 'ticket',
-                value: $this->ticket
+                value: $this->ticket,
             );
 
         $orm
@@ -73,7 +73,7 @@ final class CurrentSupportEventByTicketRepository implements CurrentSupportEvent
                 SupportEvent::class,
                 'event',
                 'WITH',
-                'event.id = invariable.event'
+                'event.id = invariable.event',
             );
 
         return $orm->getOneOrNullResult() ?: false;

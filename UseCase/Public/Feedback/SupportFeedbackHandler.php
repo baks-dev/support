@@ -51,7 +51,7 @@ final class SupportFeedbackHandler extends AbstractHandler
         /** Отправляем сообщение в шину */
         $this->messageDispatch->dispatch(
             message: new SupportMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent(), $command->getStatus()),
-            transport: 'support'
+            transport: 'support',
         );
 
         return $this->main;

@@ -127,12 +127,12 @@ class SupportEditTest extends KernelTestCase
             $testNewDate = new DateTimeImmutable('3 minutes ago');
             self::assertSame(
                 $testDate->format('Y-m-d'),
-                $SupportMessageDTO->getDate()->format('Y-m-d')
+                $SupportMessageDTO->getDate()->format('Y-m-d'),
             );
             $SupportMessageDTO->setDate(new DateTimeImmutable());
             self::assertSame(
                 $testNewDate->format('Y-m-d'),
-                $SupportMessageDTO->getDate()->format('Y-m-d')
+                $SupportMessageDTO->getDate()->format('Y-m-d'),
             );
         }
 

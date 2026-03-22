@@ -75,7 +75,7 @@ final class SupportFeedbackForm extends AbstractType
                     {
                         $SupportFeedbackDTO->captchaValid();
                     }
-                }
+                },
             );
         }
 
@@ -83,7 +83,7 @@ final class SupportFeedbackForm extends AbstractType
         $builder->add(
             'support_feedback',
             SubmitType::class,
-            ['label' => 'Отправить', 'label_html' => true, 'attr' => ['class' => 'btn btn-dark']]
+            ['label' => 'Отправить', 'label_html' => true, 'attr' => ['class' => 'btn btn-dark']],
         );
 
     }

@@ -32,17 +32,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class EditSupportMessageCommentCommentForm extends AbstractType
 {
-	public function buildForm(FormBuilderInterface $builder, array $options): void
-	{
-		 $builder->add('value', TextType::class, ['required' => false]);
-	}
-	
-	public function configureOptions(OptionsResolver $resolver): void
-	{
-		$resolver->setDefaults([
-			'data_class' => EditSupportMessageCommentCommentDTO::class,
-			'method' => 'POST',
-             'attr' => ['class' => 'w-100'],
-		]);
-	}
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder->add('value', TextType::class, ['required' => false]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => EditSupportMessageCommentCommentDTO::class,
+            'method' => 'POST',
+            'attr' => ['class' => 'w-100'],
+        ]);
+    }
 }
