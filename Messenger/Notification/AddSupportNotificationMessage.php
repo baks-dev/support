@@ -24,38 +24,32 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Support\UseCase\Admin\New;
+namespace BaksDev\Support\Messenger\Notification;
 
-use BaksDev\Core\Entity\AbstractHandler;
-use BaksDev\Support\Entity\Event\SupportEvent;
-use BaksDev\Support\Entity\Support;
-use BaksDev\Support\Messenger\SupportMessage;
+use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 
-
-final class SupportHandler extends AbstractHandler
+final readonly class AddSupportNotificationMessage
 {
-    /** @see Support */
-    public function handle(SupportDTO $command): string|Support
+    private string $profile;
+
+    private string $data;
+
+    public function __construct(
+        string $data,
+        UserProfileUid|string|null $profile,
+    )
     {
-        $this
-            ->setCommand($command)
-            ->preEventPersistOrUpdate(Support::class, SupportEvent::class);
+        $this->data = $data;
+        $this->profile = false === empty($profile) ? (string) $profile : null;
+    }
 
+    public function getProfile(): ?UserProfileUid
+    {
+        return $this->profile ? new UserProfileUid($this->profile) : null;
+    }
 
-        /** Валидация всех объектов */
-        if($this->validatorCollection->isInvalid())
-        {
-            return $this->validatorCollection->getErrorUniqid();
-        }
-
-        $this->flush();
-
-        /** Отправляем сообщение в шину */
-        $this->messageDispatch->dispatch(
-            message: new SupportMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent(), $command->getStatus()),
-            transport: 'support',
-        );
-
-        return $this->main;
+    public function getData(): string
+    {
+        return $this->data;
     }
 }
