@@ -24,38 +24,38 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Support\UseCase\Admin\New;
+namespace BaksDev\Support\Type\Profile;
 
-use BaksDev\Core\Entity\AbstractHandler;
-use BaksDev\Support\Entity\Event\SupportEvent;
-use BaksDev\Support\Entity\Support;
-use BaksDev\Support\Messenger\SupportMessage;
+use BaksDev\Users\Profile\TypeProfile\Type\Id\Choice\Collection\TypeProfileInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
-
-final class SupportHandler extends AbstractHandler
+/**
+ * Support Notification «Чат с внутренними уведомлениями»
+ */
+#[AutoconfigureTag('baks.users.profile.type')]
+final class SupportNotificationProfileType implements TypeProfileInterface
 {
-    /** @see Support */
-    public function handle(SupportDTO $command): string|Support
+    public const string TYPE = '48132a19-df71-785c-94bb-217e3234f7c3';
+
+    public function __toString(): string
     {
-        $this
-            ->setCommand($command)
-            ->preEventPersistOrUpdate(Support::class, SupportEvent::class);
+        return self::TYPE;
+    }
 
+    /** Возвращает значение (value) */
+    public function getValue(): string
+    {
+        return self::TYPE;
+    }
 
-        /** Валидация всех объектов */
-        if($this->validatorCollection->isInvalid())
-        {
-            return $this->validatorCollection->getErrorUniqid();
-        }
+    /** Сортировка */
+    public static function priority(): int
+    {
+        return 453;
+    }
 
-        $this->flush();
-
-        /** Отправляем сообщение в шину */
-        $this->messageDispatch->dispatch(
-            message: new SupportMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent(), $command->getStatus()),
-            transport: 'support',
-        );
-
-        return $this->main;
+    public static function equals(mixed $uid): bool
+    {
+        return self::TYPE === (string) $uid;
     }
 }

@@ -19,6 +19,7 @@
  *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
+ *
  */
 
 declare(strict_types=1);
@@ -130,12 +131,18 @@ final class AllSupportRepository implements AllSupportInterface
                 'support',
                 SupportInvariable::class,
                 'invariable',
-                'invariable.main = support.id AND (invariable.profile = :profile OR invariable.profile IS NULL)',
-
+                'invariable.main = support.id AND (invariable.profile = :profile OR invariable.profile = :current_profile OR invariable.profile IS NULL)',
             )
+            // профиль магазина
             ->setParameter(
                 'profile',
                 $this->profile ?: $this->UserProfileTokenStorage->getProfile(),
+                UserProfileUid::TYPE,
+            )
+            // профиль текущего пользователя
+            ->setParameter(
+                'current_profile',
+                $this->profile ?: $this->UserProfileTokenStorage->getProfileCurrent(),
                 UserProfileUid::TYPE,
             );
 
