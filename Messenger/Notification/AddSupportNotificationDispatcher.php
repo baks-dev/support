@@ -76,7 +76,7 @@ final readonly class AddSupportNotificationDispatcher
 
         $data = $message->getData();
         $profile = $message->getProfile();
-        $hashData = md5($data);
+        $hashData = md5(var_export($message, true));
 
         $ticketExist = $this->existSupportTicketRepository
             ->ticket($hashData)
