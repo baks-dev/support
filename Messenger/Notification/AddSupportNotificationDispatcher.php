@@ -62,18 +62,21 @@ final readonly class AddSupportNotificationDispatcher
 
     public function __invoke(AddSupportNotificationMessage $message): void
     {
-        $data = $message->getData();
-        $profile = $message->getProfile();
-        $hashData = md5($data);
-
         $Deduplicator = $this->Deduplicator
             ->namespace('support')
-            ->deduplication([$hashData, self::class]);
+            ->deduplication([
+                var_export($message, true),
+                self::class
+            ]);
 
         if($Deduplicator->isExecuted())
         {
             return;
         }
+
+        $data = $message->getData();
+        $profile = $message->getProfile();
+        $hashData = md5($data);
 
         $ticketExist = $this->existSupportTicketRepository
             ->ticket($hashData)
@@ -97,6 +100,7 @@ final readonly class AddSupportNotificationDispatcher
          *     type: string,
          *     header: string,
          *     message: string,
+         *     identifier: string,
          * } $notification
          */
         $notification = json_decode($data);
@@ -148,15 +152,6 @@ final readonly class AddSupportNotificationDispatcher
 
             return;
         }
-
-        $this->logger->info(
-            message: 'Уведомление сохранено',
-            context: [
-                $Support->getId(),
-                $message,
-                self::class.':'.__LINE__,
-            ],
-        );
 
         $Deduplicator->save();
     }
