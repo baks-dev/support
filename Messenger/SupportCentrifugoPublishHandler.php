@@ -30,6 +30,7 @@ use BaksDev\Centrifugo\Server\Publish\CentrifugoPublishInterface;
 use BaksDev\Core\Twig\TemplateExtension;
 use BaksDev\Support\Repository\SupportLastMessage\SupportLastMessageInterface;
 use BaksDev\Support\Repository\SupportLastMessage\SupportLastMessageResult;
+use BaksDev\Support\Type\Message\SupportMessageUid;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -59,7 +60,10 @@ final readonly class SupportCentrifugoPublishHandler
             ->forSupport($message->getId())
             ->find();
 
-        if(false === ($SupportMessage instanceof SupportLastMessageResult))
+        if(
+            false === ($SupportMessage instanceof SupportLastMessageResult)
+            || false === ($SupportMessage->getMessageId() instanceof SupportMessageUid)
+        )
         {
             return;
         }

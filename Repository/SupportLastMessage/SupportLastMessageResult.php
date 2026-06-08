@@ -32,11 +32,11 @@ class SupportLastMessageResult
 {
     public function __construct(
         private string $id,
-        private string $name,
-        private string $message,
-        private string $message_id,
-        private string $date,
-        private bool $out,
+        private ?string $name,
+        private ?string $message,
+        private ?string $message_id,
+        private ?string $date,
+        private ?bool $out,
         private ?string $profile,
     ) {}
 
@@ -55,17 +55,17 @@ class SupportLastMessageResult
         return $this->name;
     }
 
-    public function getMessageId(): SupportMessageUid
+    public function getMessageId(): SupportMessageUid|false
     {
-        return new SupportMessageUid($this->message_id);
+        return $this->message_id ? new SupportMessageUid($this->message_id) : false;
     }
 
     public function getDate(): DateTimeImmutable
     {
-        return new DateTimeImmutable($this->date);
+        return new DateTimeImmutable($this->date ?: 'now');
     }
 
-    public function getMessage(): string
+    public function getMessage(): ?string
     {
         return $this->message;
     }
