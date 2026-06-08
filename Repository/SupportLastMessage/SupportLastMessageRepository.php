@@ -93,7 +93,7 @@ final class SupportLastMessageRepository implements SupportLastMessageInterface
                 'support',
                 SupportInvariable::class,
                 'invariable',
-                'invariable.event = support.event',
+                'invariable.main = support.id',
             );
 
         $result = $dbal->fetchHydrate(SupportLastMessageResult::class);
